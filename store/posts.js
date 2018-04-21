@@ -21,8 +21,11 @@ export const state = () => ({
 
 export const actions = {
   async fetch_post ({ commit, state, rootState}, {author, permlink}) {
-    // TODO поиск поста в списке уже существующих
-    console.log('fetch_post', author, permlink)
+    let post_in_state = find_post_in_state(state, author, permlink)
+
+    if (post_in_state) {
+      return commit('SET_POST', post_in_state)
+    }
 
     await golos.api.getContent(author, permlink, (err, post) => commit('SET_POST', post))
   },
@@ -88,4 +91,9 @@ export const mutations = {
     state.start_author = last_post.author
     state.start_permlink = last_post.permlink
   }
+}
+
+function find_post_in_state(state, author, permlink) {
+  // Вернет пост если он уже есть в ленте
+  return state.list.find(p => p.author === author && p.permlink === permlink)
 }
