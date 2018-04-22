@@ -32,7 +32,7 @@ export default {
     })
   },
 
-  async asyncData ({ store, route}) {
+  async asyncData ({ store, route }) {
     let wait = store.dispatch('posts/fetch_post', route.params)
 
     if (process.server) {

@@ -20,6 +20,9 @@
     a.d-inline-block(href='#')
       i.fa.fa-fw.fa-share
       | Share
+  .card-body
+    nuxt-link.card-link(:to="{name: 'author_feed', params: {author: post.author}}") @{{ post.author }}
+
   hr.my-0
   .card-body.small.bg-faded
     .media
@@ -51,6 +54,7 @@ export default {
   },
 
   computed: {
+    author: () => console.log(this.$router)
     //firstImage: () => {
     //  return 'https://assets.servedby-buysellads.com/p/manage/asset/id/38523'
     //}
