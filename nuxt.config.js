@@ -27,6 +27,7 @@ module.exports = {
   ],
   modules: [
     'bootstrap-vue/nuxt',
+    //'@/modules/custom-generate-routes.js', FIXME разобраться с игнорированием роутов
   ],
   plugins: [
     '@/plugins/vue-google-maps',
@@ -63,6 +64,12 @@ module.exports = {
 
   router: {
     extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'author_feed',
+        path: '/@:author',
+        component: resolve(__dirname, 'pages/author.vue')
+      })
+
       routes.push({
         name: 'post',
         path: '/@:author/:permlink',

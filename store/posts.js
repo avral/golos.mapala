@@ -1,22 +1,48 @@
 import golos from 'golos-js'
 
+import Vue from 'vue'
+
 import config from '@/config'
 import prepare_html from '@/utils/prepare_html'
 
-export const state = () => ({
-  post: {
-    title: '',
-    body: ''
-  },
 
-  list: [],
+/* В authors хранится состояния для следующего
+ * запроса для автора
+ * undefined - Основная летна
+ * 
+ * Вся задумка в том, что бы хранить загруженными
+ * все посты для ленты и для авторов
+ * и не перегружать их каждый раз
+ */
+
+//  HACK
+// Proxy будут работать в Vue 2.6 ждем релиз, костыль
+const authors = new Proxy({}, {
+  get: function(object, property) {
+    if (object.hasOwnProperty(property)) {
+      return object[property]
+    }
+
+    object[property] = {
+      posts: [],
+      start_author: undefined,
+      start_permlink: undefined
+    }
+
+    return object[property]
+  }
+})
+
+
+export const state = () => ({
+  post: {},
+  list: [], // Current posts
+
+  author: undefined,
+  tags: [config.app_tag],
+
   limit: config.get_content_limit,
   isLoading: false,
-
-  tags: [config.app_tag],
-  author: undefined,
-  start_author: undefined,
-  start_permlink: undefined,
 })
 
 export const actions = {
@@ -29,16 +55,19 @@ export const actions = {
 
     await golos.api.getContent(author, permlink, (err, post) => commit('SET_POST', post))
   },
+
   async fetch_posts ({ commit, state, rootState }) {
     console.log('fetch_posts')
     rootState.isLoading = true
-    
+
+    // TODO разобраться с лоадером при последнем посте
     let posts = await golos.api.getDiscussionsByCreated({
-      select_tags: state.tags,
+      select_tags: state.tags, // TODO пока тут только тег приложения
       limit: state.limit,
-      start_author: state.start_author,
-      start_permlink: state.start_permlink,
+
       select_authors: state.author ? [state.author] : undefined,
+      start_author: authors[state.author].start_author,
+      start_permlink: authors[state.author].start_permlink,
     })
 
     posts = posts.map(post => {
@@ -56,7 +85,8 @@ export const actions = {
     let last_post = posts.pop()
 
     if (last_post) {
-      commit('UPDATE_LAST_POST_IN_FEED', last_post)
+      authors[state.author].start_author = last_post.author
+      authors[state.author].start_permlink = last_post.permlink
     }
 
     commit('EXTEND_POST_LIST', posts)
@@ -72,28 +102,47 @@ export const mutations = {
   },
 
   SET_POST_LIST (state, payload) {
-    state.list = payload
+    authors._current(state).posts(payload)
+
+    sync_posts_hack(state)
   },
 
   SET_AUTHOR (state, author) {
-    state.author = payload
+    console.log('author', author)
+    state.author = author
+
+    sync_posts_hack(state)
   },
 
   UNSET_AUTHOR (state, payload) {
     state.author = undefined
   },
 
-  EXTEND_POST_LIST (state, payload) {
-    state.list = state.list.concat(payload)
-  },
+  EXTEND_POST_LIST (state, posts) {
+    let author = authors[state.author]
+    author.posts = author.posts.concat(posts)
 
-  UPDATE_LAST_POST_IN_FEED (state, last_post) {
-    state.start_author = last_post.author
-    state.start_permlink = last_post.permlink
+    sync_posts_hack(state)
+  },
+}
+
+export const getters = {
+  posts: state => {
+    return state._authors[state.author].posts
   }
 }
 
+
+function sync_posts_hack(state) {
+  // HACK
+  // синхронизирует посты в authors с state
+
+  state.list = authors[state.author].posts
+}
+
+
 function find_post_in_state(state, author, permlink) {
   // Вернет пост если он уже есть в ленте
-  return state.list.find(p => p.author === author && p.permlink === permlink)
+  // TODO перепилить под новый стиль
+  return authors[state.author].posts.find(p => p.author === author && p.permlink === permlink)
 }
