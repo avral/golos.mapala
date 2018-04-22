@@ -14,7 +14,6 @@ div
 <script>
 import Feed from '@/components/post/Feed'
 
-
 export default {
   async asyncData ({ store, commit }) {
     // undefined - для основной ленты

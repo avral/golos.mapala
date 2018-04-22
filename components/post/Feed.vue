@@ -8,6 +8,7 @@
           p
           no-ssr
             infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
+              p(slot="no-more") Больше нет постов :(
 </template>
 
 <script>
@@ -17,21 +18,29 @@ import PostItem from '@/components/post/PostItem'
 
 
 export default {
+  computed: { 
+    ...mapState({
+      isLoading: state => state.isLoading,
+      posts: state => state.posts.list
+    }),
+  },
+
   methods: {
     ...mapActions({
       fetch_posts: 'posts/fetch_posts'
     }),
 
     handleLoading($state) {
-      this.fetch_posts().then(() => $state.loaded())
-    }
-  },
+      const posts_count = this.posts.length
 
-  computed: { 
-    ...mapState({
-      isLoading: state => state.isLoading,
-      posts: state => state.posts.list
-    }),
+      this.fetch_posts().then(() => {
+        if (posts_count == this.posts.length) {
+          $state.complete()
+        } else {
+          $state.loaded()
+        }
+      })
+    }
   },
 
   components: {
