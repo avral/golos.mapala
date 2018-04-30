@@ -21,6 +21,11 @@ nav#mainNav.navbar.navbar-expand-lg.bg-dark.navbar-dark.fixed-top
           i.fa.fa-fw.fa-table
           span.nav-link-text
             | Карта
+      li.nav-item(data-toggle='tooltip', data-placement='right', title='Tables')
+        nuxt-link(:to="{name: 'settings'}").nav-link
+          i.fa.fa-fw.fa-table
+          span.nav-link-text
+            | Настройки
       li.nav-item(data-toggle='tooltip', data-placement='right', title='Components')
         a.nav-link.nav-link-collapse.collapsed(data-toggle='collapse', href='#collapseComponents', data-parent='#exampleAccordion')
           i.fa.fa-fw.fa-wrench

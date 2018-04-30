@@ -18,6 +18,7 @@ export default {
   async asyncData ({ store, commit }) {
     // undefined - для основной ленты
     store.commit('posts/SET_AUTHOR', undefined)
+    store.commit('posts/SET_FETCH_METHOD', 'created')
   },
 
   components: {

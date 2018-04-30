@@ -15,6 +15,11 @@ import prepare_html from '@/utils/prepare_html'
  * и не перегружать их каждый раз
  */
 
+const fetch_methods = {
+  'created': 'getDiscussionsByCreated',
+  'blog': 'getDiscussionsByBlog',
+}
+
 //  HACK
 // Proxy будут работать в Vue 2.6 ждем релиз, костыль
 const authors = new Proxy({}, {
@@ -33,16 +38,18 @@ const authors = new Proxy({}, {
   }
 })
 
-
 export const state = () => ({
   post: {},
-  list: [], // Current posts
+  list: [], // current posts
 
   author: undefined,
-  tags: [config.app_tag],
+  tags: config.app_tags,
+
+  // Метод для загрузки постов
+  fetch_method: fetch_methods.created, // Default
 
   limit: config.get_content_limit,
-  isLoading: false,
+  isloading: false,
 })
 
 export const actions = {
@@ -56,19 +63,76 @@ export const actions = {
     await golos.api.getContent(author, permlink, (err, post) => commit('SET_POST', post))
   },
 
-  async fetch_posts ({ commit, state, rootState }) {
-    console.log('fetch_posts')
+  async fetch_posts ({ commit, state, rootState, route }) {
+    //console.log(authors[state.author].start_author,
+    //            authors[state.author].start_permlink)
+
+    //console.log(state.fetch_method)
+
     rootState.isLoading = true
+    var posts = []
 
     // TODO разобраться с лоадером при последнем посте
-    let posts = await golos.api.getDiscussionsByCreated({
-      select_tags: state.tags, // TODO пока тут только тег приложения
-      limit: state.limit,
+    
+    if (state.fetch_method == fetch_methods['blog']) {
+      // TODO Хак для блога, пофиксят в 17.3 ноде
+      let pass = true
 
-      select_authors: state.author ? [state.author] : undefined,
-      start_author: authors[state.author].start_author,
-      start_permlink: authors[state.author].start_permlink,
-    })
+      while (pass) {
+        let results = await golos.api[state.fetch_method]({
+          limit: state.limit,
+
+          select_authors: [state.author],
+          start_author: authors[state.author].start_author,
+          start_permlink: authors[state.author].start_permlink,
+        })
+
+        results.shift()
+
+        if (!results.length) {
+          break
+        }
+
+        let last_post = results[results.length - 1]
+        authors[state.author].start_author = last_post.author
+        authors[state.author].start_permlink = last_post.permlink
+
+        // TODO Фильтр вынести в модуль отдельный для голоса
+        results = results.filter(p => JSON.parse(p.json_metadata).tags.some(r => state.tags.includes(r)))
+
+        results.map(p => {
+          if (posts.length < state.limit) {
+            posts.push(p)
+          } else {
+            pass = false
+
+            let last_post = posts[posts.length - 1]
+            authors[state.author].start_author = last_post.author
+            authors[state.author].start_permlink = last_post.permlink
+          }
+        })
+      }
+    } else {
+      posts = await golos.api[state.fetch_method]({
+        select_tags: ['mapala'],//state.tags,
+        limit: state.limit,
+
+        select_authors: state.author ? [state.author] : undefined,
+        start_author: authors[state.author].start_author,
+        start_permlink: authors[state.author].start_permlink,
+      })
+
+      if (posts.length > 1) {
+        var last_post = posts.pop()
+      } else if (posts.length == 1) {
+        var last_post = posts[0]
+      }
+
+      if (last_post) {
+        authors[state.author].start_author = last_post.author
+        authors[state.author].start_permlink = last_post.permlink
+      }
+    }
 
     posts = posts.map(post => {
       post.body = prepare_html(post.body).html
@@ -81,13 +145,6 @@ export const actions = {
 
       return post
     })
-
-    let last_post = posts.pop()
-
-    if (last_post) {
-      authors[state.author].start_author = last_post.author
-      authors[state.author].start_permlink = last_post.permlink
-    }
 
     commit('EXTEND_POST_LIST', posts)
     rootState.isLoading = false
@@ -124,6 +181,10 @@ export const mutations = {
 
     sync_posts_hack(state)
   },
+
+  SET_FETCH_METHOD (state, method) {
+    state.fetch_method = fetch_methods[method]
+  }
 }
 
 export const getters = {

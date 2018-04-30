@@ -39,7 +39,7 @@
           li.list-inline-item
             a(href='#') Reply
   .card-footer.small.text-muted
-    | Posted 46 mins ago
+    | Posted {{ post.created | formatDate }}
 </template>
 
 <script>

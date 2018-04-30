@@ -1,5 +1,10 @@
 const path = require('path')
 
+
+console.log(process.env.NODE_ENV)
+
+
+
 module.exports = {
   /*
   ** Headers of the page
@@ -30,13 +35,19 @@ module.exports = {
     //'@/modules/custom-generate-routes.js', FIXME разобраться с игнорированием роутов
   ],
   plugins: [
+    // Плагин в котором лежат все вызовы при запуске клиента
+    {ssr: false, src: '@/plugins/startapp.js'},
+
     '@/plugins/vue-google-maps',
     '@/plugins/infiniteload.js',
+    '@/plugins/moment.js',
+    '@/plugins/vuex-router-sync.js',
   ],
   /*
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
+
   /*
   ** Build configuration
   */

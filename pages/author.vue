@@ -16,6 +16,7 @@ import Feed from '@/components/post/Feed'
 export default {
   async asyncData ({ store, route }) {
     store.commit('posts/SET_AUTHOR', route.params.author)
+    store.commit('posts/SET_FETCH_METHOD', 'blog')
   },
 
   components: {
