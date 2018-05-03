@@ -1,13 +1,6 @@
 <template lang="pug">
-div
-  ol.breadcrumb
-    li.breadcrumb-item
-      a(href='index.html') Dashboard
-    li.breadcrumb-item.active Blank Page
-
-  // лента
+.container-fluid.mt-3
   feed
-
 
 </template>
 

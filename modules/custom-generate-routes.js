@@ -1,3 +1,4 @@
+// FIXME Не использутеся
 export default function () {
   this.nuxt.hook('generate:extendRoutes', async routes => {
     const whiteList = ['/index', '/feed', 'map']

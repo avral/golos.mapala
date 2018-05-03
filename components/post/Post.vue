@@ -1,16 +1,11 @@
 <template lang="pug">
-div
-  button(@click="test")
-  ol.breadcrumb
-    li.breadcrumb-item
-      a(href='index.html') Dashboard
-    li.breadcrumb-item.active Blank Page
-  .row
-    .col-12
-      h1 {{ post.title }}
-      div(v-html="post.body").htm-from-blockchain
-  // /.container-fluid
-  // /.content-wrapper
+.row
+  .container
+    h1 {{ post.title }}
+    div(v-html="post.body").htm-from-blockchain
+
+    .row
+    button(type="button" @click="$router.go(-1)").btn.btn-light.btn-lg.btn-block.fixed-bottom Назад
 </template>
 
 <script>

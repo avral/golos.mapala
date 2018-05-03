@@ -1,14 +1,15 @@
 <template lang="pug">
-  .row
-    .col-5
+div
+  .row.justify-content-center
+    .col-6
       post-item(v-for="post in posts", :post="post", :key="post.id")
 
-      .row
-        .col-12
-          p
-          no-ssr
-            infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
-              p(slot="no-more") Больше нет постов :(
+  .row
+    .col-12
+      p
+      no-ssr
+        infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
+          p(slot="no-more") Больше нет постов :(
 </template>
 
 <script>

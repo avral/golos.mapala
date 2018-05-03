@@ -187,12 +187,6 @@ export const mutations = {
   }
 }
 
-export const getters = {
-  posts: state => {
-    return state._authors[state.author].posts
-  }
-}
-
 
 function sync_posts_hack(state) {
   // HACK

@@ -1,9 +1,8 @@
 <template lang="pug">
-  div
-    nav-bar
-    .content-wrapper
-      .container-fluid
-        nuxt
+div
+  nav-bar
+
+  nuxt
 </template>
 
 <style>
@@ -15,11 +14,12 @@ import NavBar from '@/components/NavBar'
 export default {
   head: {
     bodyAttrs: {
-      class: 'page-top fixed-nav sticky-footer bg-dark'
+      //class: 'page-top fixed-nav sticky-footer bg-dark'
     }
   },
   components: {
-    NavBar
+    NavBar,
   }
 }
 </script>
+

@@ -27,16 +27,21 @@ module.exports = {
   css: [
     '@fortawesome/fontawesome/styles.css',
 
-    '@/assets/css/sb-admin.css',
+    //'@/assets/css/sb-admin.css',
     '@/assets/css/main.css',
   ],
   modules: [
     'bootstrap-vue/nuxt',
-    //'@/modules/custom-generate-routes.js', FIXME разобраться с игнорированием роутов
+    /// '@/modules/custom-generate-routes.js',
   ],
   plugins: [
     // Плагин в котором лежат все вызовы при запуске клиента
     {ssr: false, src: '@/plugins/startapp.js'},
+
+    {ssr: false, src: '@/plugins/localStorage.js'},
+    {ssr: false, src: '@/plugins/vuelidate.js'},
+    {ssr: false, src: '@/plugins/vue-quill-editor.js'},
+    {ssr: false, src: '@/plugins/vue-notification.js'},
 
     '@/plugins/vue-google-maps',
     '@/plugins/infiniteload.js',
@@ -74,6 +79,8 @@ module.exports = {
   },
 
   router: {
+    linkActiveClass: 'active',
+
     extendRoutes(routes, resolve) {
       routes.push({
         name: 'author_feed',

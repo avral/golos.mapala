@@ -1,19 +1,46 @@
 <template lang="pug">
-div
-  ol.breadcrumb
-    li.breadcrumb-item
-      a(href='index.html') Настройки
-    li.breadcrumb-item.active Blank Page
+.container.mt-5
+
+  p wif: {{ wif }}
+  p name: {{ name }}
+
+  .input-group
+    input(v-model="name_", placeholder="name").form-control
+    input(v-model="wif_", placeholder="WIF").form-control
+    span.input-group-btn
+      button.btn.btn-secondary(@click="test") Добавить
 
 </template>
 
 <script>
-export default {
-  async asyncData ({ store, route }) {
+import { required, minLength, between } from 'vuelidate/lib/validators'
+import { mapState } from 'vuex'
 
+
+export default {
+  computed: {
+    ...mapState({
+      wif: state => state.account.wif,
+      name: state => state.account.name,
+    })
   },
 
-  components: {
+  data() {
+    return {
+      wif_: '',
+      name_: ''
+    }
+  },
+
+  methods: {
+    test() {
+      try {
+        this.$store.commit('account/SET_WIF', this.wif_)
+        this.$store.commit('account/set_name', this.name_)
+      } catch (e) {
+        alert(e)
+      }
+    },
   }
 }
 
