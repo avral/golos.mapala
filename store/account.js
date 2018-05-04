@@ -9,23 +9,54 @@ export const state = () => ({
 })
 
 export const mutations = {
-  SET_LOADING (state, loading) {
-    state.isLoading = loading
-  },
-
-  SET_WIF (state, wif) {
-    if(!golos.auth.isWif(wif)) {
-      throw new Error('This is not WIF')
-    }
-
-    state.wif = wif
-  },
+  set_wif: (state, wif) => state.wif = wif,
 
   set_name: (state, name) => state.name = name
 }
 
 export const actions = {
-  init({ commit, state }) {
+  init({ commit, state, dispatch }) {
     console.log('account init')
+
+    if (state.wif) {
+      dispatch('fetch_account')
+    }
+  },
+
+  async authorization ({ commit, state, dispatch }, { wif, account }) {
+    if (!golos.auth.isWif(wif)) {
+      throw new Error('Это не приватный ключ')
+    }
+
+    let res
+    await golos.api.getAccounts([account], (e, r) => res = r)
+
+    if (res.length == 0) {
+      throw new Error('В GOLOS.IO нет такого пользователя')
+    }
+
+    let user_pub = golos.auth.wifToPublic(wif)
+    let account_pub = res[0].posting.key_auths[0][0]
+    
+    if (user_pub !== account_pub) {
+      throw new Error('Ключ пользователя, не подходит к аккаунту')
+    }
+
+    commit('set_wif', wif)
+    commit('set_name', account)
+    dispatch('fetch_account')
+  },
+
+  async logout ({ commit }) {
+    commit('set_wif', false)
+    commit('set_name', '')
+  },
+
+  async fetch_account ({ commit }) {
+    // TODO Подгрузка инфы о пользователе
   }
+}
+
+export const getters = {
+  isAuth: state => state.wif && state.name
 }

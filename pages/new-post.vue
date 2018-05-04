@@ -21,7 +21,7 @@
     br
     br
 
-    .quill-editor(v-quill:myQuillEditor="editorOptions")
+    .quill-editor(v-quill:myQuillEditor="editorOptions", @input="update_body", v-model="editor.html")
 
     br
     
@@ -49,6 +49,8 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 
 export default {
+  middleware: 'auth',
+
   data() {
     return {
       editorOptions: {

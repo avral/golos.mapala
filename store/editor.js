@@ -10,11 +10,7 @@ export const state = () => ({
   html: '',
   title: '',
   tags: [],
-  location: {
-    name: '',
-    lat: '',
-    lng: ''
-  }
+  location: {name: '', lat: '', lng: ''}
 })
 
 export const mutations = {
@@ -28,8 +24,11 @@ export const mutations = {
   },
 
   clear(state) {
+    state.title = ''
     state.body = ''
     state[state.type] = ''
+    state.tags = []
+    state.location = {name: '', lat: '', lng: ''}
   },
 
   toggle: state => state.type = state.type == 'markdown' ? 'html' : 'markdown',

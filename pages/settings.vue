@@ -10,11 +10,17 @@
     span.input-group-btn
       button.btn.btn-secondary(@click="test") Добавить
 
+
+  button.btn.btn-secondary(@click="lol") Lol 
+
+
 </template>
 
 <script>
 import { required, minLength, between } from 'vuelidate/lib/validators'
 import { mapState } from 'vuex'
+
+import golos from 'golos-js'
 
 
 export default {
@@ -41,6 +47,21 @@ export default {
         alert(e)
       }
     },
+    
+    lol() {
+      //this.$store.commit('account/set_test', 'loll')
+      //golos.broadcast.accountUpdate(this.$store.state.account.wif, //'5KLvM8HRHN9XsQNMBsbUmj9g2SBxJKdUSBuWNdqxhCphk8ceSNz',
+      //  this.$store.state.account.name, undefined, undefined, undefined,
+      //  'GLS7h8cV4zebGyxLkEYYPUCSnAVTi4FNARR1ckdtaaoXwbUEqF2zX', {test: 'лол тест', nerd: {gh: 94}}, function(err, result) {
+      //  console.log(err, result);
+      //})
+      golos.broadcast.customJson(this.$store.state.account.wif, //'5KLvM8HRHN9XsQNMBsbUmj9g2SBxJKdUSBuWNdqxhCphk8ceSNz',
+        [], [this.$store.state.account.name], 'test',
+
+        JSON.stringify({test: 'лол тест', nerd: {gh: 94}}), function(err, result) {
+        console.log(err, result);
+      })
+    }
   }
 }
 
