@@ -1,4 +1,5 @@
 import golos from 'golos-js'
+import { get_account } from '@/utils/golos.js/'
 
 
 export const state = () => ({
@@ -28,15 +29,14 @@ export const actions = {
       throw new Error('Это не приватный ключ')
     }
 
-    let res
-    await golos.api.getAccounts([account], (e, r) => res = r)
+    account = await get_account(account)
 
-    if (res.length == 0) {
+    if (!account) {
       throw new Error('В GOLOS.IO нет такого пользователя')
     }
 
     let user_pub = golos.auth.wifToPublic(wif)
-    let account_pub = res[0].posting.key_auths[0][0]
+    let account_pub = account.posting.key_auths[0][0]
     
     if (user_pub !== account_pub) {
       throw new Error('Ключ пользователя, не подходит к аккаунту')

@@ -1,10 +1,5 @@
 const path = require('path')
 
-
-console.log(process.env.NODE_ENV)
-
-
-
 module.exports = {
   /*
   ** Headers of the page
@@ -31,9 +26,15 @@ module.exports = {
     '@/assets/css/main.css',
   ],
   modules: [
+    '@nuxtjs/apollo',
     'bootstrap-vue/nuxt',
     /// '@/modules/custom-generate-routes.js',
   ],
+  apollo: {
+    clientConfigs: {
+      default: '@/config/apollo'
+    }
+  },
   plugins: [
     // Плагин в котором лежат все вызовы при запуске клиента
     {ssr: false, src: '@/plugins/startapp.js'},
@@ -45,7 +46,7 @@ module.exports = {
 
     '@/plugins/vue-google-maps',
     '@/plugins/infiniteload.js',
-    '@/plugins/moment.js',
+    '@/plugins/filters.js',
     '@/plugins/vuex-router-sync.js',
   ],
   /*
@@ -69,13 +70,7 @@ module.exports = {
           exclude: /(node_modules)/
         })
       }
-
-      //config.module.rules.splice(0, 0, {
-      //  test: /\.js$/,
-      //  include: [path.resolve(__dirname, './node_modules/vue2-google-maps')],
-      //  loader: 'babel-loader',
-      //})
-    }
+    },
   },
 
   router: {

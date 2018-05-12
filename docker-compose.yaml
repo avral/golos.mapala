@@ -1,0 +1,10 @@
+version: '3'
+services:
+  web:
+    restart: always
+    build: .
+    command: yarn run start --production
+    ports:
+      - 3000:3000
+    #environment:
+    #tty: true

@@ -1,7 +1,5 @@
 import Vue from 'vue'
 
-
-
 // TODO Сделать глобальную обработку для отображения
 //Vue.config.errorHandler = function (err, vm, info) {
 //

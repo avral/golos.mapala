@@ -7,7 +7,7 @@
       h5.card-title.mb-1
         nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}") {{ post.title }}
       p.card-text
-        | {{ post.body.slice(0, 50) }}
+        | {{ post.body | body_preview }}
         //a(href='#') #workinghardorhardlyworking
     hr.my-0
     .card-body.py-2.small

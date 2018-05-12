@@ -2,7 +2,7 @@
 .row
   .container
     h1 {{ post.title }}
-    div(v-html="post.body").htm-from-blockchain
+    div(v-html="$options.filters.golos_html(post.body)").htm-from-blockchain
 
     .row
     button(type="button" @click="$router.go(-1)").btn.btn-light.btn-lg.btn-block.fixed-bottom Назад
@@ -16,9 +16,6 @@ export default {
     ...mapActions({
       fetch_post: 'posts/fetch_post'
     }),
-    test() {
-      console.log(this.post)
-    },
   },
 
   computed: {

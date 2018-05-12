@@ -1,8 +1,6 @@
 <template lang="pug">
 div
-  .row.justify-content-center
-    .col-6
-      post-item(v-for="post in posts", :post="post", :key="post.id")
+  post-item(v-for="post in posts", :post="post", :key="post.id")
 
   .row
     .col-12
