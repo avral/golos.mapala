@@ -1,6 +1,15 @@
 <template lang="pug">
-.container-fluid.mt-3
-  feed
+  .row.flex-xl-nowrap
+    .col.left-menu
+      ul.nav.flex-column
+        li.nav-item
+          a.nav-link.active О мапала
+
+        li.nav-item
+          a.nav-link.active Карта
+    .col-6.mt-3
+      feed
+    .col
 
 </template>
 
@@ -10,7 +19,7 @@ import Feed from '@/components/post/Feed'
 export default {
   async asyncData ({ store, commit }) {
     // undefined - для основной ленты
-    store.commit('posts/SET_AUTHOR', undefined)
+    store.commit('posts/set_author', undefined)
   },
 
   components: {
@@ -19,3 +28,12 @@ export default {
 }
 
 </script>
+
+<style>
+.left-menu {
+  top: 61px;
+  position: sticky;
+  height: calc(100vh - 61px);
+
+}
+</style>

@@ -80,39 +80,34 @@ export const actions = {
     let author = authors[state.author]
 
     let query = gql`
-      {
-        posts(page: ${author.posts.next_page}) {
+      query posts ($page: Int!, $author: String) {
+        posts(page: $page, author: $author) {
           author,
           permlink,
           title,
           created,
-          body
+          body,
         }
       }
     `
 
-    let {data: {posts}} = await client.query({query})
+    let {data: {posts}} = await client.query({query, variables: {
+      page: author.posts.next_page,
+      author: state.author
+    }})
 
-    Object.values(posts).map(post => {
-      authors[state.author].posts.list.push(post)
-    })
+    authors[state.author].posts.list = authors[state.author].posts.list.concat(posts)
 
     author.posts.next_page++
 
     sync_posts_hack(state)
-  }
+  },
 }
 
 export const mutations = {
   set_post: (state, post) => state.post = post,
 
-  SET_POST_LIST (state, payload) {
-    authors._current(state).posts(payload)
-
-    sync_posts_hack(state)
-  },
-
-  SET_AUTHOR (state, author) {
+  set_author (state, author) {
     state.author = author
 
     sync_posts_hack(state)

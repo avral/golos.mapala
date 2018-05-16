@@ -43,7 +43,7 @@ export const actions = {
     }
 
     commit('set_wif', wif)
-    commit('set_name', account)
+    commit('set_name', account.name)
     dispatch('fetch_account')
   },
 

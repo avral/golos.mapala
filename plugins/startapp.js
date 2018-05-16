@@ -13,6 +13,7 @@ export default ({app: { store }}) => {
   //  console.log(location.coords.longitude)
   //  console.log(location.coords.accuracy)
   //})
+  //
 
   window.onNuxtReady(() => {
     store.dispatch('account/init')

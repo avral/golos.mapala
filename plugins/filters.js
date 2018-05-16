@@ -12,14 +12,16 @@ Vue.filter('formatDate', (value) => {
 })
 
 Vue.filter('golos_html', (value) => {
-  return prepare_html(value).html
+  let html = marked(value)
+
+  return html
 })
 
 
 Vue.filter('body_preview', (value, length=50) => {
 	let tmp = document.createElement("DIV");
 
-	tmp.innerHTML = prepare_html(marked(value)).html;
+	tmp.innerHTML = value;
   let text = tmp.textContent || tmp.innerText
 
 	return text.slice(0, length);

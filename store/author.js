@@ -23,9 +23,13 @@ export const actions = {
       authors[author] = await get_account(author)
       commit('set_author', authors[author])
     }
+    console.log(authors[author])
   },
 }
 
 export const mutations = {
-  set_author: (state, author) => state.author = author
+  set_author: (state, author) => {
+    state.author = author
+    author.json_metadata = JSON.parse(author.json_metadata)
+  }
 }

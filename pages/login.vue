@@ -1,6 +1,12 @@
 <template lang="pug">
 .container.mt-5
-  .row.justify-content-center
+  .row.justify-content-center(v-if="$store.getters['account/isAuth']")
+    form.col-md-6.text-center
+      img(src="@/assets/img/mapala-logo.png", width="100", height="100").mb-3
+      h1.h3 Авторизация
+      p.text-muted.lead Вы авторизоавнны
+
+  .row.justify-content-center(v-else)
     form.col-md-6.text-center
       img(src="@/assets/img/mapala-logo.png", width="100", height="100").mb-3
       h1.h3 Авторизация

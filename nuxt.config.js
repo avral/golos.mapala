@@ -1,6 +1,10 @@
 const path = require('path')
 
 module.exports = {
+  env: {
+    API_QL_URL: process.env.API_QL_URL || 'http://localhost:3000'
+  },
+
   /*
   ** Headers of the page
   */
@@ -89,5 +93,5 @@ module.exports = {
         component: resolve(__dirname, 'components/post/Post.vue')
       })
     }
-  }
+  },
 }

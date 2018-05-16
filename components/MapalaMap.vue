@@ -1,40 +1,39 @@
 <template lang="pug">
-  div.map
-    gmap-map(
-      :options="mapOptions",
-      :center="center",
-      :zoom="4",
-      @idle="updateMarkersList",
-      ref="mmm",
-      map-type-id="terrain",
+  gmap-map(
+    :options="options",
+    :center="center",
+    :zoom="4",
+    @idle="updateMarkers",
+    ref="mmm",
+    map-type-id="terrain",
 
-      @dragend="checkBounds"
+    @dragend="checkBounds"
+    )
+
+    gmap-marker(
+      v-for="marker in markers",
+      :key="marker.identifier",
+      :position="{ lat: marker.location.coordinates[1], lng: marker.location.coordinates[0] }",
+      :clickable="true",
+      :draggable="false",
+      @click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
       )
 
-      gmap-marker(
-        v-for="marker in markers",
-        :key="marker.permlink + marker.author",
-        :position="{ lat: Number(marker.position.latitude), lng: Number(marker.position.longitude) }",
-        :clickable="true",
-        :draggable="false",
-        :icon="icon",
-        @mouseover="openInfoWindow(marker)",
-        @mouseout="infoWindow.opened = false",
-        @click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
-        )
-
-      gmap-info-window(
-        :options="infoWindow.options",
-        :opened="infoWindow.opened",
-        :content="infoWindow.content",
-        :position="infoWindow.position",
-        @closeclick="infoWindow.opened=false"
-        )
+    //gmap-info-window(
+      @mouseover="openInfoWindow(marker)",
+      @mouseout="infoWindow.opened = false",
+      :options="infoWindow.options",
+      :opened="infoWindow.opened",
+      :content="infoWindow.content",
+      :position="infoWindow.position",
+      @closeclick="infoWindow.opened=false"
+      )
 
 </template>
 
 <script>
 import { map_options } from '@/config'
+import gql from 'graphql-tag'
 
 
 export default {
@@ -49,6 +48,46 @@ export default {
 
       options: map_options,
     }
+  },
+
+  methods: {
+    checkBounds() {
+    },
+
+    async updateMarkers() {
+      const map = this.$refs.mmm.$mapObject
+      const bounds = map.getBounds()
+
+      //const boundingBox = [[bounds.b.b, bounds.f.b], [bounds.b.f, bounds.f.f]]
+      const boundingBox = [
+        bounds.b.b,
+        bounds.f.b,
+        bounds.b.f,
+        bounds.f.f
+      ]
+
+      let client = this.$apolloProvider.defaultClient
+
+      let query = gql`
+        query markers ($bbox: JSONString!, $author: String) {
+          markers(bbox: $bbox, author: $author) {
+            title,
+            identifier,
+            location
+          }
+        }
+      `
+
+      let {data: {markers}} = await client.query({query,
+        variables: {
+          bbox: JSON.stringify(boundingBox)
+        }
+      })
+
+        
+      this.markers = [...markers, ...this.markers].filter((elem, index, self) => self.findIndex(
+          (t) => {return (t.identifier === elem.identifier)}) === index)
+    }
   }
 }
 
@@ -56,4 +95,3 @@ export default {
 
 <style>
 </style>
-

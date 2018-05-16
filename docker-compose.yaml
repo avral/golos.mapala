@@ -2,9 +2,10 @@ version: '3'
 services:
   web:
     restart: always
-    build: .
-    command: yarn run start --production
+    build:
+      context: .
+      args:                                                                      
+        API_QL_URL: ${API_QL_URL}
+    command: yarn run start
     ports:
-      - 3000:3000
-    #environment:
-    #tty: true
+      - 127.0.0.1:8888:3000

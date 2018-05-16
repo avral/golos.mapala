@@ -4,6 +4,7 @@ export default {
   get_content_limit: 5, // Limit posts for node query
 
   img_proxy_prefix: 'https://imgp.golos.io/',
+  API_QL_URL: process.env.API_QL_URL || 'http://127.0.0.1:5000/graphql'
 }
 
 export const map_options = {

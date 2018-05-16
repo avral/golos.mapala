@@ -104,9 +104,11 @@ export default function (html, {mutate = true} = {}, resolve = false) {
 function traverse(node, state, depth = 0, resolve) {
     if(!node || !node.childNodes) return
     Array.from(node.childNodes).forEach(child => {
-        // console.log(depth, 'child.tag,data', child.tagName, child.data)
+      console.log(child)
+        //console.log(depth, 'child.tag,data', child.tagName, child.data)
         const tag = child.tagName ? child.tagName.toLowerCase() : null
         if(tag) state.htmltags.add(tag)
+
 
         if(tag === 'img')
             img(state, child)
@@ -188,7 +190,8 @@ function linkifyNode(child, state, resolve) {try{
     if(tag === 'code') return
     if(tag === 'a') return
 
-    const {mutate} = state
+    //const {mutate} = state
+    const mutate = false
     if(!child.data) return
     if(embedYouTubeNode(child, state.links, state.images)) return
     if(embedVimeoNode(child, state.links, state.images)) return

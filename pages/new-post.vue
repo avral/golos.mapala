@@ -93,8 +93,10 @@ export default {
     }),
     setPlace(place) {
       this.editor.location.name = place.formatted_address
-      this.editor.location.lat = place.geometry.location.lat()
-      this.editor.location.lng = place.geometry.location.lng()
+      this.editor.location.geometry.coordinates = [
+        place.geometry.location.lat(),
+        place.geometry.location.lng()
+      ]
     },
 
     async _submit() {

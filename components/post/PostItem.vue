@@ -2,7 +2,11 @@
   .card.mb-3
     nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
       //img.card-img-top.img-fluid.w-100(:src="post.firstImage", alt='')
-      img.img-fluid(:src="post.firstImage", alt='')
+
+      //img.img-fluid(v-if="thumb", :src="thumb", alt='')
+      //img.img-fluid(v-else, src="@/assets/img/mapala-logo.png", alt='')
+      img.img-fluid(src="@/assets/img/mapala-logo.png", alt='')
+      
     .card-body
       h5.card-title.mb-1
         nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}") {{ post.title }}
@@ -11,9 +15,9 @@
         //a(href='#') #workinghardorhardlyworking
     hr.my-0
     .card-body.py-2.small
-      a.mr-3.d-inline-block(href='#')
+      button.mr-3.btn.btn-outline-primary(@click="vote")
         i.fa.fa-fw.fa-thumbs-up
-        | Like
+        | Голосовать
       a.mr-3.d-inline-block(href='#')
         i.fa.fa-fw.fa-comment
         | Comment
@@ -43,28 +47,20 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
+
+
 export default {
   props: ['post'],
 
-  data() {
-    return {
-      //post: {},
-      image: '',
-    }
-  },
+  methods: {
+    ...mapActions({
+      gols_vote: 'golos/vote'
+    }),
 
-  computed: {
-    author: () => console.log(this.$router)
-    //firstImage: () => {
-    //  return 'https://assets.servedby-buysellads.com/p/manage/asset/id/38523'
-    //}
-    //firstImage: () => {
-    //  console.log(this.post)
-    //  if (this.post) {
-    //    console.log(JSON.parse(this.post.json_metadata))
-    //  }
-    //  this.post ? JSON.parse(this.post.json_metadata).images[0] : ''
-    //}
+    vote() {
+      this.gols_vote(this.post).catch(e => alert(e))
+    }
   }
 }
 </script>

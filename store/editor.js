@@ -10,7 +10,13 @@ export const state = () => ({
   html: '',
   title: '',
   tags: [],
-  location: {name: '', lat: '', lng: ''}
+  location: {
+    name: '',
+    geometry: {
+      type: 'Point',
+      coordinates: ['', '']
+    },
+  }
 })
 
 export const mutations = {
@@ -28,7 +34,16 @@ export const mutations = {
     state.body = ''
     state[state.type] = ''
     state.tags = []
-    state.location = {name: '', lat: '', lng: ''}
+
+    // GeoJOSON standart
+    state.location = {
+      name: '',
+      geometry: {
+        type: 'Point',
+        coordinates: ['', '']
+    }
+  }
+
   },
 
   toggle: state => state.type = state.type == 'markdown' ? 'html' : 'markdown',

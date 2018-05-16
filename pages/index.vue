@@ -1,14 +1,13 @@
 <template lang="pug">
-.container-fluid.mt-3
-  .row
-    .col-12.col-md-4
-      post-item(v-for="post in posts", :post="post", :key="post.id")
+.container.mt-3
+  b-carousel(:interval="interval" v-model="slide" style="text-shadow: 1px 1px 2px #333;" img-height=50)
+    b-carousel-slide(img-src="https://placehold.it/900x200" img-height=50)
+      h1 Mapala
+      p.lead несколько строк о проекте, вся суть
 
-      .row
-        .col
-          no-ssr
-            infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
-              p(slot="no-more") Больше нет постов :(
+    b-carousel-slide(caption="Blank Image" img-blank img-alt="Blank image")
+      p asdf
+
 
 </template>
 
@@ -20,6 +19,13 @@ import MapalaMap from '@/components/MapalaMap'
 
 
 export default {
+  data() {
+    return {
+      slide: 0,
+      sliding: null,
+      interval: 0
+    }
+  },
   computed: { 
     ...mapState({
       isLoading: state => state.isLoading,

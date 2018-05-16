@@ -17,6 +17,20 @@ export const actions = {
     state.tag_for_post = this.app.context.isDev ? 'test' : config.app_tags[0]
   },
 
+  vote({ state, commit, rootState }, { author, permlink }) {
+    if (!rootState.account.wif && !rootState.account.name) {
+      // TODO через геттеры isAuth
+      throw new Error('Добавьте постинг ключ или имя пользователя')
+    }
+
+    return new Promise((_, reject) => {
+      golos.broadcast.vote(rootState.account.wif, rootState.account.name, author, permlink, 10000, function (err, res) {
+        if (err) reject(err.message)
+      })
+    })
+
+  },
+
   post({ state, commit, rootState }, { title, body, meta }) {
     if (!rootState.account.wif && !rootState.account.name) {
       throw new Error('Добавьте постинг ключ или имя пользователя')
