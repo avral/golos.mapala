@@ -1,6 +1,9 @@
+const app_tags = process.env.PROD ? ['mapala', 'ru--mapala'] : ['mapala-dev']
+
 export default {
   app: 'mapala-next/1.0',
-  app_tags: ['mapala', 'ru--mapala'], // Posting to first tag
+  app_tags: app_tags, // Posting to first tag
+  tag_for_post: app_tags[0],
   get_content_limit: 5, // Limit posts for node query
 
   img_proxy_prefix: 'https://imgp.golos.io/',

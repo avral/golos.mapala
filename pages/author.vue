@@ -30,13 +30,11 @@ import Feed from '@/components/post/Feed'
 import { mapState } from 'vuex'
 
 export default {
-  async asyncData ({ store, route }) {
-    store.commit('posts/set_author', route.params.author)
-
-    let wait = store.dispatch('author/set_author', route.params.author)
-
-    if (process.server) {
-      await wait
+  async asyncData ({ store, route, error }) {
+    try {
+      let wait = await store.dispatch('author/set_author', route.params.author)
+    } catch (e) {
+      error(e.message)
     }
   },
 

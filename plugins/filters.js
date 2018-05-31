@@ -1,8 +1,16 @@
 import Vue from 'vue'
 import moment from 'moment'
 import marked from 'marked'
+import sbd from 'sbd'
+
+import config from '~/config'
 
 import prepare_html from '@/utils/prepare_html'
+
+
+Vue.filter('html_preview', (value) => {
+  return sbd.sentences(value, {sanitize: true }).slice(0, 2).join(' ')
+})
 
 
 Vue.filter('formatDate', (value) => {
@@ -11,10 +19,21 @@ Vue.filter('formatDate', (value) => {
   return moment.utc(value.toString()).fromNow()
 })
 
-Vue.filter('golos_html', (value) => {
-  let html = marked(value)
+Vue.filter('markdown', (value) => {
+  const body = value.replace(
+    /(https?:\S*?\.(?:png|jpe?g|gif)(?:\?[^"']+?)?(?=<|\s))/igm,
+    '![]($1)'
+  )
 
-  return html
+  return marked(body)
+})
+
+Vue.filter('golos_html', (value) => {
+  return prepare_html(value).html
+})
+
+Vue.filter('golos_proxy', (value, size) => {
+  return `${config.img_proxy_prefix}${size}/${value}`
 })
 
 

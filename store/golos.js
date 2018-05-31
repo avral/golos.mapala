@@ -7,14 +7,11 @@ import { prepare_json_metadata } from '@/utils/golos'
 
 export const state = () => ({
   wss: 'wss://ws17.golos.io',
-  tag_for_post: null, // Default
 })
 
 export const actions = {
   async init({ state, commit }) {
     commit('SET_NODE', state.wss)
-
-    state.tag_for_post = this.app.context.isDev ? 'test' : config.app_tags[0]
   },
 
   vote({ state, commit, rootState }, { author, permlink }) {
@@ -23,9 +20,9 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
-    return new Promise((_, reject) => {
+    return new Promise((resolve, reject) => {
       golos.broadcast.vote(rootState.account.wif, rootState.account.name, author, permlink, 10000, function (err, res) {
-        if (err) reject(err.message)
+				err ? reject(err) : resolve(res)
       })
     })
 
@@ -41,12 +38,12 @@ export const actions = {
       //console.log(
         rootState.account.wif,
         '',
-        state.tag_for_post,
+        config.tag_for_post,
         rootState.account.name,
         slugify(title, {lower: true}),
         title,
         body,
-        prepare_json_metadata(state.tag_for_post, meta),
+        prepare_json_metadata(meta),
 
         (err, res) => resolve({err, res})
       )

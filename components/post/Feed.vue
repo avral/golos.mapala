@@ -2,12 +2,9 @@
 div
   post-item(v-for="post in posts", :post="post", :key="post.id")
 
-  .row
-    .col-12
-      p
-      no-ssr
-        infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
-          p(slot="no-more") Больше нет постов :(
+  no-ssr
+    infinite-loading(@infinite="handleLoading", :distance="200", force-use-infinite-wrapper="true")
+      p(slot="no-more") Больше нет постов :(
 </template>
 
 <script>
@@ -38,6 +35,14 @@ export default {
         } else {
           $state.loaded()
         }
+      }).catch(() => {
+				this.$notify({
+					title: 'Request error',
+					message: 'Ошибка запроса, проверьте интернет соединение, повтор запроса..',
+					type: 'warning'
+				})
+
+        setTimeout(() => $state.loaded(), 4000)
       })
     }
   },

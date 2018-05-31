@@ -50,13 +50,8 @@ export const state = () => ({
 })
 
 export const actions = {
+	// TODO Сделать вывод ошибки если запрос не дошел
   async fetch_post ({ commit, state, rootState}, {author, permlink}) {
-    let post_in_state = find_post_in_state(state, author, permlink)
-
-    if (post_in_state) {
-      return commit('set_post', post_in_state)
-    }
-
     let client = this.app.apolloProvider.defaultClient
 
     let query = gql`
@@ -66,7 +61,11 @@ export const actions = {
           permlink,
           title,
           created,
-          body
+          body,
+          thumb,
+          jsonMetadata {
+            format
+          }
         }
       }
     `
@@ -80,23 +79,29 @@ export const actions = {
     let author = authors[state.author]
 
     let query = gql`
-      query posts ($page: Int!, $author: String) {
+      query posts ($page: Int!, $author: String, $account: String!) {
         posts(page: $page, author: $author) {
           author,
           permlink,
           title,
           created,
           body,
+          thumb,
+          isVoted(account: $account)
         }
       }
     `
 
     let {data: {posts}} = await client.query({query, variables: {
       page: author.posts.next_page,
-      author: state.author
+      author: state.author,
+      account: rootState.account.name,
     }})
 
-    authors[state.author].posts.list = authors[state.author].posts.list.concat(posts)
+		// FIXME Не хорошо это все..
+		let posts_deep_copy = JSON.parse(JSON.stringify(posts))
+
+    authors[state.author].posts.list = authors[state.author].posts.list.concat(posts_deep_copy)
 
     author.posts.next_page++
 

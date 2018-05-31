@@ -1,59 +1,49 @@
 <template lang="pug">
-.container.mt-3
-  b-carousel(:interval="interval" v-model="slide" style="text-shadow: 1px 1px 2px #333;" img-height=50)
-    b-carousel-slide(img-src="https://placehold.it/900x200" img-height=50)
-      h1 Mapala
-      p.lead несколько строк о проекте, вся суть
+.container.mt-4
+  .row
+    .col-md-8
+      feed
+    .col-4.d-none.d-md-block.bg-light.left-menu
+      .row.mb-3
+        .col
+          el-dropdown(text="Menu")
+            a.nav-item.nav-link Что такое Mapala? FAQ
+              i.el-icon-arrow-down.el-icon--right
+            el-dropdown-menu(slot="dropdown")
+              el-dropdown-item Mapala
+              el-dropdown-item Golos.io
+              el-dropdown-item Блокчейн
 
-    b-carousel-slide(caption="Blank Image" img-blank img-alt="Blank image")
-      p asdf
+      .row
+        .col
+          .card.bg-dark.text-white.text-center
+            img(src='http://placehold.it/25x5', alt='').card-img
+            .card-img-overlay
+              a().btn.btn-sm.btn-outline-secondary Пройти задания
+      .row
+        .col
+          .bg-light
+            p Популярное
+
+
 
 
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-
-import PostItem from '@/components/post/PostItem'
+import Feed from '@/components/post/Feed'
 import MapalaMap from '@/components/MapalaMap'
 
 
 export default {
-  data() {
-    return {
-      slide: 0,
-      sliding: null,
-      interval: 0
-    }
-  },
-  computed: { 
-    ...mapState({
-      isLoading: state => state.isLoading,
-      posts: state => state.posts.list
-    }),
-  },
-
-  methods: {
-    ...mapActions({
-      fetch_posts: 'posts/fetch_posts'
-    }),
-
-    handleLoading($state) {
-      const posts_count = this.posts.length
-
-      this.fetch_posts().then(() => {
-        if (posts_count == this.posts.length) {
-          $state.complete()
-        } else {
-          $state.loaded()
-        }
-      })
-    }
+  async asyncData ({ store, commit }) {
+    // undefined - для основной ленты
+    store.commit('posts/set_author', undefined)
   },
 
   components: {
-    PostItem,
-    MapalaMap,
+    //MapalaMap,
+    Feed,
   }
 }
 
@@ -61,16 +51,13 @@ export default {
 
 <style scoped>
 #map {
-  max-width: calc(100% - 574px);
-  width: 100%;
-  border-radius: 6px;
-  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
-  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  top: 78px;
+  position: sticky;
   height: calc(100vh - 92px);
-  position: fixed;
-  top: 72px;
-  right: 30px;
-  z-index: 10;
-  overflow: hidden;
+}
+.left-menu {
+  top: 85px;
+  position: sticky;
+  height: calc(100vh - 116px);
 }
 </style>

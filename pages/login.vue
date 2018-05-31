@@ -9,13 +9,13 @@
   .row.justify-content-center(v-else)
     form.col-md-6.text-center
       img(src="@/assets/img/mapala-logo.png", width="100", height="100").mb-3
-      h1.h3 Авторизация
+      h1.h2 Авторизация
       p.text-muted.lead Mapala работает на блокчейне 
         a(href="https://golos.io", target="_blank")
           img(src="https://golos.io/favicon.ico", height="15")
           | Golos
       hr
-      .text-left.mb-2
+      .mb-2
         | Для авторизации вам необходимо иметь аккаунт в блокчейне GOLOS
         br
         | Авторизируйтесь с помощью POSTING ключа
@@ -31,7 +31,7 @@
             i.fa.fa-shield
         input.form-control(placeholder="Golos.io POSTING key", v-model="wif")
       
-      loading-button.btn.btn-secondary.w-100(:loading="loading" @click.native="auth", type="button") Авторизоваться
+      loading-button.btn.btn-secondary.w-100(:loading="loading" @click="auth", type="button") Авторизоваться
 
       hr
       p.lead Помощь

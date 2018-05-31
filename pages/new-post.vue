@@ -25,20 +25,20 @@
 
     br
     
-  input(v-model="editor.tags", placeholder="tags").form-control
+  //input(v-model="editor.tags", placeholder="tags").form-control TODO Тут добавлять теги сделать логику
 
   gmap-autocomplete(placeholder="Локация", :value="editor.location.name", @place_changed="setPlace")
 
   br
-  button.btn.btn-secondary(@click="_submit") Отправить
+
+  loading-button.btn.btn-secondary(@click="_submit", :loading="loading") Отправить
   button.btn.btn-info.pull-right(@click="clear") Очистить
 
   br
 
-
   h3 Предпросмотр
 
-  div(v-html="editor.body")
+  div(v-html="preview")
 
   // TODO Все ок, но разобраться почему там p
 
@@ -53,6 +53,8 @@ export default {
 
   data() {
     return {
+      loading: false,
+
       editorOptions: {
         theme: 'snow',
         placeholder: 'Заголовок',
@@ -79,6 +81,14 @@ export default {
     ...mapState({
       editor: state => state.editor
     }),
+
+    preview() {
+      if (this.editor.type == 'markdown') {
+        return this.$options.filters.markdown(this.editor.body)
+      } else {
+        return this.$options.filters.golos_html(this.editor.body)
+      }
+    }
   },
 
   methods: {
@@ -100,10 +110,15 @@ export default {
     },
 
     async _submit() {
+      this.loading = true
+
       try {
         await this.submit()
+        // TODO Что делать после публикации?
       } catch (e) {
         alert(e.message)
+      } finally {
+        this.loading = false
       }
     },
   }

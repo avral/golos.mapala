@@ -4,10 +4,6 @@ import slugify from 'slugify'
 import config from '@/config'
 import { get_account, prepare_json_metadata } from '@/utils/golos'
 
-// TODO Когда выйдет vue 2.6 поменять на Proxy
-// Если автора нет, то значение будет undefined
-const authors = {}
-
 
 export const state = () => ({
   author: {
@@ -16,14 +12,14 @@ export const state = () => ({
 })
 
 export const actions = {
-  async set_author({ commit, dispatch, state }, author) {
-    if (author in authors) {
-      commit('set_author', authors[author])
-    } else {
-      authors[author] = await get_account(author)
-      commit('set_author', authors[author])
-    }
-    console.log(authors[author])
+  async set_author({ commit, dispatch, state }, author_name) {
+    console.log(123)
+    let author = await get_account(author_name)
+
+    if (!author) throw new Error('Такого автора не существует')
+
+    commit('set_author', author)
+    commit('posts/set_author', author_name, {root: true})
   },
 }
 

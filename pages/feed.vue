@@ -4,7 +4,6 @@
       ul.nav.flex-column
         li.nav-item
           a.nav-link.active О мапала
-
         li.nav-item
           a.nav-link.active Карта
     .col-6.mt-3
@@ -34,6 +33,5 @@ export default {
   top: 61px;
   position: sticky;
   height: calc(100vh - 61px);
-
 }
 </style>

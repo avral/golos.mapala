@@ -2,23 +2,27 @@ const path = require('path')
 
 module.exports = {
   env: {
-    API_QL_URL: process.env.API_QL_URL || 'http://localhost:3000'
+    PROD: process.env.PROD || false,
+    API_QL_URL: process.env.API_QL_URL || 'http://localhost:5000/graphql'
   },
 
   /*
   ** Headers of the page
   */
   head: {
-    title: 'mapala-next-b',
+    title: 'Mapala Travel Community',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'Nuxt.js project' }
+      { hid: 'description', name: 'description', content: 'MAPALA - World Adventure Community. Connecting with people, Be Useful, Enjoy, Repeat.' }
     ],
     link: [
 
       // Font Awesome
       { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'},
+
+      //{ rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/bootstrap-utilities@4.0.0/bootstrap-utilities.css'},
+      //{ rel: 'stylesheet', href: 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css'},
 
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ]
@@ -52,6 +56,8 @@ module.exports = {
     '@/plugins/infiniteload.js',
     '@/plugins/filters.js',
     '@/plugins/vuex-router-sync.js',
+    '@/plugins/elements.js',
+    '@/plugins/element-ui.js',
   ],
   /*
   ** Customize the progress bar color

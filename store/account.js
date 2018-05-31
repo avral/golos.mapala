@@ -4,6 +4,9 @@ import { get_account } from '@/utils/golos.js/'
 
 export const state = () => ({
   name: '',
+  meta: {
+    'profile': {}
+  },
 
   // TODO сделать пароль для разблокировки
   wif: false, // Залогиненость проверять по этому параметру
@@ -12,7 +15,15 @@ export const state = () => ({
 export const mutations = {
   set_wif: (state, wif) => state.wif = wif,
 
-  set_name: (state, name) => state.name = name
+  set_account: (state, account) => {
+    Object.keys(account).forEach((key) => {
+        if (key in state) state[key] = account[key]
+    })
+
+    state.meta.profile = account.json_metadata.profile || {}
+
+    console.log(state)
+  }
 }
 
 export const actions = {
@@ -24,7 +35,7 @@ export const actions = {
     }
   },
 
-  async authorization ({ commit, state, dispatch }, { wif, account }) {
+  async authorization ({ rootState, commit, state, dispatch }, { wif, account }) {
     if (!golos.auth.isWif(wif)) {
       throw new Error('Это не приватный ключ')
     }
@@ -43,7 +54,7 @@ export const actions = {
     }
 
     commit('set_wif', wif)
-    commit('set_name', account.name)
+    commit('set_account', account)
     dispatch('fetch_account')
   },
 

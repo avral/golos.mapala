@@ -4,7 +4,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '@/config'
 
 export default (ctx) => {
-  const httpLink = new HttpLink({ uri: process.env.API_QL_URL })
+  const httpLink = new HttpLink({ uri: config.API_QL_URL })
   // middleware
   //const middlewareLink = new ApolloLink((operation, forward) => {
   //  //This function is called before every request. Update ctx.req.session and window.__NUXT__.state.session

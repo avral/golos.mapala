@@ -1,5 +1,5 @@
 <template lang="pug">
-  button(:disabled="loading")
+  button(@click="$emit('click')", :disabled="loading")
     i.fa.fa-spinner.fa-spin(v-show="loading")
     slot
 </template>

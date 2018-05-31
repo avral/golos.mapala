@@ -13,7 +13,7 @@
     gmap-marker(
       v-for="marker in markers",
       :key="marker.identifier",
-      :position="{ lat: marker.location.coordinates[1], lng: marker.location.coordinates[0] }",
+      :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
       :clickable="true",
       :draggable="false",
       @click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
@@ -60,11 +60,16 @@ export default {
 
       //const boundingBox = [[bounds.b.b, bounds.f.b], [bounds.b.f, bounds.f.f]]
       const boundingBox = [
+        //bounds.getSouthWest().lng(),
+        //bounds.getSouthWest().lat(),
+        //bounds.getNorthEast().lng(),
+        //bounds.getNorthEast().lat(),
         bounds.b.b,
         bounds.f.b,
         bounds.b.f,
-        bounds.f.f
+        bounds.f.f,
       ]
+			console.log(boundingBox)
 
       let client = this.$apolloProvider.defaultClient
 
@@ -92,6 +97,3 @@ export default {
 }
 
 </script>
-
-<style>
-</style>

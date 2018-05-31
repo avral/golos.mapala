@@ -24,9 +24,7 @@ export const mutations = {
   set_tag: (state, tag) => state.tags.push(tag),
 
   update_body (state) {
-    let html = prepare_html(state[state.type]).html
-
-    state.body = state.type == 'markdown' ? marked(html) : html
+    state.body = state[state.type]
   },
 
   clear(state) {
@@ -56,7 +54,8 @@ export const actions = {
       body: state.body,
       meta: {
         tags: state.tags,
-        location: state.location
+        location: state.location,
+        format: state.type
       }
     }
 
@@ -65,6 +64,7 @@ export const actions = {
     if (err) {
       throw Error(err.message)
     } else {
+      console.log(res)
       return res
     }
   }
