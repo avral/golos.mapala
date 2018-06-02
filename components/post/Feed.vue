@@ -35,12 +35,13 @@ export default {
         } else {
           $state.loaded()
         }
-      }).catch(() => {
+      }).catch(e => {
 				this.$notify({
 					title: 'Request error',
 					message: 'Ошибка запроса, проверьте интернет соединение, повтор запроса..',
 					type: 'warning'
 				})
+        console.log(e)
 
         setTimeout(() => $state.loaded(), 4000)
       })
