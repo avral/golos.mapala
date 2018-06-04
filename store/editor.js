@@ -11,7 +11,7 @@ export const state = () => ({
   markdown: '',
   html: '',
   title: '',
-  tags: [],
+  tags: [config.tag_for_post],
   location: {
     name: '',
     geometry: {
