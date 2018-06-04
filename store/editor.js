@@ -1,7 +1,9 @@
 import marked from 'marked'
 
-import prepare_html from '@/utils/prepare_html'
-import prepare_json_metadata from '@/utils/golos'
+import config from '~/config'
+import prepare_html from '~/utils/prepare_html'
+import prepare_json_metadata from '~/utils/golos'
+
 
 
 export const state = () => ({
@@ -22,6 +24,7 @@ export const state = () => ({
 export const mutations = {
   set_title: (state, title) => state.title = title,
   set_tag: (state, tag) => state.tags.push(tag),
+  set_type: (state, type) => state.type = type,
 
   update_body (state) {
     state.body = state[state.type]
@@ -31,7 +34,7 @@ export const mutations = {
     state.title = ''
     state.body = ''
     state[state.type] = ''
-    state.tags = []
+    state.tags = [config.tag_for_post]
 
     // GeoJOSON standart
     state.location = {
@@ -39,15 +42,17 @@ export const mutations = {
       geometry: {
         type: 'Point',
         coordinates: ['', '']
+      }
     }
-  }
-
   },
-
-  toggle: state => state.type = state.type == 'markdown' ? 'html' : 'markdown',
 }
 
 export const actions = {
+  toggle({ state, commit }) {
+    commit('set_type', state.type == 'markdown' ? 'html' : 'markdown')
+    commit('update_body')
+  },
+
   async submit({ state, commit, dispatch, rootState }) {
     let post = {
       title: state.title,

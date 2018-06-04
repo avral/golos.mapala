@@ -109,8 +109,8 @@ function traverse(node, state, depth = 0, resolve) {
         if(tag) state.htmltags.add(tag)
 
 
-        if(tag === 'img')
-            img(state, child)
+        //if(tag === 'img')
+        //    img(state, child)
         else if(tag === 'iframe')
             iframe(state, child)
         else if(tag === 'a')
@@ -238,10 +238,11 @@ function linkify(content, mutate, hashtags, usertags, images, links) {
 	})
 
     content = content.replace(linksAny('gi'), ln => {
-        if(linksRe.image.test(ln)) {
-            if(images) images.add(ln)
-            return `<img src="${ipfsPrefix(ln)}" />`
-        }
+        // FIXME Разобраться, регулярка без параметров ссылки достает
+       // if(linksRe.image.test(ln)) {
+       //     if(images) images.add(ln)
+       //     return `<img src="${ipfsPrefix(ln)}" />`
+       // }
 
         // do not linkify .exe or .zip urls
         if(/\.(zip|exe)$/i.test(ln)) return ln;

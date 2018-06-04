@@ -6,6 +6,10 @@ import sbd from 'sbd'
 import config from '~/config'
 
 import prepare_html from '@/utils/prepare_html'
+import { escapeHtml } from '@/utils'
+
+
+let regex = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)[^"]/
 
 
 Vue.filter('html_preview', (value) => {
@@ -20,16 +24,16 @@ Vue.filter('formatDate', (value) => {
 })
 
 Vue.filter('markdown', (value) => {
-  const body = value.replace(
-    /(https?:\S*?\.(?:png|jpe?g|gif)(?:\?[^"']+?)?(?=<|\s))/igm,
-    '![]($1)'
-  )
+	value = unescape(value)
+  const body = value.replace(regex, '![]($1)')
 
   return marked(body)
 })
 
 Vue.filter('golos_html', (value) => {
-  return prepare_html(value).html
+	// TODO Хуево работает редактор
+	value = unescape(value)
+  return prepare_html(value.replace(regex, '<img src="$1">')).html
 })
 
 Vue.filter('golos_proxy', (value, size) => {
