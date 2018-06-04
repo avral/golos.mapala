@@ -9,7 +9,7 @@ import prepare_html from '@/utils/prepare_html'
 import { escapeHtml } from '@/utils'
 
 
-let regex = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)[^"]/
+let regex = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)[^"]/
 
 
 Vue.filter('html_preview', (value) => {
@@ -26,6 +26,7 @@ Vue.filter('formatDate', (value) => {
 Vue.filter('markdown', (value) => {
 	value = unescape(value)
   const body = value.replace(regex, '![]($1)')
+  console.log(body)
 
   return marked(body)
 })
