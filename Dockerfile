@@ -1,6 +1,7 @@
 FROM mhart/alpine-node:9.11.1
 
 ADD package.json /app/
+ADD yarn.lock /app/
 WORKDIR /app
 
 RUN yarn install --production

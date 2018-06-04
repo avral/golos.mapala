@@ -32,7 +32,7 @@
               i.fa.fa-shield
           input.form-control(placeholder="Golos.io POSTING key", v-model="wif")
         
-        loading-button.btn.btn-secondary.w-100(:loading="loading" @click="auth", type="button") Авторизоваться
+        el-button(type="info" :loading="loading" @click="auth").w-100 Авторизоваться
 
         hr
         p.lead Помощь

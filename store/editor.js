@@ -11,6 +11,7 @@ export const state = () => ({
   markdown: '',
   html: '',
   title: '',
+  body: '',
   tags: [config.tag_for_post],
   location: {
     name: '',
@@ -28,6 +29,7 @@ export const mutations = {
 
   update_body (state) {
     state.body = state[state.type]
+    console.log(state.markdown)
   },
 
   clear(state) {
