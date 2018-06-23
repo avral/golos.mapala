@@ -10,4 +10,5 @@ export function escapeHtml(text) {
   return text.replace(/[&<>"']/g, function(m) { return map[m]; });
 }
 
-console.log(99, escapeHtml('&amp;'))
+// FIXME Эскейпить html для ренулярки для фоток
+// console.log(99, escapeHtml('&amp;'))

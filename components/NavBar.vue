@@ -34,7 +34,10 @@ b-navbar(toggleable="md" type="light").sticky-top.bg-light
     | Mapala
 
   b-collapse(is-nav)#nav_collapse
-    .col-7
+    .col-7.d-flex
+      b-navbar-nav.d-flex.align-items-center
+        nuxt-link(:to="{name: 'map'}").nav-item.nav-link Карта
+
       b-navbar-nav.d-flex.align-items-center
         nuxt-link(:to="{name: 'index'}").nav-item.nav-link Поиск
 

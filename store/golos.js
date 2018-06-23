@@ -6,7 +6,7 @@ import { prepare_json_metadata } from '@/utils/golos'
 
 
 export const state = () => ({
-  wss: 'wss://ws17.golos.io',
+  wss: 'wss://ws18.golos.io',
 })
 
 export const actions = {

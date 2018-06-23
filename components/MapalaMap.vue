@@ -16,8 +16,9 @@
       :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
       :clickable="true",
       :draggable="false",
-      @click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
+      @click=""
       )
+      //@click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
 
     //gmap-info-window(
       @mouseover="openInfoWindow(marker)",

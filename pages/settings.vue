@@ -11,9 +11,6 @@
       button.btn.btn-secondary(@click="test") Добавить
 
 
-  button.btn.btn-secondary(@click="lol") Lol 
-
-
 </template>
 
 <script>
