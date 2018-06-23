@@ -13,7 +13,6 @@ export const state = () => ({
 
 export const actions = {
   async set_author({ commit, dispatch, state }, author_name) {
-    console.log(123)
     let author = await get_account(author_name)
 
     if (!author) throw new Error('Такого автора не существует')
@@ -26,6 +25,8 @@ export const actions = {
 export const mutations = {
   set_author: (state, author) => {
     state.author = author
-    author.json_metadata = JSON.parse(author.json_metadata)
+
+    // TODO Тут продумать данные пользователя для мапалы конкретно
+    author.json_metadata = JSON.parse(author.json_metadata || '{"profile": "{}"}')
   }
 }
