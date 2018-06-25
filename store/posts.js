@@ -79,8 +79,8 @@ export const actions = {
     let author = authors[state.author]
 
     let query = gql`
-      query posts ($page: Int!, $author: String, $account: String!) {
-        posts(page: $page, author: $author) {
+      query posts ($category: String!, $page: Int!, $author: String, $account: String!) {
+        posts(category: $category, page: $page, author: $author) {
           author,
           permlink,
           title,
@@ -93,6 +93,7 @@ export const actions = {
     `
 
     let {data: {posts}} = await client.query({query, variables: {
+      category: config.tag_for_post,
       page: author.posts.next_page,
       author: state.author,
       account: rootState.account.name,
