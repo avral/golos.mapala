@@ -1,11 +1,10 @@
 <template lang="pug">
   .card.mb-2
     .d-flex.flex-row.no-gutters
-      .col-4
-        nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
-          img.img-fluid(v-if="post.thumb", :src="post.thumb | golos_proxy('250x170')", alt='')
-          img.img-fluid(v-else, src="@/assets/img/mapala-logo.png", alt='')
-      .col-8
+        .col-4(v-if="post.thumb")
+          nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
+            img.img-fluid(v-if="post.thumb", :src="post.thumb | golos_proxy('250x170')", alt='')
+            // img.img-fluid(v-else, src="@/assets/img/mapala-logo.png", alt='')
         .card-body
           h5.card-title.mb-1
               nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}") {{ post.title }}

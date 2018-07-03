@@ -29,7 +29,6 @@ export const mutations = {
 
   update_body (state) {
     state.body = state[state.type]
-    console.log(state.markdown)
   },
 
   clear(state) {
@@ -71,7 +70,6 @@ export const actions = {
     if (err) {
       throw Error(err.message)
     } else {
-      console.log(res)
       return res
     }
   }

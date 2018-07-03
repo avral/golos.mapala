@@ -93,7 +93,9 @@ export const actions = {
     `
 
     let {data: {posts}} = await client.query({query, variables: {
-      category: config.tag_for_post,
+      //category: config.tag_for_post,
+      // FIXME !!
+      category: "mapala",
       page: author.posts.next_page,
       author: state.author,
       account: rootState.account.name,

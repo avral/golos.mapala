@@ -46,7 +46,7 @@ b-navbar(toggleable="md" type="light").sticky-top.bg-light
         nuxt-link(v-show="$store.getters['account/isAuth']",
                   :to="{name: 'new-post'}").btn.btn-sm.btn-outline-secondary Написать статью
 
-        nuxt-link(:to="{name: 'settings'}").btn.btn-sm.btn-outline-secondary.ml-3 Настройки
+        // nuxt-link(:to="{name: 'settings'}").btn.btn-sm.btn-outline-secondary.ml-3 Настройки
 
       no-ssr
         .ml-auto

@@ -26,7 +26,6 @@ Vue.filter('formatDate', (value) => {
 Vue.filter('markdown', (value) => {
 	value = unescape(value)
   const body = value.replace(regex, '![]($1)')
-  console.log(body)
 
   return marked(body)
 })
