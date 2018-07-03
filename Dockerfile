@@ -1,5 +1,9 @@
 FROM mhart/alpine-node:9.11.1
 
+ENV HOST 0.0.0.0
+ARG API_QL_URL
+ENV API_QL_URL ${API_QL_URL}
+
 ADD package.json /app/
 ADD yarn.lock /app/
 WORKDIR /app
@@ -10,9 +14,5 @@ RUN yarn install --production
 ADD . /app
 
 RUN yarn run build --production
-
-ENV HOST 0.0.0.0
-ARG API_QL_URL
-ENV API_QL_URL ${API_QL_URL}
 
 EXPOSE 3000
