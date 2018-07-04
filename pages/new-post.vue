@@ -69,6 +69,8 @@
 </template>
 
 <script>
+// FIXME Огромные картинки не влезают в превью
+// FIXME Запятые и точки не проходят в заголовке
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 

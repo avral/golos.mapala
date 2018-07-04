@@ -53,6 +53,7 @@ module.exports = {
     '@/plugins/vuex-router-sync.js',
     '@/plugins/elements.js',
     '@/plugins/element-ui.js',
+    '@/plugins/raven.js',
   ],
   /*
   ** Customize the progress bar color

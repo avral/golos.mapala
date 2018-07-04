@@ -26,6 +26,7 @@
 </template>
 
 <script>
+// FIXME cover_image не находит у аккаунтов и падает
 import Feed from '@/components/post/Feed'
 import { mapState } from 'vuex'
 

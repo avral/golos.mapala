@@ -33,6 +33,8 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
+    console.log(slugify(title, {lower: true}))
+
     return new Promise((resolve) => {
       golos.broadcast.comment(
       //console.log(
