@@ -2209,9 +2209,9 @@ electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30:
   version "1.3.42"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.42.tgz#95c33bf01d0cc405556aec899fe61fd4d76ea0f9"
 
-element-ui@^2.3.9:
-  version "2.3.9"
-  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.3.9.tgz#0c5996e74b375f2665d703c68bdb3269ae9269e0"
+element-ui@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-2.4.4.tgz#b50ac888fee1a2adb8fa7205b12aadb3962e77e3"
   dependencies:
     async-validator "~1.8.1"
     babel-helper-vue-jsx-merge-props "^2.0.0"
@@ -6595,6 +6595,10 @@ vue-hot-reload-api@^2.2.0:
 vue-infinite-loading@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/vue-infinite-loading/-/vue-infinite-loading-2.3.1.tgz#56f29616bcc95f21fd8a829ce747f30b333e890c"
+
+vue-js-modal@^1.3.16:
+  version "1.3.16"
+  resolved "https://registry.yarnpkg.com/vue-js-modal/-/vue-js-modal-1.3.16.tgz#a61b01113c8f2e297c2b45dedeab9f00175a8a63"
 
 vue-loader@13.7.0:
   version "13.7.0"

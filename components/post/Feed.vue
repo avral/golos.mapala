@@ -11,20 +11,71 @@ div
 import { mapState, mapActions } from 'vuex'
 
 import PostItem from '@/components/post/PostItem'
+import { POSTS_QUERY } from '@/constants/queries.js'
 
 
 export default {
-  computed: { 
-    ...mapState({
-      isLoading: state => state.isLoading,
-      posts: state => state.posts.list
-    }),
+  props: {
+    filters: {
+      default() {
+        return {}
+      }
+    }
+  },
+
+  data() {
+    return {
+      posts: [],
+
+      // pagination
+      after: undefined
+    }
+  },
+
+  //watch: {
+  //  filters: {
+  //    handler(val) {
+  //      console.log(val, 'filters changed')
+  //    },
+  //    deep: true
+  //  }
+  //},
+
+  //computed: { 
+  //  ...mapState({
+  //    isLoading: state => state.isLoading,
+  //    posts: state => state.posts.list
+  //  }),
+  //},
+
+  created() {
+    this.fetch_posts()
   },
 
   methods: {
-    ...mapActions({
-      fetch_posts: 'posts/fetch_posts'
-    }),
+    //...mapActions({
+    //  fetch_posts: 'posts/fetch_posts'
+    //}),
+
+    async fetch_posts() {
+      let client = this.$apolloProvider.defaultClient
+
+      let { data } = await client.query({query: POSTS_QUERY, variables: {
+        category: "mapala", // FIXME
+        first: 10, // FIXME
+        author: this.filters.author,
+        after: this.after
+      }})
+
+      let posts = data.posts.edges.map(p => p.node)
+      let posts_deep_copy = JSON.parse(JSON.stringify(posts))
+
+      this.posts = this.posts.concat(posts_deep_copy)
+
+      if (posts.length > 0) {
+        this.after = data.posts.edges[data.posts.edges.length - 1].cursor
+      }
+    },
 
     handleLoading($state) {
       const posts_count = this.posts.length

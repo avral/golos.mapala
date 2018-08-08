@@ -2,7 +2,16 @@
 div
   nav-bar
 
-  nuxt
+  modals-container 
+
+  .container-fluid.mt-4
+    .row
+      .col-md-4
+        nuxt
+      .col.right-fixed-container.no-gutters
+        mapala-map#map
+
+
 </template>
 
 <style>
@@ -10,6 +19,7 @@ div
 
 <script>
 import NavBar from '@/components/NavBar'
+import MapalaMap from '@/components/MapalaMap'
 
 export default {
   head: {
@@ -19,7 +29,38 @@ export default {
   },
   components: {
     NavBar,
+    MapalaMap
   }
 }
 </script>
 
+<style>
+.modal-wrapper {
+  border-radius: 6px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  border: 1px solid rgba(72,84,101,.2);
+  width: 100%;
+  margin: 0 auto 80px;
+  position: relative;
+}
+
+#map {
+  top: 78px;
+  position: sticky;
+  height: calc(100vh - 92px);
+
+  border-radius: 6px;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  z-index: 10;
+  overflow: hidden;
+}
+.right-fixed-container {
+  padding-left: 0px;
+  top: 85px;
+  position: sticky;
+  height: calc(100vh - 116px);
+}
+</style>

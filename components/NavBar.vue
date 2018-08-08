@@ -35,7 +35,7 @@ b-navbar(toggleable="md" type="light").sticky-top.bg-light
 
   b-collapse(is-nav)#nav_collapse
     .col-7.d-flex
-      b-navbar-nav.d-flex.align-items-center
+      //b-navbar-nav.d-flex.align-items-center
         nuxt-link(:to="{name: 'map'}").nav-item.nav-link Карта
 
       b-navbar-nav.d-flex.align-items-center

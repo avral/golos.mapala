@@ -2,31 +2,49 @@ import golos from 'golos-js'
 import slugify from 'slugify'
 
 import config from '@/config'
-import { get_account, prepare_json_metadata } from '@/utils/golos'
+import gql from 'graphql-tag'
 
 
 export const state = () => ({
-  author: {
-    name: ''
+  name: '',
+  balanceValue: 0,
+  meta: {
+    profile: {
+      profileImage: '',
+      coverImage: '',
+      website: ''
+    }
   }
 })
 
 export const actions = {
-  async set_author({ commit, dispatch, state }, author_name) {
-    let author = await get_account(author_name)
+  async fetch_author({ commit, dispatch, state }, author_name) {
+    let client = this.app.apolloProvider.defaultClient
 
-    if (!author) throw new Error('Такого автора не существует')
+    let query = gql`
+      {
+        account(name: "${author_name}") {
+          name,
+          balanceValue
+          meta {
+            profile {
+              profileImage
+              coverImage
+              website
+            }
+          }
+        }
+      }
+    `
 
-    commit('set_author', author)
-    commit('posts/set_author', author_name, {root: true})
+    let { data: { account } } = await client.query({query})
+
+    commit('set_author', account)
   },
 }
 
 export const mutations = {
   set_author: (state, author) => {
-    state.author = author
-
-    // TODO Тут продумать данные пользователя для мапалы конкретно
-    author.json_metadata = JSON.parse(author.json_metadata || '{"profile": "{}"}')
+    state.name = author
   }
 }

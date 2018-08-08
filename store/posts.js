@@ -4,45 +4,17 @@ import Vue from 'vue'
 
 import config from '@/config'
 import { get_account, posts_by_blog, posts_by_created } from '@/utils/golos'
-import gql from 'graphql-tag'
+import { POSTS_QUERY, POST_QUERY } from '@/constants/queries.js'
 
-
-
-/* В authors хранится состояния для следующего
- * запроса для автора
- * undefined - Основная летна
- * 
- * Вся задумка в том, что бы хранить загруженными
- * все посты для ленты и для авторов
- * и не перегружать их каждый раз
- */
-
-//  HACK
-// Proxy будут работать в Vue 2.6 ждем релиз, костыль
-const authors = new Proxy({}, {
-  get: function(object, author) {
-    if (object.hasOwnProperty(author)) {
-      return object[author]
-    }
-
-    object[author] = {
-      posts: {
-        list: [],
-        next_page: 1
-      },
-
-      profile: {}
-    }
-
-    return object[author]
-  }
-})
 
 export const state = () => ({
   post: {},
   list: [], // current posts
 
+  // query pagination
   author: undefined,
+  after: undefined,
+
   tags: config.app_tags,
 
   limit: config.get_content_limit,
@@ -54,61 +26,35 @@ export const actions = {
   async fetch_post ({ commit, state, rootState}, {author, permlink}) {
     let client = this.app.apolloProvider.defaultClient
 
-    let query = gql`
-      {
-        post(identifier: "@${author}/${permlink}") {
-          author,
-          permlink,
-          title,
-          created,
-          body,
-          thumb,
-          jsonMetadata {
-            format
-          }
-        }
-      }
-    `
+    let {data: {post}} = await client.query({query: POST_QUERY, variables: {
+      identifier: `@${author}/${permlink}`
+    }})
 
-    let {data: {post}} = await client.query({query})
     commit('set_post', post)
+
+    return post
   },
 
-  async fetch_posts ({ commit, state, rootState, route }) {
+  async fetch_posts ({ commit, state, rootState }) {
     let client = this.app.apolloProvider.defaultClient
-    let author = authors[state.author]
 
-    let query = gql`
-      query posts ($category: String!, $page: Int!, $author: String, $account: String!) {
-        posts(category: $category, page: $page, author: $author) {
-          author,
-          permlink,
-          title,
-          created,
-          body,
-          thumb,
-          isVoted(account: $account)
-        }
-      }
-    `
-
-    let {data: {posts}} = await client.query({query, variables: {
-      //category: config.tag_for_post,
-      // FIXME !!
-      category: "mapala",
-      page: author.posts.next_page,
-      author: state.author,
-      account: rootState.account.name,
+    console.log(rootState.author.name, state.after)
+    let { data } = await client.query({query: POSTS_QUERY, variables: {
+      category: "mapala", // FIXME
+      first: 10, // FIXME
+      author: rootState.author.name,
+      after: state.after
     }})
+
+    let posts = data.posts.edges.map(p => p.node)
 
 		// FIXME Не хорошо это все..
 		let posts_deep_copy = JSON.parse(JSON.stringify(posts))
 
-    authors[state.author].posts.list = authors[state.author].posts.list.concat(posts_deep_copy)
-
-    author.posts.next_page++
-
-    sync_posts_hack(state)
+    state.list = state.list.concat(posts_deep_copy)
+    if (posts.length > 0) {
+      state.after = data.posts.edges[data.posts.edges.length - 1].cursor
+    }
   },
 }
 
@@ -117,30 +63,11 @@ export const mutations = {
 
   set_author (state, author) {
     state.author = author
-
-    sync_posts_hack(state)
+    state.after = undefined
   },
 
   UNSET_AUTHOR (state, payload) {
     state.author = undefined
+    state.after = undefined
   },
-
-  SET_FETCH_METHOD (state, method) {
-    state.fetch_method = fetch_methods[method]
-  }
-}
-
-
-function sync_posts_hack(state) {
-  // HACK
-  // синхронизирует посты в authors с state
-
-  state.list = authors[state.author].posts.list
-}
-
-
-function find_post_in_state(state, author, permlink) {
-  // Вернет пост если он уже есть в ленте
-  // TODO перепилить под новый стиль
-  return authors[state.author].posts.list.find(p => p.author === author && p.permlink === permlink)
 }

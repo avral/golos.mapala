@@ -5,24 +5,21 @@
     :zoom="4",
     @idle="updateMarkers",
     ref="mmm",
-    map-type-id="terrain",
+    map-type-id="terrain")
 
-    @dragend="checkBounds"
-    )
-
+    // :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
     gmap-marker(
       v-for="marker in markers",
-      :key="marker.identifier",
-      :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
+      :key="marker.permlink",
+      :position="{lat: parseFloat(marker.position.latitude), lng:parseFloat(marker.position.longitude) }",
       :clickable="true",
       :draggable="false",
-      @click=""
-      )
-      //@click="$router.push({ path: $action('post-view', marker.author, marker.permlink) })"
-
-    //gmap-info-window(
+      @click="open_modal(marker)"
       @mouseover="openInfoWindow(marker)",
       @mouseout="infoWindow.opened = false",
+      )
+
+    gmap-info-window(
       :options="infoWindow.options",
       :opened="infoWindow.opened",
       :content="infoWindow.content",
@@ -35,24 +32,68 @@
 <script>
 import { map_options } from '@/config'
 import gql from 'graphql-tag'
+import { mapActions, mapState } from 'vuex'
+import PostModal from '~/components/post/PostModal.vue'
 
 
 export default {
   data() {
     return {
+      infoWindow: {
+        options: {
+          maxWidth: 250,
+          pixelOffset: {
+            width: 0,
+            height: -35
+          }
+        },
+        position: {
+          lat: 0.0,
+          lng: 0.0
+        },
+        opened: false,
+        content: ''
+      },
       center: {
         lat: 40.748817,
         lng: -73.985428
       },
 
-      markers: [],
-
       options: map_options,
     }
   },
 
+  computed: {
+    ...mapState({
+      'markers': state => state.map.markers
+    })
+  },
+
   methods: {
-    checkBounds() {
+    ...mapActions({
+      'fetch_markers': 'map/fetch_markers'
+    }),
+
+    openInfoWindow (marker) {
+      this.infoWindow.opened = true
+
+      this.infoWindow.content = `<h6>${marker.title}</h6><p>${marker.body}</p>`
+
+      this.infoWindow.options.maxWidth = 180
+
+      this.infoWindow.position = {
+        lat: Number(marker.position.latitude),
+        lng: Number(marker.position.longitude)
+      }
+    },
+
+    async open_modal(marker) {
+      this.$modal.show(PostModal, {post: marker, update: true}, {
+        height: 'auto',
+        width: '60%',
+        scrollable: true,
+        classes: ['v--modal', 'post-modal']
+      })
     },
 
     async updateMarkers() {
@@ -69,30 +110,9 @@ export default {
         bounds.f.b,
         bounds.b.f,
         bounds.f.f,
-      ]
-			console.log(boundingBox)
+      ].join()
 
-      let client = this.$apolloProvider.defaultClient
-
-      let query = gql`
-        query markers ($bbox: JSONString!, $author: String) {
-          markers(bbox: $bbox, author: $author) {
-            title,
-            identifier,
-            location
-          }
-        }
-      `
-
-      let {data: {markers}} = await client.query({query,
-        variables: {
-          bbox: JSON.stringify(boundingBox)
-        }
-      })
-
-        
-      this.markers = [...markers, ...this.markers].filter((elem, index, self) => self.findIndex(
-          (t) => {return (t.identifier === elem.identifier)}) === index)
+      this.fetch_markers(boundingBox)
     }
   }
 }

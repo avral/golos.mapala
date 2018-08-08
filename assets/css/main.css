@@ -1,3 +1,36 @@
 .htm-from-blockchain img {
     width: 100%;
 }
+
+.user_av {
+    border-radius: 50%;
+    display: block;
+    width: 100%;
+}
+
+.location {
+    margin-top: 4px;
+    font-size: 16px;
+    line-height: 18px;
+    letter-spacing: -.5px;
+    color: #7e8793;
+    padding-left: 12px;
+    position: relative;
+    background: 
+}
+
+
+.mutted-text {
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+  letter-spacing: -0.5px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+
+
+.upvote-btn {
+    border-radius: 3px;
+    background-color: #6d9ee1 !important;
+}

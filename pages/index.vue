@@ -1,10 +1,7 @@
 <template lang="pug">
-.container.mt-4
-  .row
-    .col-md-8
-      feed
+  feed
     // .col-4.d-none.d-md-block.bg-light.left-menu
-    .col-4.d-none.d-md-block.left-menu
+    //.col-4.d-none.d-md-block.left-menu
       .row.mb-3
         .col
           el-menu(default-active="2"
@@ -32,25 +29,14 @@
         .col
           .bg-light
             p Популярное
-
-
-
-
 </template>
 
 <script>
 import Feed from '@/components/post/Feed'
-import MapalaMap from '@/components/MapalaMap'
 
 
 export default {
-  async asyncData ({ store, commit }) {
-    // undefined - для основной ленты
-    store.commit('posts/set_author', undefined)
-  },
-
   components: {
-    //MapalaMap,
     Feed,
   }
 }
@@ -62,8 +48,15 @@ export default {
   top: 78px;
   position: sticky;
   height: calc(100vh - 92px);
+
+  border-radius: 6px;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
+  z-index: 10;
+  overflow: hidden;
 }
-.left-menu {
+.right-fixed-container {
+  padding-left: 0px;
   top: 85px;
   position: sticky;
   height: calc(100vh - 116px);

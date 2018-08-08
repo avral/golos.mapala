@@ -35,25 +35,26 @@ module.exports = {
   ],
   apollo: {
     clientConfigs: {
-      default: '@/config/apollo'
+      default: '~/config/apollo'
     }
   },
   plugins: [
     // Плагин в котором лежат все вызовы при запуске клиента
-    {ssr: false, src: '@/plugins/startapp.js'},
+    {ssr: false, src: '~/plugins/startapp.js'},
 
-    {ssr: false, src: '@/plugins/localStorage.js'},
-    {ssr: false, src: '@/plugins/vuelidate.js'},
-    {ssr: false, src: '@/plugins/vue-quill-editor.js'},
-    {ssr: false, src: '@/plugins/vue-notification.js'},
+    {ssr: false, src: '~/plugins/localStorage.js'},
+    {ssr: false, src: '~/plugins/vuelidate.js'},
+    {ssr: false, src: '~/plugins/vue-quill-editor.js'},
+    {ssr: false, src: '~/plugins/vue-notification.js'},
 
-    '@/plugins/vue-google-maps',
-    '@/plugins/infiniteload.js',
-    '@/plugins/filters.js',
-    '@/plugins/vuex-router-sync.js',
-    '@/plugins/elements.js',
-    '@/plugins/element-ui.js',
-    '@/plugins/raven.js',
+    '~/plugins/vue-js-modal',
+    '~/plugins/vue-google-maps',
+    '~/plugins/infiniteload.js',
+    '~/plugins/filters.js',
+    '~/plugins/vuex-router-sync.js',
+    '~/plugins/elements.js',
+    '~/plugins/element-ui.js',
+    '~/plugins/raven.js',
   ],
   /*
   ** Customize the progress bar color
@@ -84,15 +85,16 @@ module.exports = {
 
     extendRoutes(routes, resolve) {
       routes.push({
-        name: 'author_feed',
-        path: '/@:author',
-        component: resolve(__dirname, 'pages/author.vue')
+        name: 'account',
+        path: '/@:account',
+        component: resolve(__dirname, 'pages/AccountPage.vue')
       })
 
       routes.push({
         name: 'post',
         path: '/@:author/:permlink',
-        component: resolve(__dirname, 'components/post/Post.vue')
+        // TODO Разобраться с долгой прогрузкой
+        component: resolve(__dirname, 'components/post/PostSinglePage.vue')
       })
     }
   },
