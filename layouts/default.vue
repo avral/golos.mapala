@@ -47,9 +47,7 @@ export default {
 }
 
 #map {
-  top: 78px;
-  position: sticky;
-  height: calc(100vh - 92px);
+  height: calc(100vh - 65px);
 
   border-radius: 6px;
   -webkit-box-shadow: 0 0 10px 0 rgba(0,0,0,.1);
@@ -59,7 +57,7 @@ export default {
 }
 .right-fixed-container {
   padding-left: 0px;
-  top: 85px;
+  top: 60px;
   position: sticky;
   height: calc(100vh - 116px);
 }

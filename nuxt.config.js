@@ -31,6 +31,7 @@ module.exports = {
   modules: [
     '@nuxtjs/apollo',
     'bootstrap-vue/nuxt',
+    'nuxt-device-detect',
     /// '@/modules/custom-generate-routes.js',
   ],
   apollo: {

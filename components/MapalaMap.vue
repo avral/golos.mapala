@@ -17,6 +17,7 @@
       @click="open_modal(marker)"
       @mouseover="openInfoWindow(marker)",
       @mouseout="infoWindow.opened = false",
+      icon="https://mapala.net/pointer.png"
       )
 
     gmap-info-window(

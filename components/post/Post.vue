@@ -1,23 +1,24 @@
 <template lang="pug">
 div
-  .post-content.top_block
-    .t_col
-      .img_wrap
-        nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
-          img.user_av(:src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
+  .post-content
+    .top_block
+      .t_col
+        .img_wrap
+          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
+            img.user_av(:src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
 
-      div.name_block
-        nuxt-link.name(:to="{name: 'account', params: {author: post.author.name}}") @{{ post.author.name }}
-        div.date
-          | {{ post.created | formatDate }}
+        div.name_block
+          nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
+          div.date
+            | {{ post.created | formatDate }}
 
-      div.location(v-if="post.position_text")
-        asdfasdf
-        //| {{ post.position_text }}
+        div.location(v-if="post.position_text")
+          asdfasdf
+          //| {{ post.position_text }}
 
-  .content
-    h1.c_header {{ post.title }}
-    div(v-html="body").htm-from-blockchain
+    .content
+      h1.c_header {{ post.title }}
+      div(v-html="body").c_text
 
 </template>
 
@@ -53,12 +54,6 @@ export default {
     update: {
       default: false,
     }
-  },
-
-  methods: {
-    ...mapActions({
-      fetch_post: 'posts/fetch_post'
-    }),
   },
 
   computed: {

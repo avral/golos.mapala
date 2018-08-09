@@ -1,11 +1,17 @@
 <template lang="pug">
 .row
   .col
-    a(@click="open_modal") Тет модалки
     .post-item.mb-3(:class="post.thumb ? 'w_i': ''")
-      nuxt-link(v-if="post.thumb" :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
-        .post-image
-          img(:src="post.thumb | golos_proxy('490x320')", alt='')
+      div(v-if="post.thumb")
+
+        a(v-if="$device.isDesktop" @click="open_modal")
+          .post-image
+            img(:src="post.thumb | golos_proxy('490x320')", alt='')
+
+        nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
+          .post-image
+            img(:src="post.thumb | golos_proxy('490x320')", alt='')
+
       .short
         .top-block
           .img-wrap
@@ -21,97 +27,20 @@
           h2.write-header  {{ post.title }}
           p.write-text {{ post.body | html_preview }}
 
-      .row
-        .col
-          el-button.upvote-btn(size="small" v-if="!post.isVoted", @click="vote", :loading="loading").pull-right
-            round.mr-2
-            span.mutted-text.mr-2 Поддержать
-            | | 
-            span.text-light.ml-2 133
+      .bottom-block
+        .icons
+          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment
+            | {{ post.children }}
 
-          el-button.upvote-btn(v-else, size="medium", disabled)
-            round.mr-2
-            span.mutted-text.ml-2 Поддержано
-            span.text-light.ml-2 133
-
-    //.d-flex.flex-row.no-gutters
-        .col-4(v-if="post.thumb")
-          nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
-            img.img-fluid(v-if="post.thumb", :src="post.thumb | golos_proxy('250x170')", alt='')
-            // img.img-fluid(v-else, src="@/assets/img/mapala-logo.png", alt='')
-        .card-body
-          h5.card-title.mb-1
-              nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}") {{ post.title }}
-
-          p.card-text
-            | {{ post.body | html_preview }}
-            //a(href='#') #workinghardorhardlyworking
-
-    //.d-flex.flex-row.card-body.py-1
-      //.p-3.mb-2.bg-light.text-dark Выплаты: {{  }}
-
-
-      //loading-button.mr-3.btn.btn-outline-primary(v-if="!post.isVoted", @click="vote", :loading="loading")
-        i.fa.fa-fw.fa-thumbs-up
-        | Голосовать
-
-      //button.mr-3.btn.btn-outline-success(v-else)
-        i.fa.fa-fw.fa-thumbs-up
-        | Проголосованно
-      //el-button(type="primary", icon="el-icon-share", href="http://vk.com/share.php?url=", size="small") Поделиться
-    //.card-body
-      nuxt-link.card-link(:to="{name: 'account', params: {author: post.author}}") @{{ post.author }}
-
-    //.d-flex.align-items-center.flex-row.card-footer.small.text-muted.py-1.px-2
-      nuxt-link.card-link(:to="{name: 'account', params: {author: post.author}}").mr-1 @{{ post.author }}
-      | {{ post.created | formatDate }}
-
-
-      .ml-auto(v-show="$store.getters['account/isAuth']")
-        el-button(size="medium", v-if="!post.isVoted", @click="vote", :loading="loading")
-          i.fa.fa-fw.fa-thumbs-up
-          | Голосовать
-
-        el-button(v-else, size="medium", disabled)
-          i.fa.fa-fw.fa-thumbs-up
-          | Проголосованно
-
-
-    //.card-body.py-2
-      //.p-3.mb-2.bg-light.text-dark Выплаты: {{  }}
-
-      loading-button.mr-3.btn.btn-outline-primary(v-if="!post.isVoted", @click="vote", :loading="loading")
-        i.fa.fa-fw.fa-thumbs-up
-        | Голосовать
-
-      button.mr-3.btn.btn-outline-success(v-else)
-        i.fa.fa-fw.fa-thumbs-up
-        | Проголосованно
-      //el-button(type="primary", icon="el-icon-share", href="http://vk.com/share.php?url=", size="small") Поделиться
-    //.card-body
-      nuxt-link.card-link(:to="{name: 'account', params: {author: post.author}}") @{{ post.author }}
-
-    //hr.my-0
-    //.card-body.small.bg-faded
-      .media
-        img.d-flex.mr-3(src='http://placehold.it/45x45', alt='')
-        .media-body
-          h6.mt-0.mb-1
-            a(href='#') Jessy Lucas
-          | Where did you get that camera?! I want one!
-          ul.list-inline.mb-0
-            li.list-inline-item
-              a(href='#') Like
-            li.list-inline-item
-              | ·
-            li.list-inline-item
-              a(href='#') Reply
+          a.icon.repost Поделиться
+            
+        upvote-button(:post="post")
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import Round from '~/components/elements/svg/round.vue'
 import PostModal from '~/components/post/PostModal.vue'
+import UpvoteButton from '~/components/post/UpvoteButton.vue'
 
 
 export default {
@@ -136,25 +65,11 @@ export default {
         classes: ['v--modal', 'post-modal']
       })
     },
-
-    async vote() {
-			this.loading = true
-
-			try {
-				await this.gols_vote(this.post)
-      	this.post.isVoted = true
-      	this.$notify({title: 'Voted', type: 'success'})
-			} catch (e) {
-      	this.$notify({title: 'Vote error', message: e.message, type: 'error'})
-			} finally {
-				this.loading = false
-			}
-    }
   },
 
   components: {
-    Round,
-    PostModal
+    PostModal,
+    UpvoteButton
   }
 }
 </script>
@@ -172,9 +87,22 @@ export default {
   font-size: 18px;
   letter-spacing: -.3px;
   color: #20262d;
+  word-wrap: break-word;
 }
 
 .bottom-block {
+  justify-content: space-between;
+  padding: 0 17px;
+  margin-bottom: 10px;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.bottom-block .icons {
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
   -ms-flex-align: center;
@@ -225,6 +153,21 @@ export default {
   box-sizing: border-box;
 }
 
+.post-item .icon {
+    display: block;
+    cursor: pointer;
+    font: 14px/34px PT Sans;
+    letter-spacing: -.5px;
+    color: rgba(72, 84, 101, .7) !important;
+    padding-left: 23px;
+    text-decoration: none;
+}
+
+.post-item .icon.comment {
+  background: url(~/assets/icons/icon-comment.svg) no-repeat 0;
+  margin-right: 18px;
+}
+
 .post-image {
   overflow: hidden;
   border-top-left-radius: 6px;
@@ -236,14 +179,8 @@ export default {
   width: 100%;
 }
 
-.short {
-  border-radius: 6px;
-  background: #fff;
-  -webkit-box-shadow: 0 0 7px 0 rgba(0,0,0,.33);
-  box-shadow: 0 0 7px 0 rgba(0,0,0,.33);
-  position: relative;
-  z-index: 1;
-  padding-bottom: 10px;
+.post-item .short {
+  word-wrap: break-word;
 }
 
 .post-item.w_i .short{

@@ -7,7 +7,6 @@ import Vue from 'vue'
 export default ({app: { store }}) => {
   // FIXME Сделать отслеживание локи
   //navigator.geolocation.getCurrentPosition(function(location) {
-
   //  console.log(location.coords.latitude)
   //  console.log(location.coords.longitude)
   //  console.log(location.coords.accuracy)
@@ -15,7 +14,7 @@ export default ({app: { store }}) => {
   //
 
   window.onNuxtReady(() => {
-    store.dispatch('account/init')
+    store.dispatch('auth/init')
     store.dispatch('golos/init')
   })
 }

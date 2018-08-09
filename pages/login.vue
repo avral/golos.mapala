@@ -1,7 +1,7 @@
 <template lang="pug">
 .container.mt-5
   no-ssr
-    .row.justify-content-center(v-if="$store.getters['account/isAuth']")
+    .row.justify-content-center(v-if="$store.getters['auth/isAuth']")
       form.col-md-6.text-center
         img(src="@/assets/img/mapala-logo.png", width="100", height="100").mb-3
         h1.h3 Авторизация
@@ -52,6 +52,8 @@ import loadingButton from '@/components/elements/loading-button.vue'
 
 
 export default {
+  layout: 'full-width',
+
   data() {
     return {
       account: '',
@@ -64,7 +66,7 @@ export default {
   },
   methods: {
     ...mapActions({
-      'authorization': 'account/authorization'
+      'authorization': 'auth/authorization'
     }),
 
     async auth() {

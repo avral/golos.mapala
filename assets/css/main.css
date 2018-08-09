@@ -34,3 +34,12 @@
     border-radius: 3px;
     background-color: #6d9ee1 !important;
 }
+
+.v--modal-overlay {
+  background: rgba(72,84,101,.8);
+}
+
+/* POSTS */
+.icon.repost {
+    background: url('~/assets/icons/icon-repost.svg') no-repeat left center;
+}

@@ -37,6 +37,9 @@ query posts ($identifier: CommentIdentifier!) {
     body
     thumb
     isVoted(account: "avral")
+    netVotes
+    totalPendingPayout
+    children
   }
 }
 `
@@ -64,6 +67,9 @@ export const POSTS_QUERY = gql`
           body
           thumb
           isVoted(account: "avral")
+          netVotes
+          totalPendingPayout
+          children
         },
         cursor
       }

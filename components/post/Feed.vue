@@ -53,10 +53,6 @@ export default {
   },
 
   methods: {
-    //...mapActions({
-    //  fetch_posts: 'posts/fetch_posts'
-    //}),
-
     async fetch_posts() {
       let client = this.$apolloProvider.defaultClient
 

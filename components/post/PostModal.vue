@@ -11,6 +11,7 @@
 <script>
 import { mapActions } from 'vuex'
 import Post from '~/components/post/Post.vue'
+import { POST_QUERY } from '@/constants/queries.js'
 
 export default {
   props: ['post', 'update'],
@@ -26,6 +27,13 @@ export default {
     }
   },
 
+  watch: {
+    $route (to, from){
+      // Закрываем модалку когда уходим куда то
+      this.$emit('close')
+    }
+  }, 
+
   methods: {
     ...mapActions({
       'fetch_post': 'posts/fetch_post'
@@ -33,12 +41,18 @@ export default {
   },
 
   async created() {
+    console.log(this.post)
     // TODO Разоброться как тут поступать
     if (this.update) {
       this.loading = true
 
-      this.postProp = await this.fetch_post({author: this.post.author, permlink: this.post.permlink})
-      console.log(this.post)
+      let client = this.$apolloProvider.defaultClient
+
+      let {data: {post}} = await client.query({query: POST_QUERY, variables: {
+        identifier: `@${this.post.author.toLowerCase()}/${this.post.permlink}`
+      }})
+
+      this.postProp = post
       this.loading = false
     } else {
       this.postProp = this.post
