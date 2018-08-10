@@ -16,23 +16,34 @@
         .top-block
           .img-wrap
             nuxt-link.card-link(:to="{name: 'account', params: {account: post.author.name}}")
-              img.user_av(:src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
+              img.user_av(v-if="post.author.meta.profile.profileImage"
+                          :src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
+
           .name-block.mr-2
             nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
             .date {{ post.created | formatDate }}
           // TODO Локация
           .location {{ post.meta.location.name }}
 
-        nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
+          a(v-if="auth.wif && $device.isDesktop && post.author.name == auth.account.name" @click="edit_post").icon.ml-auto
+            i.fa.fa-edit
+
+        a(v-if="$device.isDesktop" @click="open_modal")
+          h2.write-header  {{ post.title }}
+          p.write-text {{ post.body | html_preview }}
+        nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
           h2.write-header  {{ post.title }}
           p.write-text {{ post.body | html_preview }}
 
       .bottom-block
         .icons
-          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment
-            | {{ post.children }}
+          a(v-if="$device.isDesktop" @click="open_modal").icon.comment {{ post.children }}
+          nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment {{ post.children }}
 
           a.icon.repost Поделиться
+
+          nuxt-link(v-if="$device.isDesktop" :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon
+            i.fa.fa-eye
             
         upvote-button(:post="post")
 </template>
@@ -52,10 +63,35 @@ export default {
 		}
 	},
 
+  computed: {
+    ...mapState({
+      auth: state => state.auth,
+      editor: state => state.editor
+    })
+  },
+
   methods: {
     ...mapActions({
-      gols_vote: 'golos/vote'
+      gols_vote: 'golos/vote',
     }),
+
+    edit_post() {
+      // TODO нормальное редактирование
+      // Пропсами в компонент закидывать пост 
+      let editor = this.editor
+      let post = this.post
+
+      editor.type = post.meta.format || 'html'
+      this.$store.commit('editor/clear')
+
+      editor.permlink = post.permlink
+
+      editor.title = post.title
+      editor[editor.type] = post.body
+      editor.tags = [...new Set([editor.tags[0], ...post.meta.tags])]
+
+      this.$router.push({name: 'editor'})
+    },
 
     open_modal() {
       this.$modal.show(PostModal, {post: this.post}, {
@@ -124,12 +160,12 @@ export default {
 }
 
 .img-wrap {
+  background: url(~/assets/icons/account/icon-profile.svg) #fff no-repeat;
   border-radius: 50%;
   margin-right: 8px;
   width: 40px;
   height: 40px;
   overflow: hidden;
-  background: #ddd;
   -ms-flex-negative: 0;
   flex-shrink: 0;
 }
@@ -153,10 +189,14 @@ export default {
   box-sizing: border-box;
 }
 
+.post-item a {
+  cursor: pointer;
+}
+
 .post-item .icon {
     display: block;
     cursor: pointer;
-    font: 14px/34px PT Sans;
+    font-size: 13px;
     letter-spacing: -.5px;
     color: rgba(72, 84, 101, .7) !important;
     padding-left: 23px;

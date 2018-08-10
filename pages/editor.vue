@@ -75,6 +75,7 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 
 export default {
+  layout: 'full-width',
   middleware: 'auth',
 
   data() {
@@ -108,7 +109,7 @@ export default {
   },
   computed: {
     ...mapState({
-      editor: state => state.editor
+      editor: state => state.editor,
     }),
 
     preview() {
@@ -161,27 +162,30 @@ export default {
     },
 
     async _submit() {
+      if (!this.editor.title) return this.$message.warning('Добавьте заголовок')
+      if (!this.editor.body) return this.$message.warning('Добавьте текст публикации')
+      if (!this.editor.location.name) return this.$message.warning('Локация обязательна')
+
       this.loading = true
 
       try {
         await this.submit()
 
-        this.$router.push({ name: 'index'})
         this.$alert('Ваш пост появится в ленте через несколько минут', 'Опубликованно', {
           confirmButtonText: 'OK',
+          callback: () => this.$router.push({ name: 'index'})
         })
       } catch (e) {
-        this.$notify.error({
-          title: 'Error',
-          message: e.message
-        })
+          this.$notify.error({
+            title: 'Error',
+            message: JSON.stringify(e)
+          })
       } finally {
         this.loading = false
       }
-    },
+    }
   }
 }
-
 </script>
 
 <style>

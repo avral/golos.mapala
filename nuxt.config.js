@@ -17,21 +17,17 @@ module.exports = {
       { hid: 'description', name: 'description', content: 'MAPALA - World Adventure Community. Connecting with people, Be Useful, Enjoy, Repeat.' }
     ],
     link: [
-
-      // Font Awesome
-      { rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'},
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: 'https://mapala.net/mapala.ico' },
     ]
   },
   css: [
-    '@fortawesome/fontawesome/styles.css',
-
     '@/assets/css/main.css',
   ],
   modules: [
     '@nuxtjs/apollo',
     'bootstrap-vue/nuxt',
     'nuxt-device-detect',
+    '@nuxtjs/font-awesome',
     /// '@/modules/custom-generate-routes.js',
   ],
   apollo: {

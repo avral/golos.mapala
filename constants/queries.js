@@ -31,6 +31,7 @@ query posts ($identifier: CommentIdentifier!) {
     meta {
       location
       format
+      tags
     }
     title
     created
@@ -61,6 +62,7 @@ export const POSTS_QUERY = gql`
           meta {
             location
             format
+            tags
           }
           title
           created

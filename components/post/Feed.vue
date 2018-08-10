@@ -1,4 +1,6 @@
 <template lang="pug">
+// TODO При возвращении на ленту, не сохраняется место скрола
+// Скорее всего решится proxy в 1.6 vue
 div
   post-item(v-for="post in posts", :post="post", :key="post.id")
 
@@ -8,6 +10,7 @@ div
 </template>
 
 <script>
+import config from '~/config'
 import { mapState, mapActions } from 'vuex'
 
 import PostItem from '@/components/post/PostItem'
@@ -57,7 +60,7 @@ export default {
       let client = this.$apolloProvider.defaultClient
 
       let { data } = await client.query({query: POSTS_QUERY, variables: {
-        category: "mapala", // FIXME
+        category: config.tag_for_post,
         first: 10, // FIXME
         author: this.filters.author,
         after: this.after

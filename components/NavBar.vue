@@ -1,38 +1,4 @@
 <template lang="pug">
-//b-navbar(toggleable="md").sticky-top.top-menu
-  nuxt-link(:to="{name: 'index'}")
-    img(src="@/assets/img/mapala-logo.png", width="34", height="34").mr-2
-    b-navbar-brand MAPALA
-
-  //nuxt-link(:to="{name: 'index'}").navbar-brand
-    img(src="@/assets/img/mapala-logo.png", width="34", height="34").mr-2
-    | MAPALA
-
-  b-collapse(is-nav)#nav_collapse
-    .col-7.d-flex
-      //b-navbar-nav.d-flex.align-items-center
-        nuxt-link(:to="{name: 'map'}").nav-item.nav-link Карта
-
-      b-navbar-nav.d-flex.align-items-center
-        nuxt-link(:to="{name: 'index'}").nav-item.nav-link Поиск
-
-    .col-5.d-flex
-      .d-flex(v-show="$store.getters['account/isAuth']")
-        nuxt-link(v-show="$store.getters['account/isAuth']",
-                  :to="{name: 'new-post'}").btn.btn-sm.btn-outline-secondary Написать статью
-
-        // nuxt-link(:to="{name: 'settings'}").btn.btn-sm.btn-outline-secondary.ml-3 Настройки
-
-      no-ssr
-        .ml-auto
-          nuxt-link(v-show="!$store.getters['account/isAuth']" :to="{name: 'login'}").btn.btn-sm.btn-outline-light Войти
-          div(v-show="$store.getters['account/isAuth']") {{ account.name }}
-            //{{ account.meta.profile.profile.profile_image }}
-            a(@click="logout").btn.btn-sm.btn-outline-secondary.ml-2 Выйти
-
-  b-navbar-toggle(target="nav_collapse")
-
-
 div#anchor
   header.main_header.sticky-top
     div.top_left_block
@@ -41,40 +7,41 @@ div#anchor
         span
           | MAPALA
 
-    div.top-right-block
-      div.username_wrapper(v-if="$store.getters['auth/isAuth']")
-        nuxt-link(:to="{name: 'index'}")
-          div.user
-            span(class="user_name" v-text="account.name")
-            img(v-if="account.meta.profile.profileImage" class="user_logo", :src="account.meta.profile.profileImage")
-            img(v-else class="no_avatar" src="~/assets/icons/account/icon-profile.svg")
+    no-ssr
+      div.top-right-block
+        div.username_wrapper(v-if="$store.getters['auth/isAuth']")
+          nuxt-link(:to="{name: 'index'}")
+            div.user
+              span.user_name @{{ account.name }}
+              img(v-if="account.meta.profile.profileImage" class="user_logo", :src="account.meta.profile.profileImage")
+              img(v-else class="no_avatar" src="~/assets/icons/account/icon-profile.svg")
 
-      nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}", class="login")
-        | Войти
-      div.right_button(v-else)
+        nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}", class="login")
+          | Войти
+        div.right_button(v-else)
 
-        div(@click="openMenu", class="open_menu", v-on-clickaway="closeMenu" )
-          | Меню 
+          div(@click="openMenu", class="open_menu", v-on-clickaway="closeMenu" )
+            | Меню 
 
-        div.user_menu(:class="{ active : isMenuOpened }")
+          div.user_menu(:class="{ active : isMenuOpened }")
 
-          nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
-            i.purce
-            span.txt_i
-              | Кошклек
-            span(class="amount" v-text="account.balanceValue")
+            nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
+              i.purce
+              span.txt_i
+                | Кошклек
+              span(class="amount" v-text="account.balanceValue")
 
-          div.divd
-          div.mn
+            div.divd
+            div.mn
 
-            nuxt-link(
-            to="/settings"
-            class="m_item"
-            )
-              | Настройки
+              nuxt-link(
+              to="/settings"
+              class="m_item"
+              )
+                | Настройки
 
-            a(class="m_item", @click.prevent="logout")
-              | Выйти
+              a(class="m_item", @click.prevent="logout")
+                | Выйти
 </template>
 
 <script>
@@ -94,7 +61,7 @@ export default {
 
 	methods: {
 		logout() {
-			this.$store.dispatch('account/logout')
+			this.$store.dispatch('auth/logout')
 		},
 
     openMenu () {

@@ -6,6 +6,7 @@
     border-radius: 50%;
     display: block;
     width: 100%;
+    background: url(~/assets/icons/account/icon-profile.svg) #fff no-repeat;
 }
 
 .location {

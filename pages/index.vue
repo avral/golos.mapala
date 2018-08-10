@@ -1,4 +1,6 @@
 <template lang="pug">
+div
+  create-post-button
   feed
     // .col-4.d-none.d-md-block.bg-light.left-menu
     //.col-4.d-none.d-md-block.left-menu
@@ -33,11 +35,13 @@
 
 <script>
 import Feed from '@/components/post/Feed'
+import CreatePostButton from '@/components/post/CreatePostButton'
 
 
 export default {
   components: {
     Feed,
+    CreatePostButton
   }
 }
 

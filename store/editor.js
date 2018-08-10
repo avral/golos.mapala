@@ -1,16 +1,19 @@
 import marked from 'marked'
+import slug from 'slug'
 
+import golos from 'golos-js'
 import config from '~/config'
-import prepare_html from '~/utils/prepare_html'
-import prepare_json_metadata from '~/utils/golos'
-
+import { prepare_json_metadata } from '~/utils/golos'
 
 
 export const state = () => ({
+  // TODO тип выплат
+
   type: 'markdown',
   markdown: '',
   html: '',
   title: '',
+  permlink: null,
   body: '',
   tags: [config.tag_for_post],
   location: {
@@ -36,6 +39,7 @@ export const mutations = {
     state.body = ''
     state[state.type] = ''
     state.tags = [config.tag_for_post]
+    state.permlink = null
 
     // GeoJOSON standart
     state.location = {
@@ -55,22 +59,32 @@ export const actions = {
   },
 
   async submit({ state, commit, dispatch, rootState }) {
-    let post = {
-      title: state.title,
-      body: state.body,
-      meta: {
-        tags: state.tags,
-        location: state.location,
-        format: state.type
-      }
+    if (!rootState.auth.wif && !rootState.auth.account.name) {
+      throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
-    let { err,  res } = await dispatch('golos/post', post, { root: true })
-
-    if (err) {
-      throw Error(err.message)
-    } else {
-      return res
-    }
+    return new Promise((resolve, reject) => {
+      golos.broadcast.comment(
+        rootState.auth.wif,
+        '',
+        config.tag_for_post,
+        rootState.auth.account.name,
+        state.permlink || slug(state.title, {lower: true}),
+        state.title,
+        state.body,
+        prepare_json_metadata({
+          tags: state.tags,
+          location: state.location,
+          format: state.type
+        }), (err, res) => {
+          if (err) {
+            reject(err.message)
+          } else {
+            commit('clear')
+            resolve(res)
+          }
+        }
+      )
+    })
   }
 }

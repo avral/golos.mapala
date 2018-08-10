@@ -107,6 +107,12 @@
     isomorphic-fetch "^2.2.1"
     vue-apollo "^3.0.0-beta.5"
 
+"@nuxtjs/font-awesome@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/font-awesome/-/font-awesome-1.0.3.tgz#66a88c8d9b0883dca992e3dd72e53fce22fcc418"
+  dependencies:
+    font-awesome "^4.7.0"
+
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@nuxtjs/youch/-/youch-4.2.3.tgz#36f8b22df5a0efaa81373109851e1d857aca6bed"
@@ -4226,9 +4232,9 @@ nuxt-device-detect@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/nuxt-device-detect/-/nuxt-device-detect-1.1.1.tgz#bd885935356cd2f8e685f93f844919fcf8184934"
 
-nuxt@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-1.4.0.tgz#66df9ede68daf2ef4cfbcc329da7dda0003e0420"
+nuxt@^1.4.2:
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-1.4.2.tgz#54165be580374b8392ed1150f758e37ab3f7c61d"
   dependencies:
     "@nuxtjs/youch" "^4.2.3"
     ansi-html "^0.0.7"
@@ -4280,12 +4286,12 @@ nuxt@^1.4.0:
     uglifyjs-webpack-plugin "^1.1.8"
     upath "^1.0.2"
     url-loader "^0.6.2"
-    vue "^2.5.13"
-    vue-loader "13.7.0"
+    vue "^2.5.17"
+    vue-loader "^13.7.2"
     vue-meta "^1.4.3"
     vue-router "^3.0.1"
-    vue-server-renderer "^2.5.13"
-    vue-template-compiler "^2.5.13"
+    vue-server-renderer "^2.5.17"
+    vue-template-compiler "^2.5.17"
     vuex "^3.0.1"
     webpack "^3.11.0"
     webpack-bundle-analyzer "^2.10.0"
@@ -5895,9 +5901,11 @@ slice-ansi@1.0.0:
   dependencies:
     is-fullwidth-code-point "^2.0.0"
 
-slugify@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/slugify/-/slugify-1.2.9.tgz#c3d518f5136b3c69345d5d0bbbcde7412b5694aa"
+slug@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-0.9.1.tgz#af08f608a7c11516b61778aa800dce84c518cfda"
+  dependencies:
+    unicode ">= 0.3.1"
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
@@ -6412,6 +6420,10 @@ ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
 
+"unicode@>= 0.3.1":
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/unicode/-/unicode-11.0.1.tgz#735bd422ec75cf28d396eb224d535d168d5f1db6"
+
 union-value@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/union-value/-/union-value-1.0.0.tgz#5c71c34cb5bad5dcebe3ea0cd08207ba5aa1aea4"
@@ -6620,9 +6632,9 @@ vue-js-modal@^1.3.16:
   version "1.3.16"
   resolved "https://registry.yarnpkg.com/vue-js-modal/-/vue-js-modal-1.3.16.tgz#a61b01113c8f2e297c2b45dedeab9f00175a8a63"
 
-vue-loader@13.7.0:
-  version "13.7.0"
-  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.7.0.tgz#4d6a35b169c2a0a488842fb95c85052105fa9729"
+vue-loader@^13.7.2:
+  version "13.7.2"
+  resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-13.7.2.tgz#f633f6393e905ffd730400f03c99353618c08fe8"
   dependencies:
     consolidate "^0.14.0"
     hash-sum "^1.0.2"
@@ -6657,9 +6669,9 @@ vue-router@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.0.1.tgz#d9b05ad9c7420ba0f626d6500d693e60092cc1e9"
 
-vue-server-renderer@^2.5.13:
-  version "2.5.16"
-  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.5.16.tgz#279ef8e37e502a0de3a9ae30758cc04a472eaac0"
+vue-server-renderer@^2.5.17:
+  version "2.5.17"
+  resolved "https://registry.yarnpkg.com/vue-server-renderer/-/vue-server-renderer-2.5.17.tgz#c1f24815a4b12a2797c154549b29b44b6be004b5"
   dependencies:
     chalk "^1.1.3"
     hash-sum "^1.0.2"
@@ -6677,9 +6689,9 @@ vue-style-loader@^3.0.0:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
 
-vue-template-compiler@^2.5.13:
-  version "2.5.16"
-  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.16.tgz#93b48570e56c720cdf3f051cc15287c26fbd04cb"
+vue-template-compiler@^2.5.17:
+  version "2.5.17"
+  resolved "https://registry.yarnpkg.com/vue-template-compiler/-/vue-template-compiler-2.5.17.tgz#52a4a078c327deb937482a509ae85c06f346c3cb"
   dependencies:
     de-indent "^1.0.2"
     he "^1.1.0"
@@ -6696,9 +6708,9 @@ vue2-google-maps@0.7.10:
     babel-runtime "^5.8.0"
     marker-clusterer-plus "^2.1.4"
 
-vue@^2.5.13:
-  version "2.5.16"
-  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.16.tgz#07edb75e8412aaeed871ebafa99f4672584a0085"
+vue@^2.5.17:
+  version "2.5.17"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.17.tgz#0f8789ad718be68ca1872629832ed533589c6ada"
 
 vuelidate@^0.6.2:
   version "0.6.2"

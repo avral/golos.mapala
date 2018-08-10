@@ -14,3 +14,4 @@ dist
 .DS_Store
 .tern-port
 .env
+yarn-error.log

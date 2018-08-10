@@ -1,5 +1,4 @@
 import golos from 'golos-js'
-import slugify from 'slugify'
 
 import config from '@/config'
 import { prepare_json_metadata } from '@/utils/golos'
@@ -37,7 +36,6 @@ export const actions = {
 
     return new Promise((resolve) => {
       golos.broadcast.comment(
-      //console.log(
         rootState.account.wif,
         '',
         config.tag_for_post,
