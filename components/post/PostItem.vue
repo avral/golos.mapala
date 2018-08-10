@@ -81,15 +81,16 @@ export default {
       let editor = this.editor
       let post = this.post
 
-      editor.type = post.meta.format || 'html'
+      editor.format = post.meta.format || 'html'
       this.$store.commit('editor/clear')
 
       editor.permlink = post.permlink
 
       editor.title = post.title
-      editor[editor.type] = post.body
+      editor[editor.format] = post.body
       editor.tags = [...new Set([editor.tags[0], ...post.meta.tags])]
 
+      this.$store.commit('editor/update_body')
       this.$router.push({name: 'editor'})
     },
 

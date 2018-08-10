@@ -9,7 +9,7 @@ import { prepare_json_metadata } from '~/utils/golos'
 export const state = () => ({
   // TODO тип выплат
 
-  type: 'markdown',
+  format: 'markdown',
   markdown: '',
   html: '',
   title: '',
@@ -19,7 +19,7 @@ export const state = () => ({
   location: {
     name: '',
     geometry: {
-      type: 'Point',
+      format: 'Point',
       coordinates: ['', '']
     },
   }
@@ -28,16 +28,16 @@ export const state = () => ({
 export const mutations = {
   set_title: (state, title) => state.title = title,
   set_tag: (state, tag) => state.tags.push(tag),
-  set_type: (state, type) => state.type = type,
+  set_format: (state, format) => state.format = format,
 
   update_body (state) {
-    state.body = state[state.type]
+    state.body = state[state.format]
   },
 
   clear(state) {
     state.title = ''
     state.body = ''
-    state[state.type] = ''
+    state[state.format] = ''
     state.tags = [config.tag_for_post]
     state.permlink = null
 
@@ -45,7 +45,7 @@ export const mutations = {
     state.location = {
       name: '',
       geometry: {
-        type: 'Point',
+        format: 'Point',
         coordinates: ['', '']
       }
     }
@@ -54,7 +54,7 @@ export const mutations = {
 
 export const actions = {
   toggle({ state, commit }) {
-    commit('set_type', state.type == 'markdown' ? 'html' : 'markdown')
+    commit('set_format', state.format == 'markdown' ? 'html' : 'markdown')
     commit('update_body')
   },
 
@@ -75,7 +75,7 @@ export const actions = {
         prepare_json_metadata({
           tags: state.tags,
           location: state.location,
-          format: state.type
+          format: state.format
         }), (err, res) => {
           if (err) {
             reject(err.message)

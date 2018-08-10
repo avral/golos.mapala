@@ -18,18 +18,24 @@ div
 
     .content
       h1.c_header {{ post.title }}
-      div(v-html="body").c_text
+      post-content(:body="post.body", :format="post.meta.format")
+      //div(v-html="body").c_text
 
 </template>
 
 <script>
+import PostContent from '~/components/post/PostContent.vue'
 import { mapState, mapActions } from 'vuex'
 import marked from 'marked'
 import xmldom from 'xmldom'
-import prepare_html from '@/utils/prepare_html'
+import prepare_html from '~/utils/prepare_html'
 
 
 export default {
+  components: {
+    PostContent
+  },
+
   props: {
     post: {
       default() {

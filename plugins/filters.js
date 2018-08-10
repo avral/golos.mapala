@@ -13,7 +13,9 @@ let regex = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[
 
 
 Vue.filter('html_preview', (value) => {
-  return sbd.sentences(value, {sanitize: true }).slice(0, 2).join(' ')
+  return sbd.sentences(marked(value), {
+		sanitize: true,
+	}).slice(0, 2).join(' ')
 })
 
 

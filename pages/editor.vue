@@ -10,23 +10,23 @@
             input(v-model="editor.title", placeholder="title").form-control
 
         .col-4.d-flex.flex-row-reverse
-          div(v-show="editor.type == 'markdown'")
+          div(v-show="editor.format == 'markdown'")
             button.btn.btn-secondary(@click="toggle_editor") HTML Редактор
 
-          div(v-show="editor.type == 'html'")
+          div(v-show="editor.format == 'html'")
             button.btn.btn-secondary(@click="toggle_editor") Markdown
 
           button.btn.btn-info(@click="clear").mr-auto Очистить
 
       .row.mt-3
         .col
-          div(v-show="editor.type == 'markdown'")
+          div(v-show="editor.format == 'markdown'")
             textarea.form-control(
               @input="update_body", rows="10",
               v-model="editor.markdown"
             )
 
-          div(v-show="editor.type == 'html'")
+          div(v-show="editor.format == 'html'")
             .quill-editor(
               v-quill:myQuillEditor="editorOptions",
               @input="update_body", v-model="editor.html"
@@ -64,19 +64,23 @@
     el-tab-pane(label="Предпросмотр")
       h1 {{ editor.title }}
 
-      div(v-html="preview")
+      post-content(:body="editor.body", :format="editor.format")
 
 </template>
 
 <script>
 // FIXME Огромные картинки не влезают в превью
-// FIXME Запятые и точки не проходят в заголовке
 import { mapState, mapActions, mapMutations } from 'vuex'
+import PostContent from '~/components/post/PostContent.vue'
 
 
 export default {
   layout: 'full-width',
   middleware: 'auth',
+
+  components: {
+    PostContent
+  },
 
   data() {
     return {
@@ -113,7 +117,7 @@ export default {
     }),
 
     preview() {
-      if (this.editor.type == 'markdown') {
+      if (this.editor.format == 'markdown') {
         return this.$options.filters.markdown(this.editor.body)
       } else {
         return this.$options.filters.golos_html(this.editor.body)

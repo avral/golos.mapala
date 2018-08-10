@@ -1,4 +1,5 @@
-const app_tags = process.env.PROD ? ['mapala', 'ru--mapala'] : ['mapala-dev']
+//const app_tags = process.env.PROD ? ['mapala', 'ru--mapala'] : ['mapala-dev']
+const app_tags = ['mapala']
 
 export default {
   app: 'mapala-next/1.0',
