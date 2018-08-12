@@ -11,7 +11,6 @@ import { POST_QUERY } from '@/constants/queries.js'
 
 
 export default {
-  scrollToTop: true,
   layout: 'full-width',
 
   components: {

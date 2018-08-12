@@ -8,7 +8,7 @@ div
     .row
       .col-md-4
         nuxt
-      .col.right-fixed-container.no-gutters
+      .col.right-fixed-container
         mapala-map#map
 
 
