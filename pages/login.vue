@@ -74,6 +74,7 @@ export default {
 
       try {
         await this.authorization({ wif: this.wif, account: this.account })
+        this.$router.push({name: 'index'})
       } catch (e) {
         this.$notify.warning({ title: 'Error', message: e.message })
       } finally {

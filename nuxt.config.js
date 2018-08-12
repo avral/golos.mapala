@@ -90,7 +90,6 @@ module.exports = {
       routes.push({
         name: 'post',
         path: '/@:author/:permlink',
-        // TODO Разобраться с долгой прогрузкой
         component: resolve(__dirname, 'components/post/PostSinglePage.vue')
       })
     }

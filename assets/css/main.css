@@ -5,7 +5,8 @@
 .user_av {
     border-radius: 50%;
     display: block;
-    width: 100%;
+    height: 40px;
+    width: 40px;
     background: url(~/assets/icons/account/icon-profile.svg) #fff no-repeat;
 }
 

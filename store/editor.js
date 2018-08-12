@@ -3,12 +3,13 @@ import slug from 'slug'
 
 import golos from 'golos-js'
 import config from '~/config'
-import { prepare_json_metadata } from '~/utils/golos'
+import { prepare_json_metadata, createUniqPermlink } from '~/utils/golos'
 
 
 export const state = () => ({
   // TODO тип выплат
 
+  isEdit: false, // По дефолту всегда создание нового поста
   format: 'markdown',
   markdown: '',
   html: '',
@@ -40,6 +41,7 @@ export const mutations = {
     state[state.format] = ''
     state.tags = [config.tag_for_post]
     state.permlink = null
+    state.isEdit = false
 
     // GeoJOSON standart
     state.location = {
@@ -63,13 +65,20 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
+    let permlink = state.isEdit
+      ? state.permlink
+      : await createUniqPermlink(rootState.auth.account.name, state.title)
+    console.log(state.isEdit)
+
+    return console.log(permlink, 99)
+
     return new Promise((resolve, reject) => {
       golos.broadcast.comment(
         rootState.auth.wif,
         '',
         config.tag_for_post,
         rootState.auth.account.name,
-        state.permlink || slug(state.title, {lower: true}),
+        permlink,
         state.title,
         state.body,
         prepare_json_metadata({

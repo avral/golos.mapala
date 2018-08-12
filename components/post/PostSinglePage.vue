@@ -3,9 +3,6 @@
   .container
     post(:post="post")
 
-    .row
-      button(type="button" @click="$router.go(-1)").btn.btn-light.btn-lg.btn-block.fixed-bottom Назад
-
 </template>
 
 <script>
@@ -14,6 +11,7 @@ import { POST_QUERY } from '@/constants/queries.js'
 
 
 export default {
+  scrollToTop: true,
   layout: 'full-width',
 
   components: {

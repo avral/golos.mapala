@@ -1,7 +1,7 @@
 <template lang="pug">
 .row
-  .col
-    post(:post="postProp", v-loading="loading")
+  .col(v-loading="loading").loading
+    post(v-if="post" :post="post")
 
     // TODO Сделать стрелки
     //a(v-if="true" class="next_post") sadf
@@ -14,7 +14,7 @@ import Post from '~/components/post/Post.vue'
 import { POST_QUERY } from '@/constants/queries.js'
 
 export default {
-  props: ['post', 'update'],
+  props: ['author', 'permlink'],
 
   components: {
     Post
@@ -22,8 +22,9 @@ export default {
 
   data () {
     return {
-      postProp: undefined,
-      loading: false
+      loading: false,
+
+      post: null
     }
   },
 
@@ -34,34 +35,26 @@ export default {
     }
   }, 
 
-  methods: {
-    ...mapActions({
-      'fetch_post': 'posts/fetch_post'
-    })
-  },
-
   async created() {
-    console.log(this.post)
-    // TODO Разоброться как тут поступать
-    if (this.update) {
-      this.loading = true
+    this.loading = true
 
-      let client = this.$apolloProvider.defaultClient
+    let client = this.$apolloProvider.defaultClient
 
-      let {data: {post}} = await client.query({query: POST_QUERY, variables: {
-        identifier: `@${this.post.author.toLowerCase()}/${this.post.permlink}`
-      }})
+    let {data: {post}} = await client.query({query: POST_QUERY, variables: {
+      identifier: `@${this.author.toLowerCase()}/${this.permlink}`
+    }})
 
-      this.postProp = post
-      this.loading = false
-    } else {
-      this.postProp = this.post
-    }
+    this.post = post
+    this.loading = false
   }
 }
 </script>
 
 <style>
+.loading {
+  min-height: 300px;
+}
+
   .prev_post {
     width: 70px;
     height: 70px;

@@ -1,7 +1,28 @@
-import golos from 'golos-js'
+import slug from 'slug'
 import axios from 'axios'
+import golos from 'golos-js'
 
 import config from '@/config'
+
+export async function createUniqPermlink(author, title) {
+  // Возвращает уникальный пермлинк для поста
+  let permlink = slug(title, {lower: true})
+
+  let isExists = await golos.api.getContent(author, permlink)
+
+  if (isExists.id !== 0) {
+    const timeStr = new Date()
+      .toISOString()
+      .replace(/[^a-zA-Z0-9]+/g, "")
+      .toLowerCase()
+
+    permlink = `${permlink}-${timeStr}`
+  }
+
+  return permlink
+}
+
+
 
 export function prepare_json_metadata (m) {
   let meta = m

@@ -4,8 +4,8 @@ div
     .top_block
       .t_col
         .img_wrap
-          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
-            img.user_av(:src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
+          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").user_av
+            img.user_av(v-if="post.author.meta.profile.profileImage" :src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
 
         div.name_block
           nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
@@ -19,12 +19,14 @@ div
     .content
       h1.c_header {{ post.title }}
       post-content(:body="post.body", :format="post.meta.format")
-      //div(v-html="body").c_text
+    
+    comments-block(:post="post")
 
 </template>
 
 <script>
 import PostContent from '~/components/post/PostContent.vue'
+import CommentsBlock from '~/components/comment/CommentsBlock.vue'
 import { mapState, mapActions } from 'vuex'
 import marked from 'marked'
 import xmldom from 'xmldom'
@@ -32,34 +34,11 @@ import prepare_html from '~/utils/prepare_html'
 
 
 export default {
-  components: {
-    PostContent
-  },
+  props: ['post'],
 
-  props: {
-    post: {
-      default() {
-        return {
-          title: '',
-          author: {
-            name: '',
-            meta: {
-              profile: {
-                porfileImage: ''
-              }
-            }
-          },
-          body: '',
-          created: '',
-          meta: {
-            format: 'html',
-          }
-        }
-      }
-    },
-    update: {
-      default: false,
-    }
+  components: {
+    PostContent,
+    CommentsBlock
   },
 
   computed: {

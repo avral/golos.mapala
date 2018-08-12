@@ -89,7 +89,7 @@ export default {
     },
 
     async open_modal(marker) {
-      this.$modal.show(PostModal, {post: marker, update: true}, {
+      this.$modal.show(PostModal, {author: marker.author, permlink: marker.permlink}, {
         height: 'auto',
         width: '60%',
         scrollable: true,

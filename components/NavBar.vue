@@ -10,10 +10,12 @@ div#anchor
     no-ssr
       div.top-right-block
         div.username_wrapper(v-if="$store.getters['auth/isAuth']")
-          nuxt-link(:to="{name: 'index'}")
+          nuxt-link(:to="{name: 'account', params: {account: account.name}}")
             div.user
               span.user_name @{{ account.name }}
-              img(v-if="account.meta.profile.profileImage" class="user_logo", :src="account.meta.profile.profileImage")
+              img(v-if="account.meta.profile.profileImage"
+                  class="user_logo",
+                  :src="account.meta.profile.profileImage | golos_proxy('120x120')")
               img(v-else class="no_avatar" src="~/assets/icons/account/icon-profile.svg")
 
         nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}", class="login")
@@ -75,7 +77,7 @@ export default {
 
   computed: {
     ...mapState({
-      'account': state => state.auth.account
+      account: state => state.auth.account
     })
   },
 }
@@ -158,8 +160,8 @@ export default {
   }
   .main_header .user_logo{
     margin-left: 12px;
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     overflow: hidden;
   }

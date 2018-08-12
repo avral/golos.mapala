@@ -1,10 +1,28 @@
 <template lang="pug">
-nuxt-link(:to="{name: 'editor'}", style="text-decoration: none;").add-post
-  .av-wrap
-    img(:src="$store.state.auth.account.meta.profile.profileImage").mr-3
-  .write-post.ml-2 Добавить публикацию
+no-ssr
+  nuxt-link(:to="{name: 'editor'}", style="text-decoration: none;").add-post
+    .av-wrap
+      img(v-if="account.meta.profile.profileImage"
+          class="user_av",
+          :src="account.meta.profile.profileImage | golos_proxy('120x120')")
+
+      //img(:src="$store.state.auth.account.meta.profile.profileImage").user_av.mr-3
+    .write-post.ml-2 Добавить публикацию
 
 </template>
+
+<script>
+import { mapState, mapMutations } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState({
+      account: state => state.auth.account
+    })
+  }
+}
+</script>
+
 
 <style>
 .write-post {

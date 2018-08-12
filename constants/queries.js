@@ -41,6 +41,22 @@ query posts ($identifier: CommentIdentifier!) {
     netVotes
     totalPendingPayout
     children
+    comments {
+      permlink
+      parentPermlink
+      parentAuthor
+      created
+      body
+      totalPendingPayout
+      author {
+        name
+        meta {
+          profile {
+            profileImage
+          }
+        }
+      }
+    }
   }
 }
 `
@@ -72,6 +88,22 @@ export const POSTS_QUERY = gql`
           netVotes
           totalPendingPayout
           children
+          comments {
+            permlink
+            parentPermlink
+            parentAuthor
+            created
+            body
+            totalPendingPayout
+            author {
+              name
+              meta {
+                profile {
+                  profileImage
+                }
+              }
+            }
+          }
         },
         cursor
       }

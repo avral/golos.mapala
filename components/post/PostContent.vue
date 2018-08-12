@@ -48,7 +48,5 @@ export default {
 .content img {
   max-width: 100%;
   text-align: center;
-  margin: 24px auto;
-	padding: 0px 0px;
 }
 </style>

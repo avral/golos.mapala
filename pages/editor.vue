@@ -79,7 +79,7 @@ export default {
   middleware: 'auth',
 
   components: {
-    PostContent
+    PostContent,
   },
 
   data() {
@@ -123,6 +123,10 @@ export default {
         return this.$options.filters.golos_html(this.editor.body)
       }
     }
+  },
+
+  created() {
+    console.log('created', this.editor.permlink)
   },
 
   methods: {

@@ -84,6 +84,8 @@ export default {
       editor.format = post.meta.format || 'html'
       this.$store.commit('editor/clear')
 
+      // FIXME Разобраться с редактированием
+      editor.isEdit = true
       editor.permlink = post.permlink
 
       editor.title = post.title
@@ -95,7 +97,7 @@ export default {
     },
 
     open_modal() {
-      this.$modal.show(PostModal, {post: this.post}, {
+      this.$modal.show(PostModal, { author: this.post.author.name, permlink: this.post.permlink }, {
         height: 'auto',
         width: '60%',
         scrollable: true,

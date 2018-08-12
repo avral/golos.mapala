@@ -6,7 +6,7 @@ div.pf
 
   div.user
     div.round_av
-      img.user_av(:src="account.meta.profile.profileImage | golos_proxy('240x240')")
+      img(v-if="account.meta.profile.profileImage" :src="account.meta.profile.profileImage | golos_proxy('240x240')")
     div.name.verified
        | {{ account.name }}
   //div.bottom_bl(v-if="isAuth && isUserOwnPage")
