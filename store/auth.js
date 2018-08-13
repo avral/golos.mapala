@@ -32,7 +32,7 @@ export const actions = {
     }
   },
 
-  async authorization ({ rootState, commit, state, dispatch }, { wif, account }) {
+  async authorization ({ app, rootState, commit, state, dispatch }, { wif, account }) {
     if (!golos.auth.isWif(wif)) {
       throw new Error('Это не приватный ключ')
     }

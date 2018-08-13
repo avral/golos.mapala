@@ -36,35 +36,18 @@ export default {
     }
   },
 
-  //watch: {
-  //  filters: {
-  //    handler(val) {
-  //      console.log(val, 'filters changed')
-  //    },
-  //    deep: true
-  //  }
-  //},
-
-  //computed: { 
-  //  ...mapState({
-  //    isLoading: state => state.isLoading,
-  //    posts: state => state.posts.list
-  //  }),
-  //},
-
-  created() {
-    this.fetch_posts()
-  },
-
   methods: {
     async fetch_posts() {
       let client = this.$apolloProvider.defaultClient
 
       let { data } = await client.query({query: POSTS_QUERY, variables: {
         category: config.tag_for_post,
-        first: 10, // FIXME
+        first: config.pagination,
         author: this.filters.author,
-        after: this.after
+        after: this.after,
+        linkifyImages: true,
+        isVoted: this.$store.state.auth.account.name,
+        authorized: !!this.$store.state.auth.wif
       }})
 
       let posts = data.posts.edges.map(p => p.node)

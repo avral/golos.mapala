@@ -1,12 +1,10 @@
 <template lang="pug">
 no-ssr
-  nuxt-link(:to="{name: 'editor'}", style="text-decoration: none;").add-post
+  nuxt-link(:to="{name: 'editor-permlink'}", style="text-decoration: none;").add-post
     .av-wrap
       img(v-if="account.meta.profile.profileImage"
           class="user_av",
           :src="account.meta.profile.profileImage | golos_proxy('120x120')")
-
-      //img(:src="$store.state.auth.account.meta.profile.profileImage").user_av.mr-3
     .write-post.ml-2 Добавить публикацию
 
 </template>

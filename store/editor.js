@@ -9,7 +9,6 @@ import { prepare_json_metadata, createUniqPermlink } from '~/utils/golos'
 export const state = () => ({
   // TODO тип выплат
 
-  isEdit: false, // По дефолту всегда создание нового поста
   format: 'markdown',
   markdown: '',
   html: '',
@@ -41,7 +40,6 @@ export const mutations = {
     state[state.format] = ''
     state.tags = [config.tag_for_post]
     state.permlink = null
-    state.isEdit = false
 
     // GeoJOSON standart
     state.location = {
@@ -65,12 +63,7 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
-    let permlink = state.isEdit
-      ? state.permlink
-      : await createUniqPermlink(rootState.auth.account.name, state.title)
-    console.log(state.isEdit)
-
-    return console.log(permlink, 99)
+    let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
 
     return new Promise((resolve, reject) => {
       golos.broadcast.comment(

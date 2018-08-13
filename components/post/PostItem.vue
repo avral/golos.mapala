@@ -25,7 +25,7 @@
           // TODO Локация
           .location {{ post.meta.location.name }}
 
-          a(v-if="auth.wif && $device.isDesktop && post.author.name == auth.account.name" @click="edit_post").icon.ml-auto
+          router-link(v-if="post.author.name == auth.account.name" :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
             i.fa.fa-edit
 
         a(v-if="$device.isDesktop" @click="open_modal")
@@ -74,27 +74,6 @@ export default {
     ...mapActions({
       gols_vote: 'golos/vote',
     }),
-
-    edit_post() {
-      // TODO нормальное редактирование
-      // Пропсами в компонент закидывать пост 
-      let editor = this.editor
-      let post = this.post
-
-      editor.format = post.meta.format || 'html'
-      this.$store.commit('editor/clear')
-
-      // FIXME Разобраться с редактированием
-      editor.isEdit = true
-      editor.permlink = post.permlink
-
-      editor.title = post.title
-      editor[editor.format] = post.body
-      editor.tags = [...new Set([editor.tags[0], ...post.meta.tags])]
-
-      this.$store.commit('editor/update_body')
-      this.$router.push({name: 'editor'})
-    },
 
     open_modal() {
       this.$modal.show(PostModal, { author: this.post.author.name, permlink: this.post.permlink }, {

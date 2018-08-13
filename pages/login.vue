@@ -64,6 +64,13 @@ export default {
   components: {
     loadingButton
   },
+
+  //created() {
+  //  if(this.$store.getters['auth/isAuth']) {
+  //    this.$router.back()
+  //  }
+  //},
+
   methods: {
     ...mapActions({
       'authorization': 'auth/authorization'

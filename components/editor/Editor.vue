@@ -1,85 +1,78 @@
 <template lang="pug">
-.container.mt-4
-  el-tabs(type="border-card")
-    el-tab-pane(label="Редактор")
-      .row
-        .col-8
-          .input-group
-            .input-group-prepend
-              .input-group-text Заголовок
-            input(v-model="editor.title", placeholder="title").form-control
+div
+  .row
+    .col-8
+      .input-group
+        .input-group-prepend
+          .input-group-text Заголовок
+        input(v-model="editor.title", placeholder="title").form-control
 
-        .col-4.d-flex.flex-row-reverse
-          div(v-show="editor.format == 'markdown'")
-            button.btn.btn-secondary(@click="toggle_editor") HTML Редактор
+    .col-4.d-flex.flex-row-reverse
+      div(v-show="editor.format == 'markdown'")
+        button.btn.btn-secondary(@click="toggle_editor") HTML Редактор
 
-          div(v-show="editor.format == 'html'")
-            button.btn.btn-secondary(@click="toggle_editor") Markdown
+      div(v-show="editor.format == 'html'")
+        button.btn.btn-secondary(@click="toggle_editor") Markdown
 
-          button.btn.btn-info(@click="clear").mr-auto Очистить
+      button.btn.btn-info(@click="clear").mr-auto Очистить
 
-      .row.mt-3
-        .col
-          div(v-show="editor.format == 'markdown'")
-            textarea.form-control(
-              @input="update_body", rows="10",
-              v-model="editor.markdown"
-            )
+  .row.mt-3
+    .col
+      div(v-show="editor.format == 'markdown'")
+        textarea.form-control(
+          @input="update_body", rows="10",
+          v-model="editor.markdown"
+        )
 
-          div(v-show="editor.format == 'html'")
-            .quill-editor(
-              v-quill:myQuillEditor="editorOptions",
-              @input="update_body", v-model="editor.html"
-            )
+      div(v-show="editor.format == 'html'")
+        .quill-editor(
+          v-quill:myQuillEditor="editorOptions",
+          @input="update_body", v-model="editor.html"
+        )
 
-      .row.mt-2
-        .col
-          .input-group
-            .input-group-prepend
-              .input-group-text Локация
-            gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
+  .row.mt-2
+    .col
+      .input-group
+        .input-group-prepend
+          .input-group-text Локация
+        gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
 
-      .row.mt-3
-        .col
-          el-tag(:key="index"
-                  v-for="(tag, index) in editor.tags"
-                  :closable="index != 0"
-                  :disable-transitions="false"
-                  @close="handleClose(tag)") {{ tag }}
+  .row.mt-3
+    .col
+      el-tag(:key="index"
+              v-for="(tag, index) in editor.tags"
+              :closable="index != 0"
+              :disable-transitions="false"
+              @close="handleClose(tag)") {{ tag }}
 
-          el-input(class="input-new-tag"
-                    v-if="inputVisible"
-                    v-model="inputValue"
-                    ref="saveTagInput"
-                    size="mini"
-                    @keyup.enter.native="handleInputConfirm"
-                    @blur="handleInputConfirm")
+      el-input(class="input-new-tag"
+                v-if="inputVisible"
+                v-model="inputValue"
+                ref="saveTagInput"
+                size="mini"
+                @keyup.enter.native="handleInputConfirm"
+                @blur="handleInputConfirm")
 
-          el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
+      el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
 
       .row.mt-3
         .col
           el-button(type="primary" @click="_submit", :loading="loading") Отправить
-    
-    el-tab-pane(label="Предпросмотр")
-      h1 {{ editor.title }}
-
-      post-content(:body="editor.body", :format="editor.format")
 
 </template>
 
 <script>
-// FIXME Огромные картинки не влезают в превью
+// FIXME Где то баг може быть в clear прервыается после печатания первой буквы
 import { mapState, mapActions, mapMutations } from 'vuex'
-import PostContent from '~/components/post/PostContent.vue'
-
 
 export default {
   layout: 'full-width',
-  middleware: 'auth',
 
-  components: {
-    PostContent,
+  computed: {
+    ...mapState({
+      editor: state => state.editor,
+      account: state => state.auth.account
+    })
   },
 
   data() {
@@ -110,23 +103,6 @@ export default {
       },
       image_loading: false,
     }
-  },
-  computed: {
-    ...mapState({
-      editor: state => state.editor,
-    }),
-
-    preview() {
-      if (this.editor.format == 'markdown') {
-        return this.$options.filters.markdown(this.editor.body)
-      } else {
-        return this.$options.filters.golos_html(this.editor.body)
-      }
-    }
-  },
-
-  created() {
-    console.log('created', this.editor.permlink)
   },
 
   methods: {

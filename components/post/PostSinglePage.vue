@@ -23,7 +23,10 @@ export default {
     let { author, permlink } = route.params
 
     let {data: {post}} = await client.query({query: POST_QUERY, variables: {
-      identifier: `@${author}/${permlink}`
+      identifier: `@${author}/${permlink}`,
+      linkifyImages: true,
+      isVoted: store.state.auth.account.name,
+      authorized: !!store.state.auth.wif
     }})
 
     return { post }

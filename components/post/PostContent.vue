@@ -12,14 +12,18 @@ import { XmlEntities } from 'html-entities'
 
 const entities = new XmlEntities()
 
-// TODO Доработать регулярку
+// TODO Доработать регулярку, negative lookahead support
 const image_regex = /((?<!["\(\/])https?:\/\/(?:[\da-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/).*?\.(?:jpe?g|gif|png)(?:\?\w+=\w+(?:\&\w+=\w+)*)?)/igm
+
+
+//const image_regex = /(https?:\S*?\.(?:png|jpe?g|gif)(?:\?[^"']+?)?(?=<|\s))/
 
 export default {
   props: ['body', 'format'],
 
   computed: {
     html() {
+      // FIXME Теперь это делает бекенд
       let html
       if (this.format == 'markdown') {
         html = marked(this.body.replace(image_regex, '![](https://imgp.golos.io/0x0/$1)'))

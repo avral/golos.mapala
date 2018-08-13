@@ -41,7 +41,10 @@ export default {
     let client = this.$apolloProvider.defaultClient
 
     let {data: {post}} = await client.query({query: POST_QUERY, variables: {
-      identifier: `@${this.author.toLowerCase()}/${this.permlink}`
+      identifier: `@${this.author.toLowerCase()}/${this.permlink}`,
+      linkifyImages: true,
+      isVoted: this.$store.state.auth.account.name,
+      authorized: !!this.$store.state.auth.wif
     }})
 
     this.post = post
