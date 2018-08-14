@@ -15,6 +15,6 @@ export default ({app: { store }}) => {
 
   window.onNuxtReady(() => {
     store.dispatch('auth/init')
-    store.dispatch('golos/init')
+    //store.dispatch('golos/init') TODO Пользовательские настройки
   })
 }
