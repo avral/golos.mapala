@@ -13,7 +13,7 @@ import { XmlEntities } from 'html-entities'
 const entities = new XmlEntities()
 
 // TODO Доработать регулярку, negative lookahead support
-const image_regex = /((?<!["\(\/])https?:\/\/(?:[\da-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/).*?\.(?:jpe?g|gif|png)(?:\?\w+=\w+(?:\&\w+=\w+)*)?)/igm
+const image_regex = /(:?[\s>])(https?:\/\/(?:[\da-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/).*?\.(?:jpe?g|gif|png)(?:\?\w+=\w+(?:\&\w+=\w+)*)?)/igm
 
 
 //const image_regex = /(https?:\S*?\.(?:png|jpe?g|gif)(?:\?[^"']+?)?(?=<|\s))/
@@ -23,13 +23,16 @@ export default {
 
   computed: {
     html() {
-      // FIXME Теперь это делает бекенд
       let html
       if (this.format == 'markdown') {
-        html = marked(this.body.replace(image_regex, '![](https://imgp.golos.io/0x0/$1)'))
+        html = marked(this.body)
       } else {
+				// FIXME Теперь это делает бекенд
+				// Юзается только для редактора
         html = entities.decode(this.body)
-        html = html.replace(image_regex, '<img src="https://imgp.golos.io/0x0/$1"></img>')
+        html = html.replace(image_regex, function(m) {
+          return `${m[0]}<img src="${m.substr(1)}"></img>`
+				})
       }
 
       return html
