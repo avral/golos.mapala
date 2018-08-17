@@ -8,6 +8,7 @@ div
 <script>
 import marked from 'marked'
 import { XmlEntities } from 'html-entities'
+import { banner_md } from '~/constants'
 
 
 const entities = new XmlEntities()
@@ -25,7 +26,9 @@ export default {
     html() {
       let html
       if (this.format == 'markdown') {
-        html = marked(this.body)
+        let body = this.body.replace(banner_md, '')
+
+        html = marked(body)
       } else {
 				// FIXME Теперь это делает бекенд
 				// Юзается только для редактора

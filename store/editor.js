@@ -5,9 +5,12 @@ import golos from 'golos-js'
 import config from '~/config'
 import { prepare_json_metadata, createUniqPermlink } from '~/utils/golos'
 
+import { banner_md } from '~/constants'
+
 
 export const state = () => ({
   // TODO тип выплат
+  // TODO Переработать баннер
 
   format: 'markdown',
   markdown: '',
@@ -62,6 +65,8 @@ export const actions = {
     if (!rootState.auth.wif && !rootState.auth.account.name) {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
+
+    if (!state.body.includes(banner_md) & state.format == 'markdown') state.body += `\n\n${banner_md}`
 
     let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
 

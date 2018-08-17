@@ -56,7 +56,6 @@ export default {
         [], [this.$store.state.account.name], 'test',
 
         JSON.stringify({test: 'лол тест', nerd: {gh: 94}}), function(err, result) {
-        console.log(err, result);
       })
     }
   }

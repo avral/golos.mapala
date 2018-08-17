@@ -25,7 +25,6 @@ export const mutations = {
 
 export const actions = {
   init({ commit, state, dispatch }) {
-    console.log('account init')
 
     if (state.wif) {
       dispatch('fetch_account')
