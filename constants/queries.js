@@ -80,13 +80,23 @@ query post ($identifier: CommentIdentifier!,
 
 export const POSTS_QUERY = gql`
 query posts ($after: String,
-             $category: String!,
+             $category: String,
              $first: Int!,
              $author: String,
              $isVoted: String,
-             $authorized: Boolean!)
+             $authorized: Boolean!,
+             $tags: [String],
+             $app: String)
 {
-  posts(after: $after, first: $first, category: $category, author: $author) {
+  posts(after: $after,
+        first: $first,
+        category: $category,
+        author: $author,
+        meta: {
+          tags: $tags,
+          app: $app
+        })
+  {
     edges {
       node {
         author {

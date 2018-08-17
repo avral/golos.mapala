@@ -41,7 +41,7 @@ export default {
       let client = this.$apolloProvider.defaultClient
 
       let { data } = await client.query({query: POSTS_QUERY, variables: {
-        category: config.tag_for_post,
+        tags: [config.tag_for_post],
         first: config.pagination,
         author: this.filters.author,
         after: this.after,

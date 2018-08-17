@@ -67,7 +67,7 @@ export default {
 		},
 
     openMenu () {
-      this.isMenuOpened = true
+      nthis.isMenuOpened = true
     },
 
     closeMenu () {
@@ -134,7 +134,7 @@ export default {
     margin-left: 0!important;
   }
   .main_logo img{
-    height: 70px;
+    height: 38px;
     margin-right: 6px;
   }
 
