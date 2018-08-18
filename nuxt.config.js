@@ -94,4 +94,9 @@ module.exports = {
       })
     }
   },
+
+  loading: {
+    color: 'white',
+    height: '3px'
+  }
 }
