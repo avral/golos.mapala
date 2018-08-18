@@ -1,25 +1,35 @@
 <template lang="pug">
-// TODO Переименовать компонент в account
-
-div
-  account(:account="account")
-  feed(:filters="{author: $route.params.account}")
+.row
+  .col-md-4
+    account(:account="account")
+    feed
+  .col.right-fixed-container(v-if="$device.isDesktop")
+    mapala-map#map
 
 </template>
 
 <script>
-// FIXME cover_image не находит у аккаунтов и падает
 import Feed from '~/components/post/Feed'
 import Account from '~/components/account/Account.vue'
 import { ACCOUNT_QUERY } from '~/constants/queries.js'
+import MapalaMap from '@/components/MapalaMap'
 
 export default {
   components: {
     Feed,
-    Account
+    Account,
+    MapalaMap
   },
 
-  async asyncData ({ app, store, commit, route }) {
+  async fetch ({ app, store, commit, route }) {
+    store.dispatch('posts/set_author', route.params.account)
+
+    if (process.server) {
+      await store.dispatch('posts/fetch_posts')
+    }
+  },
+
+  async asyncData({ app, route }) {
     let client = app.apolloProvider.defaultClient
 
     let { data: { account } } = await client.query({query: ACCOUNT_QUERY, variables: {
@@ -27,7 +37,7 @@ export default {
     }})
 
     return { account }
-  },
+  }
 }
 
 

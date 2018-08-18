@@ -11,54 +11,21 @@ div
 </template>
 
 <script>
-import config from '~/config'
 import { mapState, mapActions } from 'vuex'
 
 import PostItem from '@/components/post/PostItem'
-import { POSTS_QUERY } from '@/constants/queries.js'
 
 
 export default {
-  props: {
-    filters: {
-      default() {
-        return {}
-      }
-    }
+  computed: {
+    ...mapState({
+      posts: state => state.posts.list
+    })
   },
-
-  data() {
-    return {
-      posts: [],
-
-      // pagination
-      after: undefined
-    }
-  },
-
   methods: {
-    async fetch_posts() {
-      let client = this.$apolloProvider.defaultClient
-
-      let { data } = await client.query({query: POSTS_QUERY, variables: {
-        tags: [config.tag_for_post],
-        first: config.pagination,
-        author: this.filters.author,
-        after: this.after,
-        linkifyImages: true,
-        isVoted: this.$store.state.auth.account.name,
-        authorized: !!this.$store.state.auth.wif
-      }})
-
-      let posts = data.posts.edges.map(p => p.node)
-      let posts_deep_copy = JSON.parse(JSON.stringify(posts))
-
-      this.posts = this.posts.concat(posts_deep_copy)
-
-      if (posts.length > 0) {
-        this.after = data.posts.edges[data.posts.edges.length - 1].cursor
-      }
-    },
+    ...mapActions({
+      fetch_posts: 'posts/fetch_posts'
+    }),
 
     handleLoading($state) {
       const posts_count = this.posts.length

@@ -1,6 +1,48 @@
 <template lang="pug">
-div#anchor
-  header.main_header.sticky-top
+.top-navbar
+  .navbar-link.navbar-link-brand
+    nuxt-link(:to="{name: 'index'}").main_logo
+      img(src="~/assets/img/mapala-logo.png")
+      span
+        | MAPALA
+
+  //.navbar-link.navbar-link__toggle(@click="toggle")
+    i.fa.fa-bars
+
+  //.navbar-items
+    .navbar-link Слева
+    .navbar-link Слева2
+    
+  no-ssr
+    .navbar-items__right
+      nuxt-link(v-if="$store.getters['auth/isAuth']" :to="{name: 'account', params: {account: account.name}}").user-lk
+        .user_name.mr-2 @{{ account.name }}
+
+        .user_av
+          img(v-if="account.meta.profile.profileImage"
+              :src="account.meta.profile.profileImage | golos_proxy('120x120')")
+
+      nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}").login
+        | Войти
+      div.right_button(v-else)
+
+        div(@click="openMenu", class="open_menu", v-on-clickaway="closeMenu" )
+          | Меню 
+
+        div.user_menu(:class="{ active : isMenuOpened }")
+
+          nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
+            i.purce
+            span.txt_i
+              | Кошклек
+            span(class="amount" v-text="account.balanceValue")
+
+          div.divd
+          div.mn
+            nuxt-link(to="/settings" class="m_item") Настройки
+            a(href="#" class="m_item", @click.prevent="logout") Выйти
+
+  //header.main_header.sticky-top
     div.top_left_block
       nuxt-link(class="main_logo", :to="{name: 'index'}")
         img(src="~/assets/img/mapala-logo.png")
@@ -62,12 +104,17 @@ export default {
   },
 
 	methods: {
+    toggle() {
+      let navs = document.querySelectorAll('.navbar-items')
+      navs.forEach(nav => nav.classList.toggle('navbar-toggle-show'))
+    },
+
 		logout() {
 			this.$store.dispatch('auth/logout')
 		},
 
     openMenu () {
-      nthis.isMenuOpened = true
+      this.isMenuOpened = true
     },
 
     closeMenu () {
@@ -84,8 +131,124 @@ export default {
 </script>
 
 <style scoped>
-  #anchor {
-    margin-bottom: 60px;
+  .user-lk {
+    display: flex;
+    align-items: center;
+  }
+
+  .user_name {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+  }
+   
+  .top-navbar {
+    height: 42px;
+    background-image: linear-gradient(180deg,#5d7394,#4b5e7a);
+    display: flex;
+    padding: 0px 30px;
+    font-family: sans-serif;
+  }
+
+  .navbar-items {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-items__right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .navbar-link {
+    padding-right: 8px;
+  }
+
+  .navbar-items a,
+  .user-lk a,
+  .navbar-link a {
+    padding-right: 8px;
+    color: #fff;
+  }
+
+  .navbar-link__toggle {
+    display: none;
+  }
+
+ .login {
+    color: #88ade0;
+    font: 700 14px PT Sans;
+    display: block;
+    align-items: center;
+    width: 70px;
+    padding-left: 7px;
+    height: 102%;
+    line-height: 42px;
+    box-sizing: border-box;
+    background: url('~assets/icons/icon-login.svg') no-repeat 53px center;
+    cursor: pointer;
+    transition: color .2s ease;
+    text-decoration: none;
+    margin-left: 10px;
+  }
+
+  .login:hover{
+    color: #fff;
+  }
+  /* @media only screen and (max-width: 768px) {
+    .navbar-items,
+    .top-navbar {
+      flex-direction: column;
+    }
+
+    .navbar-items {
+      display: none;
+    }
+
+    .navbar-items__right {
+      margin-left: 0px;
+    }
+
+    .navbar-link__toggle {
+      align-self: flex-end;
+      display: initial;
+      position: absolute;
+      cursor: pointer;
+    }
+
+    .navbar-toggle-show {
+      display: flex;
+    }
+  } */
+
+
+  .main_logo {
+    display: flex;
+    height: 42px;
+    text-decoration: none;
+    align-items: center;
+  }
+
+  .open_menu {
+    color: #88ade0;
+    font: 700 14px PT Sans;
+    display: flex;
+    align-items: center;
+    width: 70px;
+    padding-left: 0;
+    height: 100%;
+    position: relative;
+    line-height: 42px;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    background: url('~/assets/icons/icon-menu.svg') no-repeat 53px center;
+    cursor: pointer;
+    transition: color .2s ease;
+  }
+  .open_menu:hover{
+    color: #fff;
   }
 
   .top-menu {
@@ -121,19 +284,10 @@ export default {
     display: flex;
     flex-wrap: wrap;
   }
-  .main_logo{
-    display: flex;
-    height: 42px;
-    margin-left: 0;
-    justify-content: center;
-    align-items: center;
-    padding-right: 20px;
-    margin-right: 20px;
-  }
   .main_logoMobile {
     margin-left: 0!important;
   }
-  .main_logo img{
+  .main_logo img {
     height: 38px;
     margin-right: 6px;
   }
@@ -181,27 +335,6 @@ export default {
     width: 100%;
   }
 
-  .main_header .open_menu{
-    color: #88ade0;
-    font: 700 14px PT Sans;
-    display: flex;
-    align-items: center;
-    width: 70px;
-    padding-left: 0;
-    height: 100%;
-    position: relative;
-    line-height: 42px;
-    right: 0;
-    top: 0;
-    box-sizing: border-box;
-    background: url('~/assets/icons/icon-menu.svg') no-repeat 53px center;
-    cursor: pointer;
-    transition: color .2s ease;
-  }
-
-  .main_header .open_menu:hover{
-    color: #fff;
-  }
 
   .main_header .open_menuMobile{
     width: 69px;
@@ -244,7 +377,7 @@ export default {
     display: flex;
   }
 
-  .user_menu{
+  .user_menu {
     background: #5d7394;
     width: 350px;
     display: none;
@@ -254,6 +387,7 @@ export default {
     top: 50px;
     border-radius: 6px;
     color: #fff;
+    z-index: 99;
   }
 
   .user_menuMobile{
@@ -302,10 +436,6 @@ export default {
 
   .user_menu .m_item:hover{
     opacity: 1;
-  }
-
-  .user_menu .m_item:last-of-type{
-    margin-bottom: 8px;
   }
 
   .user_menu .purce{

@@ -12,7 +12,8 @@ export const state = () => ({
   },
 
   // TODO сделать пароль для разблокировки
-  wif: false, // Залогиненость проверять по этому параметру
+  wif: false,
+  isAuth: false
 })
 
 export const mutations = {
@@ -26,7 +27,8 @@ export const mutations = {
 export const actions = {
   init({ commit, state, dispatch }) {
 
-    if (state.wif) {
+    if (state.wif && state.account.name) {
+      state.isAuth = true
       dispatch('fetch_account')
     }
   },

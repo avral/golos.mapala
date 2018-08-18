@@ -1,25 +1,19 @@
 <template lang="pug">
 div
-  nav-bar
+  .top
+    .fixed-top
+      nav-bar
 
   modals-container 
 
-  .container-fluid.mt-4
-    .row
-      .col-md-4
-        nuxt
-      .col.right-fixed-container
-        mapala-map#map
-
+  .container-fluid
+    nuxt
 
 </template>
 
-<style>
-</style>
-
 <script>
 import NavBar from '@/components/NavBar'
-import MapalaMap from '@/components/MapalaMap'
+//import MapalaMap from '@/components/MapalaMap'
 
 export default {
   head: {
@@ -29,12 +23,16 @@ export default {
   },
   components: {
     NavBar,
-    MapalaMap
+    //MapalaMap
   }
 }
 </script>
 
 <style>
+.top {
+  margin-top: 60px;
+}
+
 .modal-wrapper {
   border-radius: 6px;
   background-color: #fff;
