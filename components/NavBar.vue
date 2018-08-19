@@ -9,12 +9,21 @@
   //.navbar-link.navbar-link__toggle(@click="toggle")
     i.fa.fa-bars
 
+  .navbar-items.slogan
+    .navbar-link
+      nuxt-link(:to="{name: 'about'}").white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.
+    //.navbar-link
+      nuxt-link(:to="{name: 'about'}").white-text Блог мапала
+
   .navbar-items
-    nuxt-link(:to="{name: 'about'}").navbar-link.white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.
     //.navbar-link Слева2
     
   no-ssr
     .navbar-items__right
+      el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala" placement="bottom-end")
+        a(target='_blank', href="https://t.me/mapala_ru").mr-2
+          img(src="~/assets/icons/telegram.png").telegram
+
       nuxt-link(v-if="$store.getters['auth/isAuth']" :to="{name: 'account', params: {account: account.name}}").user-lk
         .user_name.mr-2 @{{ account.name }}
 
@@ -135,6 +144,10 @@ export default {
 </script>
 
 <style scoped>
+.telegram {
+    height: 38px;
+    width: 38px;
+}
   .user-lk {
     display: flex;
     align-items: center;
@@ -588,5 +601,12 @@ export default {
     display: none;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .slogan {
+    display: none;
+  }
+}
+
 
 </style>

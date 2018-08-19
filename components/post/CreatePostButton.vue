@@ -1,6 +1,6 @@
 <template lang="pug">
 no-ssr
-  nuxt-link(:to="{name: 'editor-permlink'}", style="text-decoration: none;").add-post
+  nuxt-link(:to="{name: 'editor-permlink'}", style="text-decoration: none;").add-post.mb-3
     .av-wrap
       img(v-if="account.meta.profile.profileImage"
           class="user_av",
@@ -46,7 +46,6 @@ export default {
   align-items: center;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  margin-bottom: 20px;
   cursor: pointer;
 }
 
