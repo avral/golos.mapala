@@ -25,10 +25,9 @@
           // TODO Локация
           .location {{ post.meta.location.name }}
 
-          no-ssr
-            router-link(v-if="post.author.name == auth.account.name"
-                        :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
-              i.fa.fa-edit
+          nuxt-link(v-show="$store.getters['auth/isAuth']"
+                    :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
+            i.fa.fa-edit
 
         a(v-if="$device.isDesktop" @click="open_modal")
           h2.write-header  {{ post.title }}

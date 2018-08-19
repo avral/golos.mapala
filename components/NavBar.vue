@@ -9,9 +9,9 @@
   //.navbar-link.navbar-link__toggle(@click="toggle")
     i.fa.fa-bars
 
-  //.navbar-items
-    .navbar-link Слева
-    .navbar-link Слева2
+  .navbar-items
+    nuxt-link(:to="{name: 'about'}").navbar-link.white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.
+    //.navbar-link Слева2
     
   no-ssr
     .navbar-items__right
@@ -26,7 +26,7 @@
         | Войти
       div.right_button(v-else)
 
-        div(@click="openMenu", class="open_menu", v-on-clickaway="closeMenu" )
+        div(@click="toggleMenu", class="open_menu", v-on-clickaway="closeMenu" )
           | Меню 
 
         div.user_menu(:class="{ active : isMenuOpened }")
@@ -112,6 +112,10 @@ export default {
 		logout() {
 			this.$store.dispatch('auth/logout')
 		},
+
+    toggleMenu () {
+      this.isMenuOpened = !this.isMenuOpened
+    },
 
     openMenu () {
       this.isMenuOpened = true

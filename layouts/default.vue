@@ -1,6 +1,6 @@
 <template lang="pug">
 div
-  .top
+  .top(v-if="$store.state.showTop")
     .fixed-top
       nav-bar
 

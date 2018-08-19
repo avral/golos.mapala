@@ -1,8 +1,9 @@
 <template lang="pug">
 .container.mt-4
   no-ssr
-    el-tabs(type="border-card")
-      el-tab-pane(label="Редактор")
+    editor
+    //el-tabs(type="border-card")
+      el-tab-pane(label="Markdown")
         editor
 
       el-tab-pane(label="Предпросмотр")
@@ -18,33 +19,32 @@ import Editor from '~/components/editor/Editor.vue'
 import Preview from '~/components/editor/Preview.vue'
 
 export default {
-  layout: 'full-width',
-  //middleware: 'auth',
+  scrollTop: true,
 
   components: {
     Editor,
     Preview
   },
 
-  async created() {
-    if(!this.$store.getters['auth/isAuth']) {
-      this.$router.push('login')
+  async fetch({ app, store, route, redirect }) {
+    if(process.server) {
+      return
     }
 
-    let editor = this.editor
-    let permlink = this.$route.params.permlink
+    let editor = store.state.editor
+    let permlink = route.params.permlink
 
     if (permlink) {
       // Если это редактирование поста
-      let client = this.$apolloProvider.defaultClient
+      let client = app.apolloProvider.defaultClient
 
       let {data: {post}} = await client.query({query: MINIMAL_POST_QUERY, variables: {
-        identifier: `@${this.account.name}/${permlink}`,
-        authorized: !!this.$store.state.auth.wif
+        identifier: `@${store.state.auth.account.name}/${permlink}`,
+        authorized: !!store.state.auth.wif
       }})
 
       editor.format = post.meta.format || 'html'
-      this.$store.commit('editor/clear')
+      store.commit('editor/clear')
 
       editor.permlink = permlink
 
@@ -52,10 +52,10 @@ export default {
       editor[editor.format] = post.body
       editor.tags = [...new Set([editor.tags[0], ...post.meta.tags])]
 
-      this.$store.commit('editor/update_body')
+      store.commit('editor/update_body')
     } else {
       // Создание нового поста
-      this.$store.commit('editor/clear')
+      store.commit('editor/clear')
       editor.permlink = null
     }
   },
@@ -88,20 +88,6 @@ export default {
         }
       },
       image_loading: false,
-    }
-  },
-  computed: {
-    ...mapState({
-      editor: state => state.editor,
-      account: state => state.auth.account
-    }),
-
-    preview() {
-      if (this.editor.format == 'markdown') {
-        return this.$options.filters.markdown(this.editor.body)
-      } else {
-        return this.$options.filters.golos_html(this.editor.body)
-      }
     }
   },
 

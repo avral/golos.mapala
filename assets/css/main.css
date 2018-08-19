@@ -2,6 +2,12 @@
     width: 100%;
 }
 
+.white-text {
+    color: #fff;
+    font-size: 14px;
+    text-decoration: none !important;
+}
+
 .av-wrap {
   background: url(~/assets/icons/account/icon-profile.svg) #fff no-repeat;
   border-radius: 50%;

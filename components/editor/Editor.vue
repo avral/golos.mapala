@@ -19,10 +19,7 @@ div
   .row.mt-3
     .col
       div(v-show="editor.format == 'markdown'")
-        textarea.form-control(
-          @input="update_body", rows="10",
-          v-model="editor.markdown"
-        )
+        textarea.form-control
 
       div(v-show="editor.format == 'html'")
         .quill-editor(
@@ -72,7 +69,39 @@ export default {
     ...mapState({
       editor: state => state.editor,
       account: state => state.auth.account
+    }),
+  },
+
+  async created() {
+    var store = this.$store
+    let SimpleMDE = await import('simplemde')
+    var simplemde = new SimpleMDE({
+      forceSync: true,
+      autofocus: true,
+      spellChecker: false,
+      promptURLs: true,
+      initialValue: this.editor.markdown,
+
+      // TODO previewRender: 
+	    //autosave: {
+		  //  enabled: true,
+      //  uniqueId: this.$route.params.permlink || 'default'
+      //}
     })
+
+    simplemde.codemirror.on("change", () => {
+      this.editor.body = simplemde.value()
+    })
+
+		const oldEditorSetOption = simplemde.codemirror.setOption
+
+		simplemde.codemirror.setOption = function(option, value) {
+				oldEditorSetOption.apply(this, arguments);
+
+				if (option === 'fullScreen') {
+          store.dispatch('showTopToggle')
+				}
+		}
   },
 
   data() {
@@ -106,10 +135,12 @@ export default {
   },
 
   methods: {
+    update_body() {
+      console.log(this.$refs)
+    },
     ...mapMutations({
       clear: 'editor/clear',
       set_title: 'editor/set_title',
-      update_body: 'editor/update_body',
     }),
 
     ...mapActions({
@@ -173,6 +204,8 @@ export default {
 </script>
 
 <style>
+  @import '~/node_modules/simplemde/dist/simplemde.min.css';
+
   .el-tag + .el-tag {
     margin-left: 10px;
   }

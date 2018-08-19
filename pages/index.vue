@@ -2,7 +2,7 @@
 .row
   .col-md-4
     no-ssr
-      create-post-button(v-if="$store.state.auth.isAuth")
+      create-post-button(v-if="this.$store.getters['auth/isAuth']")
     feed
   .col.right-fixed-container(v-if="$device.isDesktop")
     no-ssr
