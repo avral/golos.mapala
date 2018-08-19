@@ -1,10 +1,12 @@
 <template lang="pug">
 .row
   .col-md-4
-    create-post-button(v-if="$store.state.auth.isAuth")
+    no-ssr
+      create-post-button(v-if="$store.state.auth.isAuth")
     feed
   .col.right-fixed-container(v-if="$device.isDesktop")
-    mapala-map#map
+    no-ssr
+      mapala-map#map
 </template>
 
 <script>

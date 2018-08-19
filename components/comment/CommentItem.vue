@@ -16,26 +16,43 @@
 
       div {{ comment.body }}
 
-    comment-item(v-for="child in childComments" :comment="child" :comments="comments" :key="comment.id").nested
+      div
+        span(@click="reply_toggle").mt-2.reply Ответить
+        no-ssr
+          reply(v-if="show_reply"
+                :parentAuthor="comment.author.name"
+                :parentPermlink="comment.permlink"
+                @newComment="newComment"
+                ).mt-2
 
-    //div.reply(v-if="isAuth", @click="reply(comment)")
-      | {{ $t('reply') }}
+      comment-item(v-for="child in childComments"
+                   :comment="child"
+                   :comments="comments"
+                   :key="comment.id"
+                   @newComment="newComment")
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import Reply from '~/components/comment/Reply.vue'
 
 export default {
   name: 'comment-item',
   props: ['comment', 'comments'],
 
+  components: {
+    Reply
+  },
+
   data () {
-    return {}
+    return {
+      show_reply: false
+    }
   },
 
   computed: {
     ...mapState({
-      isAuth: state => state.user.auth.isAuth
+      //isAuth: state => state.user.auth.isAuth
     }),
 
     childComments() {
@@ -47,15 +64,21 @@ export default {
   methods: {
     reply (comment) {
       this.$emit('reply', comment)
+    },
+
+    reply_toggle () {
+      this.show_reply = !this.show_reply
+    },
+
+    newComment(comment) {
+      this.reply_toggle()
+      this.$emit('newComment', comment)
     }
   },
 }
 </script>
 
 <style lang="stylus" scoped>
-  .nested
-    margin-left: 50px
-
   .comments_block .comment{
     display: flex;
     flex-wrap: wrap;
@@ -108,7 +131,6 @@ export default {
   }
 
   .comments_block .comment .reply{
-    margin-left: 55px;
     font: 700 14px 'PT Sans';
     letter-spacing: -0.4px;
     color: #5d7394;

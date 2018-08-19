@@ -4,7 +4,8 @@
     account(:account="account")
     feed
   .col.right-fixed-container(v-if="$device.isDesktop")
-    mapala-map#map
+    no-ssr
+      mapala-map#map
 
 </template>
 

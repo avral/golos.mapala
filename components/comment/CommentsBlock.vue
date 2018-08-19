@@ -34,7 +34,7 @@ export default {
 <style lang="stylus">
   .comments_block
     background-color: #fafafa
-    padding: 20px 10px 26px
+    padding: 20px 15px 26px
 
   .comments_block .rep_comments
     border-left: solid 2px #e3e8ef

@@ -52,7 +52,6 @@ export const mutations = {
 
   set_author: (state, author) => {
     state.author = author
-    console.log(state.author)
   },
 
   set_after: (state, after) => {

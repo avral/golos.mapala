@@ -25,8 +25,10 @@
           // TODO Локация
           .location {{ post.meta.location.name }}
 
-          router-link(v-if="post.author.name == auth.account.name" :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
-            i.fa.fa-edit
+          no-ssr
+            router-link(v-if="post.author.name == auth.account.name"
+                        :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
+              i.fa.fa-edit
 
         a(v-if="$device.isDesktop" @click="open_modal")
           h2.write-header  {{ post.title }}
@@ -40,12 +42,15 @@
           a(v-if="$device.isDesktop" @click="open_modal").icon.comment {{ post.children }}
           nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment {{ post.children }}
 
-          a.icon.repost Поделиться
+          a.icon.repost(@click="share()") Поделиться
 
           nuxt-link(v-if="$device.isDesktop" :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon
             i.fa.fa-eye
             
         upvote-button(:post="post")
+
+        no-ssr
+          textarea(ref="copy_clickboard").copy-clickboard
 </template>
 
 <script>
@@ -59,7 +64,7 @@ export default {
 
 	data() {
 		return {
-			loading: false
+			loading: false,
 		}
 	},
 
@@ -83,6 +88,15 @@ export default {
         classes: ['v--modal', 'post-modal']
       })
     },
+
+    share() {
+      // TODO Вынести домен в конфиг
+      let el = this.$refs.copy_clickboard
+      el.value = `https://golos.mapala.net/@${this.post.author.name}/${this.post.permlink}`
+      el.select()
+      document.execCommand('copy')
+      this.$message('Сылка на публикацию скопированна в буфер обмена')
+    }
   },
 
   components: {
@@ -93,6 +107,10 @@ export default {
 </script>
 
 <style>
+.copy-clickboard {
+  position: absolute;
+  left: -9999px
+}
 
 .post-item .name {
   font: 700 16px/20px PT Sans;
