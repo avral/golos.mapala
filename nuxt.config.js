@@ -43,6 +43,7 @@ module.exports = {
     {ssr: false, src: '~/plugins/vuelidate.js'},
     {ssr: false, src: '~/plugins/vue-quill-editor.js'},
     {ssr: false, src: '~/plugins/vue-notification.js'},
+    {ssr: false, src: '~/plugins/vue-clipboard2.js'},
 
     '~/plugins/vue-js-modal',
     '~/plugins/vue-google-maps',

@@ -91,10 +91,7 @@ export default {
 
     share() {
       // TODO Вынести домен в конфиг
-      let el = this.$refs.copy_clickboard
-      el.value = `https://golos.mapala.net/@${this.post.author.name}/${this.post.permlink}`
-      el.select()
-      document.execCommand('copy')
+      this.$copyText(`https://golos.mapala.net/@${this.post.author.name}/${this.post.permlink}`)
       this.$message('Сылка на публикацию скопированна в буфер обмена')
     }
   },
