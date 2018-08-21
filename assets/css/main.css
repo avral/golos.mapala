@@ -1,3 +1,21 @@
+.icon {
+    display: block;
+    cursor: pointer;
+    font-size: 13px;
+    letter-spacing: -.5px;
+    color: rgba(72, 84, 101, .7) !important;
+    padding-left: 23px;
+    text-decoration: none;
+}
+
+.icon.comment {
+  background: url(~/assets/icons/icon-comment.svg) no-repeat 0;
+}
+
+.icon.widthout-text {
+  padding: 0px;
+}
+
 .button-text {
   font: 700 14px PT Sans;
   font-size: 18px;

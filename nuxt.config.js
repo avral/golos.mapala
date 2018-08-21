@@ -3,7 +3,8 @@ const path = require('path')
 module.exports = {
   env: {
     PROD: process.env.PROD || false,
-    API_QL_URL: process.env.API_QL_URL || 'http://localhost:5000/graphql'
+    API_QL_URL: process.env.API_QL_URL || 'http://localhost:5000/graphql',
+    BACKEND_API: process.env.BACKEND_API || 'http://127.0.0.1:8000/api/'
   },
 
   /*
@@ -18,7 +19,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: 'https://mapala.net/mapala.ico' },
-    ]
+    ],
   },
   css: [
     '@/assets/css/main.css',

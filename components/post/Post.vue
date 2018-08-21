@@ -20,6 +20,8 @@ div
       h1.c_header {{ post.title }}
       post-content(:body="post.body", :format="post.meta.format")
     
+    .col
+      bottom(:post="post")
     comments-block(:post="post")
 
 </template>
@@ -27,6 +29,7 @@ div
 <script>
 import PostContent from '~/components/post/PostContent.vue'
 import CommentsBlock from '~/components/comment/CommentsBlock.vue'
+import Bottom from '~/components/post/Bottom.vue'
 import { mapState, mapActions } from 'vuex'
 import marked from 'marked'
 import xmldom from 'xmldom'
@@ -38,7 +41,8 @@ export default {
 
   components: {
     PostContent,
-    CommentsBlock
+    CommentsBlock,
+    Bottom
   },
 
   computed: {

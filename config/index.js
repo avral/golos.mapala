@@ -1,6 +1,6 @@
 // TODO В переменные окружения выносить это
-const app_tags = process.env.PROD ? ['mapala', 'ru--mapala'] : ['mapala-dev']
-//const app_tags = ['mapala']
+//const app_tags = process.env.PROD ? ['mapala', 'ru--mapala'] : ['mapala-dev']
+const app_tags = ['mapala']
 
  // TODO Может быть что то перенести в пользовательские настройки
 export default {
@@ -10,7 +10,9 @@ export default {
   pagination: 10,
 
   img_proxy_prefix: 'https://imgp.golos.io/',
-  API_QL_URL: process.env.API_QL_URL || 'http://127.0.0.1:5000/graphql'
+  API_QL_URL: process.env.API_QL_URL || 'http://127.0.0.1:5000/graphql',
+
+  baseURI: 'https://golos.mapala.net/',
 }
 
 export const map_options = {

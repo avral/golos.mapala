@@ -20,7 +20,7 @@
     
   no-ssr
     .navbar-items__right
-      el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala" placement="bottom-end")
+      el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala_ru" placement="bottom-end")
         a(target='_blank', href="https://t.me/mapala_ru").mr-2
           img(src="~/assets/icons/telegram.png").telegram
 

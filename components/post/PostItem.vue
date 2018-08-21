@@ -36,26 +36,14 @@
           h2.write-header  {{ post.title }}
           p.write-text {{ post.body | html_preview }}
 
-      .bottom-block
-        .icons
-          a(v-if="$device.isDesktop" @click="open_modal").icon.comment {{ post.children }}
-          nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment {{ post.children }}
-
-          a.icon.repost(@click="share()") Поделиться
-
-          nuxt-link(v-if="$device.isDesktop" :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon
-            i.fa.fa-eye
+        bottom(:post="post")
             
-        upvote-button(:post="post")
-
-        no-ssr
-          textarea(ref="copy_clickboard").copy-clickboard
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
 import PostModal from '~/components/post/PostModal.vue'
-import UpvoteButton from '~/components/post/UpvoteButton.vue'
+import Bottom from '~/components/post/Bottom.vue'
 
 
 export default {
@@ -87,27 +75,16 @@ export default {
         classes: ['v--modal', 'post-modal']
       })
     },
-
-    share() {
-      // TODO Вынести домен в конфиг
-      this.$copyText(`https://golos.mapala.net/@${this.post.author.name}/${this.post.permlink}`)
-      this.$message('Сылка на публикацию скопированна в буфер обмена')
-    }
   },
 
   components: {
     PostModal,
-    UpvoteButton
+    Bottom,
   }
 }
 </script>
 
 <style>
-.copy-clickboard {
-  position: absolute;
-  left: -9999px
-}
-
 .post-item .name {
   font: 700 16px/20px PT Sans;
   letter-spacing: -.5px;
@@ -120,25 +97,6 @@ export default {
   letter-spacing: -.3px;
   color: #20262d;
   word-wrap: break-word;
-}
-
-.bottom-block {
-  justify-content: space-between;
-  padding: 0 17px;
-  margin-bottom: 10px;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-}
-
-.bottom-block .icons {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
 }
 
 .write-header {
@@ -187,21 +145,6 @@ export default {
 
 .post-item a {
   cursor: pointer;
-}
-
-.post-item .icon {
-    display: block;
-    cursor: pointer;
-    font-size: 13px;
-    letter-spacing: -.5px;
-    color: rgba(72, 84, 101, .7) !important;
-    padding-left: 23px;
-    text-decoration: none;
-}
-
-.post-item .icon.comment {
-  background: url(~/assets/icons/icon-comment.svg) no-repeat 0;
-  margin-right: 18px;
 }
 
 .post-image {

@@ -35,20 +35,28 @@
         el-button(type="info" :loading="loading" @click="auth").w-100 Авторизоваться
 
         hr
-        p.lead Помощь
+        //p.lead Помощь
         ul.list-unstyled.text-small.text-left
           // TODO Здесь написать гайды на сайте самом
           li
             a(href="https://golos.io/create_account", target="_blank") Где зарегистрироваться?
             |  Обязательно сохраните пароль!
-          li
-            p Где взять постинг ключ? https://golos.io/@Ваш_Ник/permissions
+
+          div.mt-2
+            img(src='https://imgp.golos.io/0x0/https://i.imgsafe.org/d1b8f9e4d2.jpg' style="width: 100%;")
+            strong Чтобы получить свой приватный постинг ключ для Голос (он же Posting WiF)
+            p Зайдите в свой блог на Голосе. Нажмите кнопку "Кошелек" - затем кнопку "Разрешения" - затем кнопку справа от первого абзаца (где Постинг ключ) "Показать приватный ключ".
+            p
+
+
+
 
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 import loadingButton from '@/components/elements/loading-button.vue'
+import PostModal from '~/components/post/PostModal.vue'
 
 
 export default {
@@ -63,6 +71,15 @@ export default {
   },
   components: {
     loadingButton
+  },
+
+  open_modal(marker) {
+    this.$modal.show(PostModal, {author: marker.author, permlink: marker.permlink}, {
+      height: 'auto',
+      width: '60%',
+      scrollable: true,
+      classes: ['v--modal', 'post-modal']
+    })
   },
 
   //created() {
