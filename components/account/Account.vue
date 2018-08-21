@@ -9,27 +9,59 @@ div.pf
       img(v-if="account.meta.profile.profileImage" :src="account.meta.profile.profileImage | golos_proxy('240x240')")
     div.name.verified
        | {{ account.name }}
-  //div.bottom_bl(v-if="isAuth && isUserOwnPage")
-    nuxt-link.but.ic.wal(:to="index")
-      // | {{ $t('my_wallett') }}
-      | dadsf
 
-    i.divd
+  .user-data
+    i.el-icon-location
 
-    nuxt-link.but.ic.set(:to="index")
-      | {{ $t('setting') }}
+    no-ssr
+      div
+        el-button(v-if="$store.state.auth.account.name == account.name"
+                  size="small" @click="showEditAccount = !showEditAccount").edit-button Редактировать
+
+        edit-account(v-if="showEditAccount").mt-3
+
+//  div.bottom_bl
+    nuxt-link.but.ic.set(:to="{name: 'index'}")
+      | Задания
+
+    nuxt-link.but.ic.set(:to="{name: 'index'}")
+      | Посты
+
+    //i.divd
+
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import EditAccount from '~/components/account/EditAccount.vue'
 
 export default {
   props: ['account'],
+
+  data() {
+    return {
+      showEditAccount: false
+    }
+  },
+
+  components: {
+    EditAccount
+  }
 }
 
 </script>
 
 <style>
+.user-data {
+  padding: 15px;
+}
+
+.edit-button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+
   .pf {
     border-radius: 6px;
     background-color: #fafafa;
@@ -68,7 +100,7 @@ export default {
   .pf .user{
     position: relative;
     z-index: 5;
-    margin: -60px auto 65px;
+    margin: -60px auto 0px;
     text-align: center;
   }
   .pf .round_av{

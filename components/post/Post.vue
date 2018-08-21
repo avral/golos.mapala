@@ -21,7 +21,7 @@ div
       post-content(:body="post.body", :format="post.meta.format")
     
     .col
-      bottom(:post="post")
+      post-bottom(:post="post")
     comments-block(:post="post")
 
 </template>
@@ -29,7 +29,7 @@ div
 <script>
 import PostContent from '~/components/post/PostContent.vue'
 import CommentsBlock from '~/components/comment/CommentsBlock.vue'
-import Bottom from '~/components/post/Bottom.vue'
+import PostBottom from '~/components/post/PostBottom.vue'
 import { mapState, mapActions } from 'vuex'
 import marked from 'marked'
 import xmldom from 'xmldom'
@@ -42,7 +42,7 @@ export default {
   components: {
     PostContent,
     CommentsBlock,
-    Bottom
+    PostBottom
   },
 
   computed: {

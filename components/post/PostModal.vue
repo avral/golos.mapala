@@ -2,6 +2,7 @@
 .row
   .col(v-loading="loading").loading
     post(v-if="post" :post="post")
+    not-found(v-if="notFound").mt-5
 
     // TODO Сделать стрелки
     //a(v-if="true" class="next_post") sadf
@@ -11,18 +12,21 @@
 <script>
 import { mapActions } from 'vuex'
 import Post from '~/components/post/Post.vue'
+import NotFound from '~/components/errors/NotFound.vue'
 import { POST_QUERY } from '@/constants/queries.js'
 
 export default {
   props: ['author', 'permlink'],
 
   components: {
-    Post
+    Post,
+    NotFound
   },
 
   data () {
     return {
       loading: false,
+      notFound: false,
 
       post: null
     }
@@ -46,6 +50,8 @@ export default {
       isVoted: this.$store.state.auth.account.name,
       authorized: !!this.$store.state.auth.wif
     }})
+
+    if (!post) this.notFound = true
 
     this.post = post
     this.loading = false
