@@ -1,11 +1,43 @@
 import gql from 'graphql-tag'
 
+
+
+export const ACCOUNT_MARKERS_QUERY = gql`
+{
+  accounts(meta: {notNull: "mapalaProfile.location"}) {
+    edges {
+      node {
+      	name
+        meta {
+          profile {
+            profileImage
+          }
+          mapalaProfile {
+            location {
+              geometry {
+                coordinates
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
+
 export const ACCOUNT_QUERY = gql`
 query account($name: String!) {
   account(name: $name) {
     name,
     balanceValue
+    jsonMetadata
     meta {
+      mapalaProfile {
+        location {
+          properties
+        }
+      }
       profile {
         profileImage
         coverImage

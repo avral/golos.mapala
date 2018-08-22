@@ -20,9 +20,11 @@ export const state = () => ({
   body: '',
   tags: [config.tag_for_post],
   location: {
-    name: '',
+    properties: {
+      name: '',
+    },
     geometry: {
-      format: 'Point',
+      type: 'Point',
       coordinates: ['', '']
     },
   }

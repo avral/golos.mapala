@@ -144,6 +144,12 @@ export default {
 </script>
 
 <style scoped>
+
+.user_av {
+    height: 32px;
+    width: 32px;
+}
+
 .telegram {
     height: 38px;
     width: 38px;

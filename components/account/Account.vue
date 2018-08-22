@@ -10,10 +10,11 @@ div.pf
     div.name.verified
        | {{ account.name }}
 
-  .user-data
-    i.el-icon-location
+  no-ssr
+    .user-data.text-center
+      i.el-icon-location(v-if="profile.meta.mapalaProfile.location.properties.name")
+        | {{ profile.meta.mapalaProfile.location.properties.name }}
 
-    no-ssr
       div
         el-button(v-if="$store.state.auth.account.name == account.name"
                   size="small" @click="showEditAccount = !showEditAccount").edit-button Редактировать
@@ -37,6 +38,16 @@ import EditAccount from '~/components/account/EditAccount.vue'
 
 export default {
   props: ['account'],
+
+  computed: {
+    profile() {
+      if (this.$store.state.auth.account.name == this.account.name) {
+        return this.$store.state.auth.account
+      } else {
+        return this.account
+      }
+    }
+  },
 
   data() {
     return {

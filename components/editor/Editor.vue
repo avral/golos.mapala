@@ -169,7 +169,7 @@ export default {
     },
 
     setPlace(place) {
-      this.editor.location.name = place.formatted_address
+      this.editor.location.properties.name = place.formatted_address
       this.editor.location.geometry.coordinates = [
         place.geometry.location.lat(),
         place.geometry.location.lng()

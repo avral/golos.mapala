@@ -15,9 +15,21 @@
       :clickable="true",
       :draggable="false",
       @click="open_modal(marker)"
-      @mouseover="openInfoWindow(marker)",
+      @mouseover="openInfoWindow(marker, 'post')",
       @mouseout="infoWindow.opened = false",
       icon="https://mapala.net/pointer.png"
+      )
+
+    gmap-marker(
+      v-for="marker in account_markers",
+      :key="marker.name",
+      :position="marker.coords",
+      :clickable="true",
+      :draggable="false",
+      :icon="marker.icon"
+      @click="$router.push({name: 'account', params: { account: marker.name }})"
+      @mouseover="openInfoWindow(marker, 'account')",
+      @mouseout="infoWindow.opened = false",
       )
 
     gmap-info-window(
@@ -35,6 +47,7 @@ import { map_options } from '@/config'
 import gql from 'graphql-tag'
 import { mapActions, mapState } from 'vuex'
 import PostModal from '~/components/post/PostModal.vue'
+import { ACCOUNT_MARKERS_QUERY } from '~/constants/queries.js'
 
 
 export default {
@@ -61,7 +74,30 @@ export default {
       },
 
       options: map_options,
+
+			account_markers: []
     }
+  },
+
+  async created() {
+    let client = this.$apolloProvider.defaultClient
+
+    let { data } = await client.query({query: ACCOUNT_MARKERS_QUERY})
+
+    this.account_markers = data.accounts.edges.map(e => {
+      e = e.node
+
+      let avatar = e.meta.profile.profileImage || 'https://thumb.ibb.co/bHPoQz/icon_profile.png'
+      return {
+        name: e.name,
+        coords: {
+          lat: e.meta.mapalaProfile.location.geometry.coordinates[0],
+          lng: e.meta.mapalaProfile.location.geometry.coordinates[1]
+        },
+
+        icon: 'https://imgp.golos.io/32x32/' + avatar
+      }
+    })
   },
 
   computed: {
@@ -75,17 +111,24 @@ export default {
       'fetch_markers': 'map/fetch_markers'
     }),
 
-    openInfoWindow (marker) {
+    openInfoWindow (marker, type) {
       this.infoWindow.opened = true
 
-      this.infoWindow.content = `<h6>${marker.title}</h6><p>${marker.body}</p>`
+      if (type == 'post') {
+        this.infoWindow.content = `<h6>${marker.title}</h6><p>${marker.body}</p>`
+
+        this.infoWindow.position = {
+          lat: Number(marker.position.latitude),
+          lng: Number(marker.position.longitude)
+        }
+      } else {
+        this.infoWindow.content = `Здесь сейчас находится <span class="name">@${marker.name}</span>`
+
+        this.infoWindow.position = marker.coords
+      }
 
       this.infoWindow.options.maxWidth = 180
 
-      this.infoWindow.position = {
-        lat: Number(marker.position.latitude),
-        lng: Number(marker.position.longitude)
-      }
     },
 
     async open_modal(marker) {
@@ -119,3 +162,11 @@ export default {
 }
 
 </script>
+
+<style>
+.name {
+    font: 700 16px/20px PT Sans;
+    letter-spacing: -.5px;
+    color: #6d9ee1;
+}
+</style>
