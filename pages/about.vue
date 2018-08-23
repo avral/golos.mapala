@@ -139,7 +139,32 @@
 </template>
 
 <script>
-//export default {
-//  layout: 'full-width'
-//}
+export default {
+  layout: 'full-width',
+
+	head () {
+    let desc = `
+    Чем полезен сайт Mapala.net? Для чего он мне нужен?
+    Что означает название Mapala?
+    В чём преимущества Mapala.net?
+    `
+
+    let title = `FAQ (часто задаваемые вопросы и ответы) | Mapala`
+
+		return {
+			title: title,
+
+			meta: [
+				{
+					hid: 'description',
+					name: 'description',
+					content: desc
+				},
+				{ property: 'og:title', content: title },
+				{ property: 'og:type', content: 'article' },
+				{ property: 'og:description', content: desc },
+			],
+		}
+  }
+}
 </script>

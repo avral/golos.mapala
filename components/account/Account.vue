@@ -57,6 +57,32 @@ export default {
 
   components: {
     EditAccount
+  },
+
+	head () {
+    let desc = `Пользователь mapala @${this.account.name}`
+    let title = `@${this.account.name} | Mapala`
+
+		return {
+			title: title,
+
+			meta: [
+				{
+					hid: 'description',
+					name: 'description',
+					content: desc
+				},
+				{ property: 'og:title', content: title },
+				{ property: 'og:type', content: 'profile' },
+				{ property: 'og:profile:username', content: this.account.name },
+				{ property: 'og:image', content: this.account.meta.profile.profileImage },
+				{ property: 'og:description', content: desc },
+
+			],
+			bodyAttrs: {
+				class: 'overflowHidden'
+			}
+		}
   }
 }
 
