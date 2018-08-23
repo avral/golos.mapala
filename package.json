@@ -19,6 +19,7 @@
     "@nuxtjs/apollo": "^3.0.6",
     "@nuxtjs/font-awesome": "^1.0.3",
     "@nuxtjs/sentry": "^1.1.2",
+    "@nuxtjs/yandex-metrika": "^0.1.0",
     "apollo-link-http": "^1.5.4",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",

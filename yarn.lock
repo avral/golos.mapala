@@ -138,6 +138,10 @@
     raven "^2.3.0"
     raven-js "^3.21.0"
 
+"@nuxtjs/yandex-metrika@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/yandex-metrika/-/yandex-metrika-0.1.0.tgz#e34e3a076f8022efc5373fe8f6c458ed2a74d951"
+
 "@nuxtjs/youch@^4.2.3":
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/@nuxtjs/youch/-/youch-4.2.3.tgz#36f8b22df5a0efaa81373109851e1d857aca6bed"
