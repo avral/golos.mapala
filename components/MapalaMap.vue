@@ -1,44 +1,54 @@
 <template lang="pug">
-  gmap-map(
-    :options="options",
-    :center="center",
-    :zoom="4",
-    @idle="updateMarkers",
-    ref="mmm",
-    map-type-id="terrain")
+div
+  .vue-map-container
+    gmap-autocomplete(@place_changed="setCenter"
+                      :selectFirstOnEnter="true"
+                      placeholder="Поиск локации").vue-map-search.form-control#search
+    gmap-map(
+      :options="options",
+      :center="center",
+      :zoom="zoom",
+      @idle="updateMarkers",
+      ref="mmm",
+      map-type-id="terrain")
 
-    // :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
-    gmap-marker(
-      v-for="marker in markers",
-      :key="marker.permlink",
-      :position="{lat: parseFloat(marker.position.latitude), lng:parseFloat(marker.position.longitude) }",
-      :clickable="true",
-      :draggable="false",
-      @click="open_modal(marker)"
-      @mouseover="openInfoWindow(marker, 'post')",
-      @mouseout="infoWindow.opened = false",
-      icon="https://mapala.net/pointer.png"
-      )
+      //gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
+      //gmap-autocomplete(value="asdf").form-control.search
 
-    gmap-marker(
-      v-for="marker in account_markers",
-      :key="marker.name",
-      :position="marker.coords",
-      :clickable="true",
-      :draggable="false",
-      :icon="marker.icon"
-      @click="$router.push({name: 'account', params: { account: marker.name }})"
-      @mouseover="openInfoWindow(marker, 'account')",
-      @mouseout="infoWindow.opened = false",
-      )
+      // :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
+      //gmap-cluster(:gridSize="1")
+      gmap-marker(
+        v-for="marker in markers",
+        :key="marker.permlink",
+        :position="{lat: parseFloat(marker.position.latitude), lng:parseFloat(marker.position.longitude) }",
+        :clickable="true",
+        :draggable="false",
+        @click="open_modal(marker)"
+        @mouseover="openInfoWindow(marker, 'post')",
+        @mouseout="infoWindow.opened = false",
+        icon="https://mapala.net/pointer.png"
+        )
 
-    gmap-info-window(
-      :options="infoWindow.options",
-      :opened="infoWindow.opened",
-      :content="infoWindow.content",
-      :position="infoWindow.position",
-      @closeclick="infoWindow.opened=false"
-      )
+      gmap-marker(
+        v-for="marker in account_markers",
+        :key="marker.name",
+        :position="marker.coords",
+        :clickable="true",
+        :draggable="false",
+        :icon="marker.icon"
+        @click="$router.push({name: 'account', params: { account: marker.name }})"
+        @mouseover="openInfoWindow(marker, 'account')",
+        @mouseout="infoWindow.opened = false",
+        )
+
+      gmap-info-window(
+        :options="infoWindow.options",
+        :opened="infoWindow.opened",
+        :content="infoWindow.content",
+        :position="infoWindow.position",
+        @closeclick="infoWindow.opened=false"
+        )
+
 
 </template>
 
@@ -48,11 +58,18 @@ import gql from 'graphql-tag'
 import { mapActions, mapState } from 'vuex'
 import PostModal from '~/components/post/PostModal.vue'
 import { ACCOUNT_MARKERS_QUERY } from '~/constants/queries.js'
+import GmapCluster from 'vue2-google-maps/dist/components/cluster'
 
 
 export default {
   data() {
     return {
+      zoom: 4,
+      center: {
+        lat: 40.748817,
+        lng: -73.985428
+      },
+
       infoWindow: {
         options: {
           maxWidth: 250,
@@ -67,10 +84,6 @@ export default {
         },
         opened: false,
         content: ''
-      },
-      center: {
-        lat: 40.748817,
-        lng: -73.985428
       },
 
       options: map_options,
@@ -110,6 +123,16 @@ export default {
     ...mapActions({
       'fetch_markers': 'map/fetch_markers'
     }),
+
+    setCenter(location) {
+      if(!location.geometry) return
+
+      this.zoom = 10
+      this.center = {
+        lat: location.geometry.location.lat(),
+        lng: location.geometry.location.lng(),
+      }
+    },
 
     openInfoWindow (marker, type) {
       this.infoWindow.opened = true
@@ -158,12 +181,32 @@ export default {
 
       this.fetch_markers(boundingBox)
     }
+  },
+
+  components: {
+    GmapCluster
   }
 }
 
 </script>
 
 <style>
+.vue-map-search {
+    z-index: 999;
+    position: absolute;
+    width: 90%;
+    margin: auto;
+    top: 18px;
+    left: 0px;
+    right: 0px;
+}
+
+#map-div,
+.vue-map-container {
+  height: 100%;
+  width: 100%;
+}
+
 .name {
     font: 700 16px/20px PT Sans;
     letter-spacing: -.5px;

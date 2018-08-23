@@ -53,7 +53,7 @@ export default {
 
     if (!post) this.notFound = true
 
-    this.post = post
+    this.post = JSON.parse(JSON.stringify(post))
     this.loading = false
   }
 }

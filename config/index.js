@@ -17,7 +17,8 @@ export default {
 
 export const map_options = {
   minZoom: 4,
-  mapTypeControl: true,
+  mapTypeControl: false,
+  fullscreenControl: false,
   zoomControlOptions: {
     position: null
   },
