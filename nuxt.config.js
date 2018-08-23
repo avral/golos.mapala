@@ -4,7 +4,10 @@ module.exports = {
   env: {
     PROD: process.env.PROD || false,
     API_QL_URL: process.env.API_QL_URL || 'http://localhost:5000/graphql',
-    BACKEND_API: process.env.BACKEND_API || 'http://127.0.0.1:8000/api/'
+    BACKEND_API: process.env.BACKEND_API || 'http://127.0.0.1:8000/api/',
+    SENTRY_DSN: process.env.SENTRY_DSN || null,
+    // TODO Поменять везде базовый урл
+    BASE_URL: process.env.BASE_URL || 'http://localhost:3000/',
   },
 
   /*
@@ -26,6 +29,7 @@ module.exports = {
   ],
   modules: [
     '@nuxtjs/apollo',
+    '@nuxtjs/sentry',
     'bootstrap-vue/nuxt',
     'nuxt-device-detect',
     '@nuxtjs/font-awesome',
@@ -53,7 +57,6 @@ module.exports = {
     '~/plugins/vuex-router-sync.js',
     '~/plugins/elements.js',
     '~/plugins/element-ui.js',
-    '~/plugins/raven.js',
   ],
   /*
   ** Customize the progress bar color
