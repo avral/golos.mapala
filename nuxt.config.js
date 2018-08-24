@@ -16,13 +16,13 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: 'Mapala | Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.',
+    title: 'Mapala | Пиши о путешествиях, зарабатывай, путешествуй.',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description',
         name: 'description',
-        content: 'Mapala | глобальная туристическая база знаний, социальная сеть и корпорация нового поколения. Bы можете писать статьи о ваших путешествиях, интересных местах и получать за это вознаграждение.'
+        content: 'Mapala | Глобальная туристическая база знаний, социальная сеть и корпорация нового поколения. Bы можете писать статьи о ваших путешествиях, интересных местах и получать за это вознаграждение.'
       },
       { property: 'og:image', content: '/mapala.png' },
 			{ name:"msapplication-TileColor", content: "#da532c"},

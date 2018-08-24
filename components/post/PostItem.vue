@@ -18,7 +18,8 @@
             nuxt-link.card-link(:to="{name: 'account', params: {account: post.author.name}}")
               img.user_av(v-if="post.author.meta.profile.profileImage"
                           :src="post.author.meta.profile.profileImage | golos_proxy('64x64')"
-													:alt="'@' + post.author.name")
+													:alt="'@' + post.author.name"
+													:title="'@' + post.author.name")
 
           .name-block.mr-2
             nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
