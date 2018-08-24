@@ -26,7 +26,9 @@ module.exports = {
       },
       { property: 'og:image', content: '/mapala.png' },
 			{ name:"msapplication-TileColor", content: "#da532c"},
-			{ name:"theme-color", content: "#ffffff"}
+			{ name:"theme-color", content: "#ffffff"},
+
+      { name: "yandex-verification", content: "9a1b6ff8a7e81790" }
 
     ],
 
@@ -143,23 +145,23 @@ module.exports = {
     ],
 
     routes() {
-      let posts = axios.post('https://golos-ql.mapala.net/', {
-        query: `
-          {
-            posts(meta: {tags: ["mapala"]}) {
-              edges {
-                node {
-                  author {
-                    name
-                  }
-                  permlink
-                  lastUpdate
-                }
-              }
-            }
-          }
-        `
-      })
+      //let posts = axios.post('https://golos-ql.mapala.net/', {
+      //  query: `
+      //    {
+      //      posts(meta: {tags: ["mapala"]}) {
+      //        edges {
+      //          node {
+      //            author {
+      //              name
+      //            }
+      //            permlink
+      //            lastUpdate
+      //          }
+      //        }
+      //      }
+      //    }
+      //  `
+      //})
 
       let accounts = axios.post('https://golos-ql.mapala.net/', {
         query: `
@@ -175,15 +177,17 @@ module.exports = {
         `
       })
 
-      return Promise.all([posts, accounts]).then(res => {
+      //return Promise.all([posts, accounts]).then(res => {
+      return Promise.all([accounts]).then(res => {
         let urls = [
-          ...res[0].data.data.posts.edges.map(e => {
-            return {
-              url: `/@${e.node.author.name}/${e.node.permlink}`,
-              lastmodISO: e.node.lastUpdate
-            }
-          }),
-          ...res[1].data.data.accounts.edges.map(e => `/@${e.node.name}`)
+          // TODO Решить с сайтмапом для постов
+          //...res[0].data.data.posts.edges.map(e => {
+          //  return {
+          //    url: `/@${e.node.author.name}/${e.node.permlink}`,
+          //    lastmodISO: e.node.lastUpdate
+          //  }
+          //}),
+          ...res[0].data.data.accounts.edges.map(e => `/@${e.node.name}`)
         ]
 
         return urls
