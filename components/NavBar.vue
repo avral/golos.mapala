@@ -3,15 +3,17 @@
   .navbar-link.navbar-link-brand
     nuxt-link(:to="{name: 'index'}").main_logo
       img(src="~/assets/img/mapala-logo.png")
-      span
+      h1.mb-0
         | MAPALA
+
 
   //.navbar-link.navbar-link__toggle(@click="toggle")
     i.fa.fa-bars
 
-  .navbar-items.slogan
-    .navbar-link
-      nuxt-link(:to="{name: 'about'}").white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.(FAQ)
+  .navbar-items
+
+    .navbar-link.slogan
+      nuxt-link(:to="{name: 'about'}").white-text Вопросы и ответы (FAQ)
     //.navbar-link
       nuxt-link(:to="{name: 'about'}").white-text Блог мапала
 
@@ -20,6 +22,16 @@
     
   no-ssr
     .navbar-items__right
+      .navbar-link
+        el-popover(placement="bottom"
+                   title="Выплаты"
+                   width="300"
+                   trigger="hover"
+                   content="Суммарная выплата авторам Mapala в рублях.")
+
+          h4(slot="reference").mb-0.white-text.btn
+            | Всего выплачено: {{ totalPayout | convertGBG }}₽
+
       el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala_ru" placement="bottom-end")
         a(target='_blank', href="https://t.me/mapala_ru").mr-2
           img(src="~/assets/icons/telegram.png").telegram
@@ -56,6 +68,7 @@
 import { mapState, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import { Loading } from 'element-ui'
+import { MAPALA_TOTAL_PAYOUT_QUERY } from '~/constants/queries'
 
 
 export default {
@@ -63,8 +76,17 @@ export default {
 
   data () {
     return {
-      isMenuOpened: false
+      isMenuOpened: false,
+      totalPayout: 0
     }
+  },
+
+  created() {
+    let client = this.$apolloProvider.defaultClient
+
+    client.query({query: MAPALA_TOTAL_PAYOUT_QUERY})
+      //.then(r => console.log(r.data.stats * 2.60424))
+      .then(r => this.totalPayout = r.data.stats.posts.totalPayout)
   },
 
 	methods: {

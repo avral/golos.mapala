@@ -1,4 +1,6 @@
 const path = require('path')
+const axios = require('axios')
+
 
 module.exports = {
   env: {
@@ -20,7 +22,7 @@ module.exports = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description',
         name: 'description',
-        content: 'Mapala.net — это глобальная туристическая база знаний, социальная сеть и корпорация нового поколения. На данном этапе развития проекта вы можете писать статьи о ваших путешествиях и интересных местах и получать за это вознаграждение.'
+        content: 'Mapala | глобальная туристическая база знаний, социальная сеть и корпорация нового поколения. Bы можете писать статьи о ваших путешествиях, интересных местах и получать за это вознаграждение.'
       },
       { property: 'og:image', content: '/mapala.png' },
 			{ name:"msapplication-TileColor", content: "#da532c"},
@@ -45,6 +47,7 @@ module.exports = {
     'bootstrap-vue/nuxt',
     'nuxt-device-detect',
     '@nuxtjs/font-awesome',
+    '@nuxtjs/sitemap',
     [
       '@nuxtjs/yandex-metrika',
       {
@@ -126,5 +129,65 @@ module.exports = {
   loading: {
     color: 'white',
     height: '3px'
+  },
+
+  cache: {
+    maxAge: 1000 * 60 * 2
+  },
+
+  sitemap: {
+    //cacheTime: 1000 * 60 * 15,
+    gzip: true,
+    exclude: [
+      '/errors/**'
+    ],
+
+    routes() {
+      let posts = axios.post('https://golos-ql.mapala.net/', {
+        query: `
+          {
+            posts(meta: {tags: ["mapala"]}) {
+              edges {
+                node {
+                  author {
+                    name
+                  }
+                  permlink
+                  lastUpdate
+                }
+              }
+            }
+          }
+        `
+      })
+
+      let accounts = axios.post('https://golos-ql.mapala.net/', {
+        query: `
+          {
+            accounts(meta: {notNull: "mapalaProfile.location"}) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        `
+      })
+
+      return Promise.all([posts, accounts]).then(res => {
+        let urls = [
+          ...res[0].data.data.posts.edges.map(e => {
+            return {
+              url: `/@${e.node.author.name}/${e.node.permlink}`,
+              lastmodISO: e.node.lastUpdate
+            }
+          }),
+          ...res[1].data.data.accounts.edges.map(e => `/@${e.node.name}`)
+        ]
+
+        return urls
+      })
+    }
   }
 }

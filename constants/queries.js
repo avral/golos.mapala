@@ -1,6 +1,16 @@
 import gql from 'graphql-tag'
 
 
+export const MAPALA_TOTAL_PAYOUT_QUERY = gql`
+{
+  stats {
+    posts {
+      totalPayout(category: "mapala")
+    }
+  }
+}
+`
+
 
 export const ACCOUNT_MARKERS_QUERY = gql`
 {

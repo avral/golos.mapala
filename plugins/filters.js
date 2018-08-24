@@ -20,6 +20,11 @@ Vue.filter('html_preview', (value = '') => {
 	}).slice(0, 2).join(' ')
 })
 
+Vue.filter('convertGBG', (value = 0) => {
+
+  return (value * 2.60424).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')
+})
+
 
 Vue.filter('formatDate', (value = '') => {
   moment.locale('ru')

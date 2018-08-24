@@ -138,6 +138,17 @@
     raven "^2.3.0"
     raven-js "^3.21.0"
 
+"@nuxtjs/sitemap@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/sitemap/-/sitemap-0.1.1.tgz#25031515289e506aa8d3decc33e31569bb023a95"
+  dependencies:
+    async-cache "^1.1.0"
+    fs-extra "^5.0.0"
+    is-https "^1.0.0"
+    lodash "^4.17.5"
+    minimatch "^3.0.4"
+    sitemap "^1.13.0"
+
 "@nuxtjs/yandex-metrika@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/yandex-metrika/-/yandex-metrika-0.1.0.tgz#e34e3a076f8022efc5373fe8f6c458ed2a74d951"
@@ -458,6 +469,12 @@ assert@^1.1.1:
 assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
+
+async-cache@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/async-cache/-/async-cache-1.1.0.tgz#4a9a5a89d065ec5d8e5254bd9ee96ba76c532b5a"
+  dependencies:
+    lru-cache "^4.0.0"
 
 async-each@^1.0.0:
   version "1.0.1"
@@ -3544,6 +3561,10 @@ is-glob@^4.0.0:
   dependencies:
     is-extglob "^2.1.1"
 
+is-https@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/is-https/-/is-https-1.0.0.tgz#9c1dde000dc7e7288edb983bef379e498e7cb1bf"
+
 is-number@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/is-number/-/is-number-3.0.0.tgz#24fd6201a4782cf50561c810276afc7d12d71195"
@@ -3968,6 +3989,13 @@ loud-rejection@^1.6.0:
 lower-case@^1.1.1:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/lower-case/-/lower-case-1.1.4.tgz#9a2cabd1b9e8e0ae993a4bf7d5875c39c42e8eac"
+
+lru-cache@^4.0.0:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.3.tgz#a1175cf3496dfc8436c156c334b4955992bce69c"
+  dependencies:
+    pseudomap "^1.0.2"
+    yallist "^2.1.2"
 
 lru-cache@^4.0.1, lru-cache@^4.1.1:
   version "4.1.2"
@@ -6038,6 +6066,13 @@ simplemde@^1.11.2:
     codemirror-spell-checker "*"
     marked "*"
 
+sitemap@^1.13.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/sitemap/-/sitemap-1.13.0.tgz#569cbe2180202926a62a266cd3de09c9ceb43f83"
+  dependencies:
+    underscore "^1.7.0"
+    url-join "^1.1.0"
+
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"
@@ -6610,6 +6645,10 @@ ultron@1.0.x:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.0.2.tgz#ace116ab557cd197386a4e88f4685378c8b2e4fa"
 
+underscore@^1.7.0:
+  version "1.9.1"
+  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.1.tgz#06dce34a0e68a7babc29b365b8e74b8925203961"
+
 "unicode@>= 0.3.1":
   version "11.0.1"
   resolved "https://registry.yarnpkg.com/unicode/-/unicode-11.0.1.tgz#735bd422ec75cf28d396eb224d535d168d5f1db6"
@@ -6688,6 +6727,10 @@ uri-js@^3.0.2:
 urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
+
+url-join@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/url-join/-/url-join-1.1.0.tgz#741c6c2f4596c4830d6718460920d0c92202dc78"
 
 url-join@^2.0.2:
   version "2.0.5"
