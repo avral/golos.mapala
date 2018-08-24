@@ -57,7 +57,7 @@ export default {
 
     childComments() {
       return this.comments.filter(c => {
-        return c.parentPermlink == this.comment.permlink && c.parentAuthor == this.comment.author
+        return c.parentPermlink == this.comment.permlink && c.parentAuthor == this.comment.author.name
       })
     }
   },
