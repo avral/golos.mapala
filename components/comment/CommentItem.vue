@@ -56,8 +56,9 @@ export default {
     }),
 
     childComments() {
-      //console.log(this.comments.filter(c => c.parentPermlink == this.comment.permlink))
-      return this.comments.filter(c => c.parentPermlink == this.comment.permlink)
+      return this.comments.filter(c => {
+        return c.parentPermlink == this.comment.permlink && c.parentAuthor == this.comment.author
+      })
     }
   },
 
@@ -74,7 +75,7 @@ export default {
       this.reply_toggle()
       this.$emit('newComment', comment)
     }
-  },
+  }
 }
 </script>
 
