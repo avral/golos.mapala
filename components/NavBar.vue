@@ -11,7 +11,7 @@
 
   .navbar-items.slogan
     .navbar-link
-      nuxt-link(:to="{name: 'about'}").white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.
+      nuxt-link(:to="{name: 'about'}").white-text Пиши о путешествиях, зарабатывай, путешествуй. Повторяй бесконечно.(FAQ)
     //.navbar-link
       nuxt-link(:to="{name: 'about'}").white-text Блог мапала
 
