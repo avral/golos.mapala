@@ -18,10 +18,15 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: 'MAPALA - World Adventure Community. Connecting with people, Be Useful, Enjoy, Repeat.' }
+      { hid: 'description',
+        name: 'description',
+        content: 'MAPALA - World Adventure Community. Connecting with people, Be Useful, Enjoy, Repeat.'
+      },
+      { property: 'og:image', content: '/mapala.png' },
+
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: 'https://mapala.net/mapala.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
   },
   css: [
