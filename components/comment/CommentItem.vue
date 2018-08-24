@@ -1,7 +1,7 @@
 <template lang="pug">
   div.comment.mt-2
     nuxt-link(:to="{name: 'account', params: {account: comment.author.name}}").user_av
-      img(v-if="comment.author.meta.profile.profileImage" :src="comment.author.meta.profile.profileImage | golos_proxy('120x120')")
+      img(v-if="comment.author.meta.profile.profileImage" :src="comment.author.meta.profile.profileImage | golos_proxy('64x64')")
 
     div.comment_body
       div.name_bl

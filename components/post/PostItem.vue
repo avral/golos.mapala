@@ -6,18 +6,18 @@
 
         a(v-if="$device.isDesktop" @click="open_modal")
           .post-image
-            img(:src="post.thumb | golos_proxy('490x320')", :alt="post.title", :title="post.title")
+            img(:src="post.thumb | golos_proxy('480x320')", :alt="post.title", :title="post.title")
 
         nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
           .post-image
-            img(:src="post.thumb | golos_proxy('490x320')", :alt="post.title", :title="post.title")
+            img(:src="post.thumb | golos_proxy('480x320')", :alt="post.title", :title="post.title")
 
       .short
         .top-block
           .img-wrap
             nuxt-link.card-link(:to="{name: 'account', params: {account: post.author.name}}")
               img.user_av(v-if="post.author.meta.profile.profileImage"
-                          :src="post.author.meta.profile.profileImage | golos_proxy('120x120')"
+                          :src="post.author.meta.profile.profileImage | golos_proxy('64x64')"
 													:alt="'@' + post.author.name")
 
           .name-block.mr-2
@@ -31,7 +31,7 @@
             i.fa.fa-edit
 
         a(v-if="$device.isDesktop" @click="open_modal")
-          h1.write-header  {{ post.title }}
+          h2.write-header  {{ post.title }}
           p.write-text {{ post.body | html_preview }}
         nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
           h2.write-header  {{ post.title }}

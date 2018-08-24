@@ -29,7 +29,7 @@
 
         .user_av
           img(v-if="account.meta.profile.profileImage"
-              :src="account.meta.profile.profileImage | golos_proxy('120x120')")
+              :src="account.meta.profile.profileImage | golos_proxy('40x40')")
 
       nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}").login
         | Войти
@@ -50,51 +50,6 @@
           div.mn
             nuxt-link(to="/settings" class="m_item") Настройки
             a(href="#" class="m_item", @click.prevent="logout") Выйти
-
-  //header.main_header.sticky-top
-    div.top_left_block
-      nuxt-link(class="main_logo", :to="{name: 'index'}")
-        img(src="~/assets/img/mapala-logo.png")
-        span
-          | MAPALA
-
-    no-ssr
-      div.top-right-block
-        div.username_wrapper(v-if="$store.getters['auth/isAuth']")
-          nuxt-link(:to="{name: 'account', params: {account: account.name}}")
-            div.user
-              span.user_name @{{ account.name }}
-              img(v-if="account.meta.profile.profileImage"
-                  class="user_logo",
-                  :src="account.meta.profile.profileImage | golos_proxy('120x120')")
-              img(v-else class="no_avatar" src="~/assets/icons/account/icon-profile.svg")
-
-        nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}", class="login")
-          | Войти
-        div.right_button(v-else)
-
-          div(@click="openMenu", class="open_menu", v-on-clickaway="closeMenu" )
-            | Меню 
-
-          div.user_menu(:class="{ active : isMenuOpened }")
-
-            nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
-              i.purce
-              span.txt_i
-                | Кошклек
-              span(class="amount" v-text="account.balanceValue")
-
-            div.divd
-            div.mn
-
-              nuxt-link(
-              to="/settings"
-              class="m_item"
-              )
-                | Настройки
-
-              a(class="m_item", @click.prevent="logout")
-                | Выйти
 </template>
 
 <script>

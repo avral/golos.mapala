@@ -5,7 +5,7 @@ div
       .t_col
         .img_wrap
           nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").user_av
-            img.user_av(v-if="post.author.meta.profile.profileImage" :src="post.author.meta.profile.profileImage | golos_proxy('120x120')")
+            img.user_av(v-if="post.author.meta.profile.profileImage" :src="post.author.meta.profile.profileImage | golos_proxy('64x64')")
 
         div.name_block
           nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
