@@ -24,11 +24,13 @@ export default {
     let { author, permlink } = route.params
 
     let {data: {post}} = await client.query({query: POST_QUERY, variables: {
-      identifier: `@${author}/${permlink}`,
+      identifier: `@${author.toLowerCase()}/${permlink}`,
       linkifyImages: true,
       isVoted: store.state.auth.account.name,
       authorized: !!store.state.auth.wif
     }})
+
+    if (!post) return error({ statusCode: 404, message: 'Публикация не найдена' })
 
     return { post }
   }

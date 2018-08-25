@@ -30,12 +30,14 @@ export default {
     }
   },
 
-  async asyncData({ app, route }) {
+  async asyncData({ app, route, error }) {
     let client = app.apolloProvider.defaultClient
 
     let { data: { account } } = await client.query({query: ACCOUNT_QUERY, variables: {
-      name: route.params.account
+      name: route.params.account.toLowerCase()
     }})
+
+    if (!account) return error({ statusCode: 404, message: 'Account not found' })
 
     return { account }
   }
