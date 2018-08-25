@@ -141,13 +141,6 @@ export default {
     margin: 0 30px 20px;
   }
 
-  .post-content .c_text {
-    font: 21px/1.52 'PT Sans';
-    letter-spacing: -1px;
-    color: #141823;
-    margin: 0 30px 40px;
-  }
-
   .post-content .top_block {
     display: flex;
     margin: 40px 30px 35px;
@@ -200,75 +193,6 @@ export default {
     /* background: url('~/assets/icon-location-small.svg') no-repeat left 3px; */
   }
 
-  .post-content .bottom_block {
-    display: flex;
-    align-items: center;
-    padding: 0 30px;
-    margin-bottom: 30px;
-  }
-
-  .post-content .icons {
-    display: flex;
-    align-items: center;
-  }
-
-  .post-content .icon {
-    display: block;
-    cursor: pointer;
-    font: 14px/34px 'PT Sans';
-    letter-spacing: -0.5px;
-    color: rgba(72, 84, 101, 0.7);
-    padding-left: 23px;
-    text-decoration: none;
-  }
-
-  .post-content .icon.comment {
-    /* background: url('~/assets/icon-comment.svg') no-repeat left center; */
-    margin-right: 18px;
-  }
-
-  .post-content .icon.repost {
-    /* background: url('~/assets/icon-repost.svg') no-repeat left center; */
-    margin-right: 18px;
-  }
-
-  .post-content .support {
-    font: 14px/34px 'PT Sans';
-    letter-spacing: -0.5px;
-    color: rgba(255, 255, 255, 0.7);
-    padding: 0 12px 0 12px;
-    border-radius: 3px;
-    text-decoration: none;
-    background: #6d9ee1;
-    margin-right: 35px;
-    cursor: pointer;
-  }
-
-  .support_block button {
-    height: 31px;
-  }
-
-  .post-content .is-disabled {
-    color: #bfcbd9;
-    cursor: not-allowed;
-    background-image: none;
-    background-color: #eef1f6;
-    border-color: #d1dbe5;
-  }
-
-  .post-content .support span {
-    color: #ffffff;
-  }
-
-  .post-content .main_image {
-    overflow: hidden;
-    margin: 0 -1px 25px;
-  }
-
-  .post-content .main_image img {
-    width: 100%;
-  }
-
   .post-content .content {
     overflow: hidden;
     -ms-word-wrap: break-word;
@@ -283,4 +207,3 @@ export default {
     width: auto;
   }
 </style>
-
