@@ -48,11 +48,13 @@ export const mutations = {
 
     // GeoJOSON standart
     state.location = {
-      name: '',
+      properties: {
+        name: '',
+      },
       geometry: {
-        format: 'Point',
+        type: 'Point',
         coordinates: ['', '']
-      }
+      },
     }
   },
 }
