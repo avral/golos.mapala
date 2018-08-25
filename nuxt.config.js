@@ -25,11 +25,11 @@ module.exports = {
         content: 'Mapala | Глобальная туристическая база знаний, социальная сеть и корпорация нового поколения. Bы можете писать статьи о ваших путешествиях, интересных местах и получать за это вознаграждение.'
       },
       { property: 'og:image', content: '/mapala.png' },
-			{ name:"msapplication-TileColor", content: "#da532c"},
-			{ name:"theme-color", content: "#ffffff"},
+			{ name: "msapplication-TileColor", content: "#da532c"},
+			{ name: "theme-color", content: "#ffffff"},
 
-      { name: "yandex-verification", content: "9a1b6ff8a7e81790" }
-
+      { name: "yandex-verification", content: "9a1b6ff8a7e81790" },
+      { name: "google-site-verification", content: "9I09Urp97DzUqnO2i2B8l7ddZ14vCiSWDoZlFIf7ilE"}
     ],
 
     link: [
