@@ -60,7 +60,7 @@
 
           div.divd
           div.mn
-            nuxt-link(to="/settings" class="m_item") Настройки
+            //nuxt-link(to="/settings" class="m_item") Настройки
             a(href="#" class="m_item", @click.prevent="logout") Выйти
 </template>
 
