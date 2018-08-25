@@ -1,67 +1,90 @@
 <template lang="pug">
-.top-navbar
-  .navbar-link.navbar-link-brand
-    nuxt-link(:to="{name: 'index'}").main_logo
-      img(src="~/assets/img/mapala-logo.png")
-      h1.mb-0
-        | MAPALA
+div
+  .top-navbar
+    .navbar-link.navbar-link-brand
+      nuxt-link(:to="{name: 'index'}").main_logo
+        img(src="~/assets/img/mapala-logo.png")
+        h1.mb-0
+          | MAPALA
+
+    .navbar-link
+      el-popover(placement="bottom"
+                 title="Выплаты"
+                 width="300"
+                 trigger="hover"
+                 content="Суммарная выплата авторам Mapala в рублях.")
+        h4(slot="reference").mb-0.white-text.btn
+          | Всего выплачено: {{ totalPayout | convertGBG }}₽
 
 
-  //.navbar-link.navbar-link__toggle(@click="toggle")
-    i.fa.fa-bars
-
-  .navbar-items
-
-    .navbar-link.slogan
+    .navbar-items
       nuxt-link(:to="{name: 'about'}").white-text Вопросы и ответы (FAQ)
-    //.navbar-link
-      nuxt-link(:to="{name: 'about'}").white-text Блог мапала
+      //.navbar-link
+        nuxt-link(:to="{name: 'about'}").white-text Блог мапала
 
-  .navbar-items
-    //.navbar-link Слева2
-    
+
+    .navbar-link.navbar-link__toggle(@click="mobileMenuToggle = !mobileMenuToggle")
+      i.fa.fa-bars
+      
+    no-ssr
+      .navbar-items__right
+        el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala_ru" placement="bottom-end")
+          a(target='_blank', href="https://t.me/mapala_ru").mr-2
+            img(src="~/assets/icons/telegram.png").telegram
+
+        nuxt-link(v-if="$store.getters['auth/isAuth']" :to="{name: 'account', params: {account: account.name}}").user-lk
+          .user_name.mr-2 @{{ account.name }}
+
+          .user_av
+            img(v-if="account.meta.profile.profileImage"
+                :src="account.meta.profile.profileImage | golos_proxy('40x40')")
+
+        nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}").login
+          | Войти
+        div.right_button(v-else)
+          div(@click="toggleMenu", class="open_menu", v-on-clickaway="closeMenu" )
+            | Меню 
+
+          div.user_menu(:class="{ active : isMenuOpened }")
+
+            nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
+              i.purce
+              span.txt_i
+                | Кошклек
+              span(class="amount" v-text="account.balanceValue")
+
+            div.divd
+            div.mn
+              //nuxt-link(to="/settings" class="m_item") Настройки
+              a(href="#" class="m_item", @click.prevent="logout").white-text Выйти
+
   no-ssr
-    .navbar-items__right
+    .mobile-menu(v-if="mobileMenuToggle")
       .navbar-link
-        el-popover(placement="bottom"
-                   title="Выплаты"
-                   width="300"
-                   trigger="hover"
-                   content="Суммарная выплата авторам Mapala в рублях.")
+        nuxt-link(v-if="$store.getters['auth/isAuth']" :to="{name: 'account', params: {account: account.name}}").user-lk
+          .user_name.mr-2 @{{ account.name }}
 
-          h4(slot="reference").mb-0.white-text.btn
-            | Всего выплачено: {{ totalPayout | convertGBG }}₽
+          .user_av
+            img(v-if="account.meta.profile.profileImage"
+                :src="account.meta.profile.profileImage | golos_proxy('40x40')")
 
-      el-tooltip(class="item" effect="light" content="Поддержка/чат @mapala_ru" placement="bottom-end")
-        a(target='_blank', href="https://t.me/mapala_ru").mr-2
+      .navbar-link
+        a(target='_blank', href="https://t.me/mapala_ru").mr-2.white-text Телеграм чат/поддержка
           img(src="~/assets/icons/telegram.png").telegram
 
-      nuxt-link(v-if="$store.getters['auth/isAuth']" :to="{name: 'account', params: {account: account.name}}").user-lk
-        .user_name.mr-2 @{{ account.name }}
+      .navbar-link
+        nuxt-link(:to="{name: 'about'}").white-text Вопросы и ответы (FAQ)
+        //.navbar-link
+          nuxt-link(:to="{name: 'about'}").white-text Блог мапала
 
-        .user_av
-          img(v-if="account.meta.profile.profileImage"
-              :src="account.meta.profile.profileImage | golos_proxy('40x40')")
-
-      nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}").login
-        | Войти
-      div.right_button(v-else)
-
-        div(@click="toggleMenu", class="open_menu", v-on-clickaway="closeMenu" )
-          | Меню 
-
-        div.user_menu(:class="{ active : isMenuOpened }")
-
-          nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
-            i.purce
-            span.txt_i
-              | Кошклек
-            span(class="amount" v-text="account.balanceValue")
-
-          div.divd
+      .navbar-link
+        nuxt-link(v-if="!$store.getters['auth/isAuth']", :to="{name: 'login'}").login
+          | Войти
+        div.right_button(v-else)
           div.mn
             //nuxt-link(to="/settings" class="m_item") Настройки
-            a(href="#" class="m_item", @click.prevent="logout") Выйти
+            a(href="#" class="m_item", @click.prevent="logout").white-text Выйти
+
 </template>
 
 <script>
@@ -77,7 +100,15 @@ export default {
   data () {
     return {
       isMenuOpened: false,
-      totalPayout: 0
+      totalPayout: 0,
+      mobileMenuToggle: false
+    }
+  },
+
+  watch: {
+    $route (to, from){
+      // Закрываем мобльную менюшку когда уходим куда то
+      this.mobileMenuToggle = false
     }
   },
 
@@ -89,15 +120,15 @@ export default {
       .then(r => this.totalPayout = r.data.stats.posts.totalPayout)
   },
 
-	methods: {
+  methods: {
     toggle() {
-      let navs = document.querySelectorAll('.navbar-items')
+      let navs = document.querySelectorAll('.mobile-menu')
       navs.forEach(nav => nav.classList.toggle('navbar-toggle-show'))
     },
 
-		logout() {
-			this.$store.dispatch('auth/logout')
-		},
+    logout() {
+      this.$store.dispatch('auth/logout')
+    },
 
     toggleMenu () {
       this.isMenuOpened = !this.isMenuOpened
@@ -110,7 +141,7 @@ export default {
     closeMenu () {
       this.isMenuOpened = false
     }
-	},
+  },
 
   computed: {
     ...mapState({
@@ -121,81 +152,109 @@ export default {
 </script>
 
 <style scoped>
+.mobile-menu {
+  width: 100%;
+  background-image: linear-gradient(180deg,#5d7394,#4b5e7a);
+}
 
 .user_av {
-    height: 32px;
-    width: 32px;
+  height: 32px;
+  width: 32px;
 }
 
 .telegram {
-    height: 38px;
-    width: 38px;
+  height: 38px;
+  width: 38px;
 }
-  .user-lk {
-    display: flex;
-    align-items: center;
-  }
+.user-lk {
+  display: flex;
+  align-items: center;
+}
 
-  .user_name {
-    color: #fff;
-    font-size: 14px;
-    font-weight: 700;
-  }
-   
+.user_name {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+}
+ 
+.top-navbar {
+  height: 42px;
+  background-image: linear-gradient(180deg,#5d7394,#4b5e7a);
+  display: flex;
+  padding: 0px 30px;
+  font-family: sans-serif;
+}
+
+.navbar-items {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-items__right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.navbar-link {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.navbar-items a,
+.user-lk a,
+.navbar-link a {
+  color: #fff;
+}
+
+.navbar-link__toggle {
+  color: #d0d0d0;
+  display: none;
+}
+
+.login {
+  color: #88ade0;
+  font: 700 14px PT Sans;
+  display: block;
+  align-items: center;
+  width: 70px;
+  padding-left: 7px;
+  height: 102%;
+  line-height: 42px;
+  box-sizing: border-box;
+  background: url('~assets/icons/icon-login.svg') no-repeat 53px center;
+  cursor: pointer;
+  transition: color .2s ease;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.login:hover{
+  color: #fff;
+}
+
+@media only screen and (max-width: 768px) {
   .top-navbar {
-    height: 42px;
-    background-image: linear-gradient(180deg,#5d7394,#4b5e7a);
-    display: flex;
-    padding: 0px 30px;
-    font-family: sans-serif;
+    padding: 0px 15px;
   }
 
+  .navbar-items__right,
   .navbar-items {
-    display: flex;
-    align-items: center;
-  }
-
-  .navbar-items__right {
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-  }
-
-  .navbar-link {
-    padding-right: 8px;
-  }
-
-  .navbar-items a,
-  .user-lk a,
-  .navbar-link a {
-    padding-right: 8px;
-    color: #fff;
-  }
-
-  .navbar-link__toggle {
     display: none;
   }
 
- .login {
-    color: #88ade0;
-    font: 700 14px PT Sans;
-    display: block;
-    align-items: center;
-    width: 70px;
-    padding-left: 7px;
-    height: 102%;
-    line-height: 42px;
-    box-sizing: border-box;
-    background: url('~assets/icons/icon-login.svg') no-repeat 53px center;
+  .navbar-link__toggle {
+    display: flex;
     cursor: pointer;
-    transition: color .2s ease;
-    text-decoration: none;
-    margin-left: 10px;
+    margin-left: auto;
   }
 
-  .login:hover{
-    color: #fff;
+  .navbar-toggle-show {
+    display: flex;
   }
+}
+
   /* @media only screen and (max-width: 768px) {
     .navbar-items,
     .top-navbar {
@@ -210,16 +269,6 @@ export default {
       margin-left: 0px;
     }
 
-    .navbar-link__toggle {
-      align-self: flex-end;
-      display: initial;
-      position: absolute;
-      cursor: pointer;
-    }
-
-    .navbar-toggle-show {
-      display: flex;
-    }
   } */
 
 
@@ -534,7 +583,7 @@ export default {
     opacity: 1;
   }
 
-
+/*
 @media screen and (max-width: 600px) {
   .username_wrapper {
     display: none;
@@ -550,19 +599,11 @@ export default {
 
 }
 
+*/
 
-@media screen and (max-width: 767px) {
-  .change_lang {
-    display: none;
-  }
-
-  .top_left_block {
-    flex: 0.5;
-  }
-
-  .top-right-block {
-    flex: 1;
-    justify-content: space-around;
+@media screen and (max-width: 800px) {
+  .main_logo h1 {
+    font-size: 13px;
   }
 }
 
