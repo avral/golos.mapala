@@ -2,7 +2,7 @@
   el-button.upvote-btn(size="small" v-if="!post.isVoted", @click="vote", :loading="loading")
     round.mr-2
     span.mutted-text.mr-2 Поддержать
-    span.text-light.ml-2 {{ parseFloat(post.totalPendingPayout) | convertGBG }}₽
+    span.text-light {{ parseFloat(post.totalPendingPayout) | convertGBG }}₽
 
   el-button.upvote-btn(v-else, size="small", disabled)
     round.mr-2

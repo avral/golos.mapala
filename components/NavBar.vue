@@ -51,7 +51,7 @@ div
               i.purce
               span.txt_i
                 | Кошклек
-              span(class="amount" v-text="account.balanceValue")
+              span(class="amount") {{ parseFloat(account.balanceValue) | convertGBG }}₽
 
             div.divd
             div.mn
