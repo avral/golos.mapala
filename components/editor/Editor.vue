@@ -179,7 +179,7 @@ export default {
     async _submit() {
       if (!this.editor.title) return this.$message.warning('Добавьте заголовок')
       if (!this.editor.body) return this.$message.warning('Добавьте текст публикации')
-      if (!this.editor.location.name) return this.$message.warning('Локация обязательна')
+      if (!this.editor.location.properties.name) return this.$message.warning('Локация обязательна')
 
       this.loading = true
 

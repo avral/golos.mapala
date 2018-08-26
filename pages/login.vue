@@ -25,6 +25,7 @@
           .input-group-prepend
             span.input-group-text
               i.fa.fa-user-o
+          // TODO При вводе аккаунта показывать кнопку для быстрого перехода к ключам
           input.form-control(placeholder="Golos.io account name", v-model="account")
         .input-group.mb-3
           .input-group-prepend
