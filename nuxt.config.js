@@ -1,6 +1,6 @@
 const path = require('path')
-const axios = require('axios')
-
+const MongoClient = require('mongodb').MongoClient
+const golos_mongo_url = 'mongodb://mapala:mapala@golos-mongo.mapala.net:27017/Golos'
 
 module.exports = {
   env: {
@@ -144,54 +144,22 @@ module.exports = {
       '/errors/**'
     ],
 
-    routes() {
-      //let posts = axios.post('https://golos-ql.mapala.net/', {
-      //  query: `
-      //    {
-      //      posts(meta: {tags: ["mapala"]}) {
-      //        edges {
-      //          node {
-      //            author {
-      //              name
-      //            }
-      //            permlink
-      //            lastUpdate
-      //          }
-      //        }
-      //      }
-      //    }
-      //  `
-      //})
+    async routes() {
+      const client = await MongoClient.connect(golos_mongo_url, { useNewUrlParser: true })
+      const db = client.db('Golos')
 
-      let accounts = axios.post('https://golos-ql.mapala.net/', {
-        query: `
-          {
-            accounts(meta: {notNull: "mapalaProfile.location"}) {
-              edges {
-                node {
-                  name
-                }
-              }
-            }
-          }
-        `
-      })
+      let [posts, authors] = await Promise.all([
+        db.collection("comment_object").find({'json_metadata.tags': 'mapala', 'depth': 0})
+            .project({author: true, permlink: true, last_update: true}).toArray(),
 
-      //return Promise.all([posts, accounts]).then(res => {
-      return Promise.all([accounts]).then(res => {
-        let urls = [
-          // TODO Решить с сайтмапом для постов
-          //...res[0].data.data.posts.edges.map(e => {
-          //  return {
-          //    url: `/@${e.node.author.name}/${e.node.permlink}`,
-          //    lastmodISO: e.node.lastUpdate
-          //  }
-          //}),
-          ...res[0].data.data.accounts.edges.map(e => `/@${e.node.name}`)
-        ]
+        db.collection("account_object").find({'json_metadata.mapalaProfile': {'$exists': true}})
+            .project({name: true}).toArray()
+      ])
 
-        return urls
-      })
+      return [
+          ...authors.map(a => `/@${a.name}`),
+          ...posts.map(p => ({ url: `/@${p.author}/${p.permlink}`, lastmodISO: p.last_update})),
+      ]
     }
   }
 }
