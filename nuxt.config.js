@@ -158,7 +158,7 @@ module.exports = {
 
       return [
           ...authors.map(a => `/@${a.name}`),
-          ...posts.map(p => ({ url: `/@${p.author}/${p.permlink}`, lastmodISO: p.last_update})),
+          ...posts.map(p => ({ url: `/@${p.author}/${p.permlink}`, lastmodISO: p.last_update.toISOString()})),
       ]
     }
   }
