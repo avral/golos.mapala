@@ -206,6 +206,10 @@ export default {
 <style>
   @import '~/node_modules/simplemde/dist/simplemde.min.css';
 
+  .editor-preview img {
+    width: 100%;
+  }
+
   .el-tag + .el-tag {
     margin-left: 10px;
   }
