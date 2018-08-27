@@ -56,7 +56,7 @@ export default {
 }
 
 .content img {
-  max-width: 100%;
+  width: 100%;
   text-align: center;
   height: 100%;
 }
