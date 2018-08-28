@@ -62,7 +62,7 @@ export default {
         name: comment.author,
         meta: {
           profile: {
-            profileImage: this.$store.state.auth.account.meta.profile.profileimage
+            profileImage: this.$store.state.auth.account.meta.profile.profileImage
           }
         }
       }
