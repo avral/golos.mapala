@@ -4,15 +4,18 @@ div
     .fixed-top
       nav-bar
 
+  welcome-banner
+
   modals-container 
 
-  .container-fluid
+  .container-fluid.main
     nuxt
 
 </template>
 
 <script>
 import NavBar from '@/components/NavBar'
+import WelcomeBanner from '@/components/WelcomeBanner.vue'
 //import MapalaMap from '@/components/MapalaMap'
 
 export default {
@@ -23,6 +26,7 @@ export default {
   },
   components: {
     NavBar,
+    WelcomeBanner,
     //MapalaMap
   }
 }
@@ -30,6 +34,10 @@ export default {
 
 <style>
 .top {
+  /* margin-top: 60px; */
+}
+
+.main {
   margin-top: 60px;
 }
 

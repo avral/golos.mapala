@@ -20,6 +20,7 @@ import Preview from '~/components/editor/Preview.vue'
 
 export default {
   scrollTop: true,
+  layout: 'full-width',
 
   components: {
     Editor,

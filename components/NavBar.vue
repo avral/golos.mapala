@@ -4,7 +4,7 @@ div
     .navbar-link.navbar-link-brand
       nuxt-link(:to="{name: 'index'}").main_logo
         img(src="~/assets/img/mapala-logo.png")
-        h1.mb-0
+        h2.mb-0
           | MAPALA
 
     .navbar-link
@@ -602,7 +602,7 @@ export default {
 */
 
 @media screen and (max-width: 800px) {
-  .main_logo h1 {
+  .main_logo h2 {
     font-size: 13px;
   }
 }
