@@ -1,6 +1,6 @@
 <template lang="pug">
-.welcome-banner(v-show="show" @click="show = !show")
-  a.close-button(aria-label="Close")
+.welcome-banner(v-show="show")
+  a.close-button(aria-label="Close" @click="show = !show")
     span(aria-hidden="true") &times;
 
   .welcome
