@@ -24,7 +24,7 @@ div
       div(v-show="editor.format == 'html'")
         .quill-editor(
           v-quill:myQuillEditor="editorOptions",
-          @input="update_body", v-model="editor.html"
+          v-model="editor.html"
         )
 
   .row.mt-2
@@ -36,31 +36,42 @@ div
 
   .row.mt-3
     .col
-      el-tag(:key="index"
-              v-for="(tag, index) in editor.tags"
-              :closable="index != 0"
-              :disable-transitions="false"
-              @close="handleClose(tag)") {{ tag }}
+      .d-flex
+        el-tag(:key="index"
+                v-for="(tag, index) in editor.tags"
+                :closable="index != 0"
+                :disable-transitions="false"
+                @close="handleClose(tag)") {{ tag }}
 
-      el-input(class="input-new-tag"
-                v-if="inputVisible"
-                v-model="inputValue"
-                ref="saveTagInput"
-                size="mini"
-                @keyup.enter.native="handleInputConfirm"
-                @blur="handleInputConfirm")
+        el-input(class="input-new-tag"
+                  v-if="inputVisible"
+                  v-model="inputValue"
+                  ref="saveTagInput"
+                  size="mini"
+                  @keyup.enter.native="handleInputConfirm"
+                  @blur="handleInputConfirm")
 
-      el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
+        el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
+        el-button(:loading="image_loading"
+                  @click="imageUploadHandler"
+                  type="info"
+                  size="small"
+                  round
+                  icon="el-icon-upload").ml-auto Загрузить изображение
 
       .row.mt-3
         .col
           el-button(type="primary" @click="_submit", :loading="loading") Отправить
+    
+      // Cкрытый инпут для аплоада картинки
+      input(ref="inputImage", @change="uploadImage", hidden, type="file")
 
 </template>
 
 <script>
 // FIXME Где то баг може быть в clear прервыается после печатания первой буквы
 import { mapState, mapActions, mapMutations } from 'vuex'
+import { uploadImage } from '~/utils/golos'
 
 export default {
   layout: 'full-width',
@@ -90,23 +101,27 @@ export default {
     })
 
     simplemde.codemirror.on("change", () => {
-      this.editor.body = simplemde.value()
+      this.editor.markdown = simplemde.value()
     })
+
+    this.codemirror = simplemde.codemirror
 
 		const oldEditorSetOption = simplemde.codemirror.setOption
 
 		simplemde.codemirror.setOption = function(option, value) {
-				oldEditorSetOption.apply(this, arguments);
+      oldEditorSetOption.apply(this, arguments);
 
-				if (option === 'fullScreen') {
-          store.dispatch('showTopToggle')
-				}
+      if (option === 'fullScreen') {
+        store.dispatch('showTopToggle')
+      }
 		}
   },
 
   data() {
     return {
       loading: false,
+      image_loading: false,
+      codemirror: null,
 
       inputVisible: false,
       inputValue: '',
@@ -130,14 +145,37 @@ export default {
           }
         }
       },
-      image_loading: false,
     }
   },
 
   methods: {
-    update_body() {
-      console.log(this.$refs)
+    async uploadImage (e) {
+      this.image_loading = true
+      e.preventDefault()
+
+      const formData = new FormData()
+      formData.append('file', this.$refs.inputImage.files[0])
+
+      try {
+        const imgUrl = await uploadImage(this.$refs.inputImage.files[0], this.$store.state.auth)
+
+        if (this.editor.format = 'markdown') {
+          this.codemirror.getDoc().setValue(`${this.editor.markdown}\n![](${imgUrl})`)
+        } else {
+          this.editor.html += `\n<img src="${imgUrl}">)`
+        }
+
+      } catch (e) {
+        this.$notify({ message: e.message, type: 'warning' })
+      } finally {
+        this.image_loading = false
+      }
     },
+
+    imageUploadHandler () {
+      this.$refs.inputImage.click()
+    },
+
     ...mapMutations({
       clear: 'editor/clear',
       set_title: 'editor/set_title',
@@ -178,7 +216,7 @@ export default {
 
     async _submit() {
       if (!this.editor.title) return this.$message.warning('Добавьте заголовок')
-      if (!this.editor.body) return this.$message.warning('Добавьте текст публикации')
+      if (!this.editor[this.editor.format]) return this.$message.warning('Добавьте текст публикации')
       if (!this.editor.location.properties.name) return this.$message.warning('Локация обязательна')
 
       this.loading = true

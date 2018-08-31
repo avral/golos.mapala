@@ -48,7 +48,7 @@ export default {
 
 .welcome-banner {
   top: 42px;
-  background: url(~/assets/img/action-beach-fun-416676.jpeg) no-repeat;
+  background: url(~/assets/img/welcomBanner.jpeg) no-repeat;
   background-size: contain;
   background-repeat: no-repeat;
   position:relative;

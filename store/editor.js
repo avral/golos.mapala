@@ -82,7 +82,7 @@ export const actions = {
         rootState.auth.account.name,
         permlink,
         state.title,
-        state.body,
+        state[state.format],
         prepare_json_metadata({
           tags: state.tags,
           location: state.location,

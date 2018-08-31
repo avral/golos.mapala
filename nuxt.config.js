@@ -50,6 +50,8 @@ module.exports = {
     'nuxt-device-detect',
     '@nuxtjs/font-awesome',
     '@nuxtjs/sitemap',
+    '@nuxtjs/proxy',
+
     [
       '@nuxtjs/yandex-metrika',
       {
@@ -77,6 +79,7 @@ module.exports = {
     {ssr: false, src: '~/plugins/vue-quill-editor.js'},
     {ssr: false, src: '~/plugins/vue-notification.js'},
     {ssr: false, src: '~/plugins/vue-clipboard2.js'},
+    {ssr: false, src: '~/plugins/vue-tel-imput.js'},
 
     '~/plugins/vue-js-modal',
     '~/plugins/vue-google-maps',
@@ -161,5 +164,12 @@ module.exports = {
           ...posts.map(p => ({ url: `/@${p.author}/${p.permlink}`, lastmodISO: p.last_update.toISOString()})),
       ]
     }
-  }
+  },
+
+  proxy: [
+    // Проксируем на голос
+    //
+    'https://golos.io/create_account',
+    'https://golos.io/api/v1/',
+  ]
 }
