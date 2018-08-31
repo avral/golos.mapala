@@ -14,7 +14,7 @@
         div.date
           | {{ comment.created | formatDate }}
 
-      div {{ comment.body }}
+      div(v-html="mdBody")
 
       div
         span(@click="reply_toggle").mt-2.reply Ответить
@@ -35,6 +35,8 @@
 <script>
 import { mapState } from 'vuex'
 import Reply from '~/components/comment/Reply.vue'
+import marked from 'marked'
+
 
 export default {
   name: 'comment-item',
@@ -51,9 +53,9 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      //isAuth: state => state.user.auth.isAuth
-    }),
+    mdBody() {
+      return marked(this.comment.body)
+    },
 
     childComments() {
       return this.comments.filter(c => {
