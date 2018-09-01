@@ -1,6 +1,7 @@
 import golos from 'golos-js'
 import { get_account } from '~/utils/golos.js'
 import { ACCOUNT_QUERY } from '~/constants/queries.js'
+import camelizeObject from 'camelcase-keys'
 
 
 export const state = () => ({
@@ -67,8 +68,11 @@ export const actions = {
       state.account.name,
       jsonMetadata,
       function(err, result) {
-        state.account.meta = {...state.account.meta, ...JSON.parse(result.operations[0][1].json_metadata)}
-        console.log(state.account.meta)
+        state.account.meta = camelizeObject(
+          {...state.account.meta, ...JSON.parse(result.operations[0][1].json_metadata)},
+          {deep: true}
+      )
+      console.log(state.account.meta)
     })
 
     //navigator.geolocation.getCurrentPosition((location) => {
