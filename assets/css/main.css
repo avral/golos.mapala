@@ -1,3 +1,7 @@
+button {
+  outline: 0;
+}
+
 .icon {
     display: block;
     cursor: pointer;
@@ -80,11 +84,6 @@
 }
 
 
-
-.upvote-btn {
-    border-radius: 3px;
-    background-color: #6d9ee1 !important;
-}
 
 .v--modal-overlay {
   background: rgba(72,84,101,.8);

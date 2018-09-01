@@ -1,18 +1,19 @@
 <template lang="pug">
-  el-button.upvote-btn(size="small" v-if="!post.isVoted", @click="vote", :loading="loading")
-    round.mr-2
-    span.mutted-text.mr-2 Поддержать
-    span.text-light {{ parseFloat(post.totalPendingPayout) | convertGBG }}₽
+  el-button(size="small" v-if="!isVoted", @click="vote", type="info" :loading="loading" icon="el-icon-arrow-up")
+    //round.mr-2
+    //span.mr-2 Голосовать
+    span {{ parseFloat(tpv || post.totalPendingPayout) | convertGBG }}₽
 
-  el-button.upvote-btn(v-else, size="small", disabled)
-    round.mr-2
-    span.mutted-text.ml-2 Поддержано
+  el-button.upvote-btn(v-else, size="small" type="primary" icon="el-icon-check").voted
+    //round.mr-2
+    //span.ml-2 Проголосовано
     // TODO тут сделать фильтрацию по разрым валютам в зависимости от настроек
-    span.text-light.ml-2 {{ parseFloat(post.totalPendingPayout) | convertGBG }}₽
+    span.text-light.ml-2 {{ parseFloat(tpv || post.totalPendingPayout) | convertGBG }}₽
 </template>
 
 <script>
 import golos from 'golos-js'
+import Raven from 'raven-js'
 import { mapState } from 'vuex'
 
 import Round from '~/components/elements/svg/round.vue'
@@ -22,7 +23,10 @@ export default {
 
   data() {
     return {
-      loading: false
+      tpv: 0,
+      loading: false,
+
+      votes: []
     }
   },
 
@@ -30,10 +34,26 @@ export default {
     ...mapState({
       wif: state => state.auth.wif,
       name: state => state.auth.account.name,
-    })
+    }),
+
+    isVoted() {
+      return !!this.votes.filter(v => v.voter == this.name).length
+    }
+  },
+
+  mounted() {
+    this.getVotes()
   },
 
   methods: {
+    async getVotes() {
+      let r = await golos.api.getContent(this.post.author.name, this.post.permlink, -1)
+
+      this.votes = r.active_votes
+      this.tpv = parseFloat(r.total_payout_value.replace(' GBG', ''))
+               + parseFloat(r.total_pending_payout_value.replace(' GBG', ''))
+    },
+
     vote() {
         if (!this.$store.getters['auth/isAuth']) {
       	  return this.$notify({title: 'Vote error', message: 'Авторизируйтесь!', type: 'warning'})
@@ -47,13 +67,13 @@ export default {
             err
               ? this.$notify({title: 'Vote error', message: err.message, type: 'warning'})
               : this.$notify({title: 'Voted', type: 'success'});
-                this.post.isVoted = true
+                this.getVotes()
 
 
             this.loading = false
 
-            // TODO Тут все в сентри логируем дополнительно
             if (err) {
+              Raven.captureMessage(err)
               console.log(err)
             }
         })
@@ -78,3 +98,9 @@ export default {
 }
 
 </script>
+
+<style>
+.voted {
+  cursor: default;
+}
+</style>
