@@ -5,7 +5,7 @@
 
   a.icon.repost(@click="share()") Поделиться
 
-  nuxt-link(v-if="$device.isDesktop"
+  nuxt-link(v-if="$device.isDesktop && $route.name != 'post'"
             :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.widthout-text
     i.fa.fa-eye
 
