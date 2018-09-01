@@ -9,7 +9,7 @@
           | {{ comment.author.name }}
 
         span.pr(v-show="comment.parentAuthor")
-          | Отвелил {{ comment.parentAuthor }}
+          | Ответил {{ comment.parentAuthor }}
 
         div.date
           | {{ comment.created | formatDate }}
