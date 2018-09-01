@@ -50,7 +50,7 @@ div
             nuxt-link(:to="{name: 'account', params: {account: account.name}}", class="wal")
               i.purce
               span.txt_i
-                | Кошклек
+                | Кошелек
               span(class="amount") {{ parseFloat(account.balanceValue) | convertGBG }}₽
 
             div.divd
