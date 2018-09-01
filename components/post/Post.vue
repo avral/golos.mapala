@@ -16,6 +16,12 @@ div
           asdfasdf
           //| {{ post.position_text }}
 
+      nuxt-link(v-show="$store.state.auth.account.name == post.author.name"
+                :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").edit
+      
+        span Редактировать
+
+
     .content
       h1.c_header {{ post.title }}
       post-content(:body="post.body", :format="post.meta.format")
@@ -131,8 +137,6 @@ export default {
     color: #000000;
     text-decoration: none;
   }
-
-
 
   .post-content .c_header {
     font: 700 40px 'PT Sans';
