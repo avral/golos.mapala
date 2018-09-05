@@ -49,7 +49,7 @@ export default {
   color: #141823;
   overflow: hidden;
 	padding: 0px 20px;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
   word-wrap: break-word;
   font: 21px/1.52 'PT Sans';
   -ms-word-wrap: break-word;

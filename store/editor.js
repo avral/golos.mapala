@@ -70,7 +70,9 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
-    if (!state.body.includes(banner_md) & state.format == 'markdown') state.body += `\n\n${banner_md}`
+    if (!state.body.includes(banner_md) & state.format == 'markdown') state[state.format] += `\n\n${banner_md}`
+    // TODO Баннер для html
+    // TODO Ссылка на статью обратно
 
     let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
 
