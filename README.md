@@ -1,22 +1,17 @@
-# mapala-next-b
+Golos.mapala client
 
-> Nuxt.js project
+> Nuxt.js
 
-## Build Setup
+Env:
+  API_QL_URL
+ 
+ 
+## Run local
+```API_QL_URL=https://golos-ql.mapala.net/ yarn run dev```
 
-``` bash
-# install dependencies
-$ npm install # Or yarn install
+## Run docker
+* Create .env file.
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm start
-
-# generate static project
-$ npm run generate
-```
+* ```docker-compose up -d --build```
 
 For detailed explanation on how things work, checkout the [Nuxt.js docs](https://github.com/nuxt/nuxt.js).
