@@ -2,6 +2,10 @@ button {
   outline: 0;
 }
 
+img[src="https://golos.mapala/from-mapala.png"] {
+    display: none !important;
+}
+
 .icon {
     display: block;
     cursor: pointer;

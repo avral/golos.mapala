@@ -5,8 +5,6 @@ import golos from 'golos-js'
 import config from '~/config'
 import { prepare_json_metadata, createUniqPermlink } from '~/utils/golos'
 
-import { banner_md } from '~/constants'
-
 
 export const state = () => ({
   // TODO тип выплат
@@ -70,11 +68,23 @@ export const actions = {
       throw new Error('Добавьте постинг ключ или имя пользователя')
     }
 
-    if (!state.body.includes(banner_md) & state.format == 'markdown') state[state.format] += `\n\n${banner_md}`
-    // TODO Баннер для html
-    // TODO Ссылка на статью обратно
-
     let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
+    let url = `https://golos.mapala.net/@${rootState.auth.account.name}/${permlink}`
+
+    if (!state.body.includes('From Mapala')) {
+      if (state.format == 'markdown') {
+        state[state.format] += `
+          \n\n[![From Mapala](https://golos.mapala.net/from-mapala.png)](${url})
+        `
+      } else {
+        state[state.format] += `
+          \n\n
+          <a href="${url}">
+            <img src="https://golos.mapala.net/from-mapala.png" alt="From Mapala">
+          </a>
+        `
+      }
+    }
 
     return new Promise((resolve, reject) => {
       golos.broadcast.comment(
