@@ -2,7 +2,7 @@ button {
   outline: 0;
 }
 
-img[src*="golos.mapala.net/from-mapala.png"] {
+.post-content img[src*="golos.mapala.net/from-mapala.png"] {
     display: none !important;
 }
 
