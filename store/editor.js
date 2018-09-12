@@ -1,5 +1,6 @@
 import marked from 'marked'
 import slug from 'slug'
+import Raven from 'raven-js'
 
 import golos from 'golos-js'
 import config from '~/config'
@@ -102,6 +103,8 @@ export const actions = {
           format: state.format
         }), (err, res) => {
           if (err) {
+            Raven.captureMessage(err)
+            console.log(err)
             reject(err.message)
           } else {
             commit('clear')
