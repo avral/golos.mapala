@@ -159,10 +159,10 @@ export default {
       try {
         const imgUrl = await uploadImage(this.$refs.inputImage.files[0], this.$store.state.auth)
 
-        if (this.editor.format = 'markdown') {
-          this.codemirror.getDoc().setValue(`${this.editor.markdown}\n![](${imgUrl})`)
+        if (this.editor.format == 'markdown') {
+          this.codemirror.getDoc().setValue(`${this.editor.markdown}\n![${this.editor.title}](${imgUrl})`)
         } else {
-          this.editor.html += `\n<img src="${imgUrl}">)`
+          this.editor.html += `\n<img src="${imgUrl} alt="${this.editor.title}">`
         }
 
       } catch (e) {
