@@ -70,14 +70,15 @@ export const actions = {
 
     let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
     let url = `https://golos.mapala.net/@${rootState.auth.account.name}/${permlink}`
+    let body = state[state.format]
 
-    if (!state.body.includes('From Mapala')) {
+    if (!body.includes('https://golos.mapala.net/from-mapala.png')) {
       if (state.format == 'markdown') {
-        state[state.format] += `
+        body += `
           \n\n[![From Mapala](https://golos.mapala.net/from-mapala.png)](${url})
         `
       } else {
-        state[state.format] += `
+        body += `
           \n\n
           <a href="${url}">
             <img src="https://golos.mapala.net/from-mapala.png" alt="From Mapala">
@@ -94,7 +95,7 @@ export const actions = {
         rootState.auth.account.name,
         permlink,
         state.title,
-        state[state.format],
+        body,
         prepare_json_metadata({
           tags: state.tags,
           location: state.location,
