@@ -149,6 +149,12 @@ export default {
   },
 
   methods: {
+    imageHandler () {
+      const range = this.myQuillEditor.getSelection()
+      const value = prompt('What is the image URL')
+      this.myQuillEditor.insertEmbed(range.index, 'image', value)
+    },
+
     async uploadImage (e) {
       this.image_loading = true
       e.preventDefault()
