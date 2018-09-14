@@ -1,53 +1,52 @@
 <template lang="pug">
 div
-  .vue-map-container
-    gmap-autocomplete(@place_changed="setCenter"
-                      :selectFirstOnEnter="true"
-                      placeholder="Поиск локации").vue-map-search.form-control#search
-    gmap-map(
-      :options="options",
-      :center="center",
-      :zoom="zoom",
-      @idle="updateMarkers",
-      ref="mmm",
-      map-type-id="terrain")
+  gmap-autocomplete(@place_changed="setCenter"
+                    :selectFirstOnEnter="true"
+                    placeholder="Поиск локации").vue-map-search.form-control#search
+  gmap-map(
+    :options="options",
+    :center="center",
+    :zoom="zoom",
+    @idle="updateMarkers",
+    ref="mmm",
+    map-type-id="terrain")
 
-      //gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
-      //gmap-autocomplete(value="asdf").form-control.search
+    //gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
+    //gmap-autocomplete(value="asdf").form-control.search
 
-      // :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
-      //gmap-cluster(:gridSize="1")
-      gmap-marker(
-        v-for="marker in markers",
-        :key="marker.permlink",
-        :position="{lat: parseFloat(marker.position.latitude), lng:parseFloat(marker.position.longitude) }",
-        :clickable="true",
-        :draggable="false",
-        @click="open_modal(marker)"
-        @mouseover="openInfoWindow(marker, 'post')",
-        @mouseout="infoWindow.opened = false",
-        icon="https://mapala.net/pointer.png"
-        )
+    // :position="{lat: parseFloat(marker.location.geometry.coordinates[0]), lng:parseFloat(marker.location.geometry.coordinates[1]) }",
+    //gmap-cluster(:gridSize="1")
+    gmap-marker(
+      v-for="marker in markers",
+      :key="marker.permlink",
+      :position="{lat: parseFloat(marker.position.latitude), lng:parseFloat(marker.position.longitude) }",
+      :clickable="true",
+      :draggable="false",
+      @click="open_modal(marker)"
+      @mouseover="openInfoWindow(marker, 'post')",
+      @mouseout="infoWindow.opened = false",
+      icon="https://mapala.net/pointer.png"
+      )
 
-      gmap-marker(
-        v-for="marker in account_markers",
-        :key="marker.name",
-        :position="marker.coords",
-        :clickable="true",
-        :draggable="false",
-        :icon="marker.icon"
-        @click="$router.push({name: 'account', params: { account: marker.name }})"
-        @mouseover="openInfoWindow(marker, 'account')",
-        @mouseout="infoWindow.opened = false",
-        )
+    gmap-marker(
+      v-for="marker in account_markers",
+      :key="marker.name",
+      :position="marker.coords",
+      :clickable="true",
+      :draggable="false",
+      :icon="marker.icon"
+      @click="$router.push({name: 'account', params: { account: marker.name }})"
+      @mouseover="openInfoWindow(marker, 'account')",
+      @mouseout="infoWindow.opened = false",
+      )
 
-      gmap-info-window(
-        :options="infoWindow.options",
-        :opened="infoWindow.opened",
-        :content="infoWindow.content",
-        :position="infoWindow.position",
-        @closeclick="infoWindow.opened=false"
-        )
+    gmap-info-window(
+      :options="infoWindow.options",
+      :opened="infoWindow.opened",
+      :content="infoWindow.content",
+      :position="infoWindow.position",
+      @closeclick="infoWindow.opened=false"
+      )
 
 
 </template>
@@ -199,12 +198,6 @@ export default {
     top: 18px;
     left: 0px;
     right: 0px;
-}
-
-#map-div,
-.vue-map-container {
-  height: 100%;
-  width: 100%;
 }
 
 .name {

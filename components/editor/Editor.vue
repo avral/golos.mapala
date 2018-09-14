@@ -1,70 +1,68 @@
 <template lang="pug">
-div
-  .row
-    .col-8
-      .input-group
-        .input-group-prepend
-          .input-group-text Заголовок
-        input(v-model="editor.title", placeholder="title").form-control
+no-ssr
+  div.mb-5
+    .row
+      .col-8
+        .input-group
+          .input-group-prepend
+            .input-group-text Заголовок
+          input(v-model="editor.title", placeholder="title").form-control
 
-    .col-4.d-flex.flex-row-reverse
-      div(v-show="editor.format == 'markdown'")
-        button.btn.btn-secondary(@click="toggle_editor") HTML Редактор
+      .col-4.d-flex.flex-row-reverse
+        div(v-show="editor.format == 'markdown'")
+          button.btn.btn-secondary(@click="toggle_editor") HTML Редактор
 
-      div(v-show="editor.format == 'html'")
-        button.btn.btn-secondary(@click="toggle_editor") Markdown
+        div(v-show="editor.format == 'html'")
+          button.btn.btn-secondary(@click="toggle_editor") Markdown
 
-      button.btn.btn-info(@click="clear").mr-auto Очистить
+        button.btn.btn-info(@click="clear").mr-auto Очистить
 
-  .row.mt-3
-    .col
-      div(v-show="editor.format == 'markdown'")
-        textarea.form-control
+    .row.mt-3
+      .col
+        div(v-show="editor.format == 'markdown'")
+          textarea.form-control
 
-      div(v-show="editor.format == 'html'")
-        .quill-editor(
-          v-quill:myQuillEditor="editorOptions",
-          v-model="editor.html"
-        )
+        div(v-show="editor.format == 'html'")
+          .quill-editor(
+            v-quill:myQuillEditor="editorOptions",
+            v-model="editor.html"
+          )
 
-  .row.mt-2
-    .col
-      .input-group
-        .input-group-prepend
-          .input-group-text Локация
-        gmap-autocomplete(:value="editor.location.name", @place_changed="setPlace").form-control
+    .row.mt-2
+      .col
+        EditorMap(@locationUpdated="locationUpdated").editor-map
 
-  .row.mt-3
-    .col
-      .d-flex
-        el-tag(:key="index"
-                v-for="(tag, index) in editor.tags"
-                :closable="index != 0"
-                :disable-transitions="false"
-                @close="handleClose(tag)") {{ tag }}
+    .row.mt-3
+      .col
+        .d-flex
+          el-tag(:key="index"
+                  v-for="(tag, index) in editor.tags"
+                  :closable="index != 0"
+                  :disable-transitions="false"
+                  @close="handleClose(tag)") {{ tag }}
 
-        el-input(class="input-new-tag"
-                  v-if="inputVisible"
-                  v-model="inputValue"
-                  ref="saveTagInput"
-                  size="mini"
-                  @keyup.enter.native="handleInputConfirm"
-                  @blur="handleInputConfirm")
+          el-input(class="input-new-tag"
+                    v-if="inputVisible"
+                    v-model="inputValue"
+                    ref="saveTagInput"
+                    size="mini"
+                    @keyup.enter.native="handleInputConfirm"
+                    @blur="handleInputConfirm")
 
-        el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
-        el-button(:loading="image_loading"
-                  @click="imageUploadHandler"
-                  type="info"
-                  size="small"
-                  round
-                  icon="el-icon-upload").ml-auto Загрузить изображение
+          el-button(v-else-if="editor.tags.length < 5" class="button-new-tag" size="small" @click="showInput") + Добавить тег
+          el-button(:loading="image_loading"
+                    @click="imageUploadHandler"
+                    type="info"
+                    size="small"
+                    round
+                    icon="el-icon-upload").ml-auto Загрузить изображение
 
-      .row.mt-3
-        .col
-          el-button(type="primary" @click="_submit", :loading="loading") Отправить
-    
-      // Cкрытый инпут для аплоада картинки
-      input(ref="inputImage", @change="uploadImage", hidden, type="file")
+        .row.mt-3
+          .col
+            el-button(type="primary" @click="_submit", :loading="loading") Отправить
+      
+        // Cкрытый инпут для аплоада картинки
+        input(ref="inputImage", @change="uploadImage", hidden, type="file")
 
 </template>
 
@@ -72,9 +70,14 @@ div
 // FIXME Где то баг може быть в clear прервыается после печатания первой буквы
 import { mapState, mapActions, mapMutations } from 'vuex'
 import { uploadImage } from '~/utils/golos'
+import EditorMap from '~/components/editor/EditorMap.vue'
 
 export default {
   layout: 'full-width',
+
+  components: {
+    EditorMap
+  },
 
   computed: {
     ...mapState({
@@ -212,12 +215,8 @@ export default {
       this.inputValue = ''
     },
 
-    setPlace(place) {
-      this.editor.location.properties.name = place.formatted_address
-      this.editor.location.geometry.coordinates = [
-        place.geometry.location.lat(),
-        place.geometry.location.lng()
-      ]
+    locationUpdated(location) {
+      this.editor.location = location
     },
 
     async _submit() {
@@ -269,4 +268,8 @@ export default {
     margin-left: 10px;
     vertical-align: bottom;
   }
+
+.editor-map {
+  height: 400px;
+}
 </style>

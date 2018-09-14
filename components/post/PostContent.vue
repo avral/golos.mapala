@@ -26,9 +26,7 @@ export default {
     html() {
       let html
       if (this.format == 'markdown') {
-        let body = this.body.replace(banner_md, '')
-
-        html = marked(body)
+        html = marked(this.body)
       } else {
 				// FIXME Теперь это делает бекенд
 				// Юзается только для редактора
