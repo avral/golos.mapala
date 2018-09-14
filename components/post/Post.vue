@@ -12,9 +12,11 @@ div
           div.date
             | {{ post.created | formatDate }}
 
-        div.location(v-if="post.position_text")
-          asdfasdf
-          //| {{ post.position_text }}
+          // Новый стандарт
+          .location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
+
+          // Старый стандарт
+          .location(v-else) {{ post.meta.location.name }}
 
       nuxt-link(v-show="$store.state.auth.account.name == post.author.name"
                 :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").edit

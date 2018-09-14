@@ -24,8 +24,11 @@
           .name-block.mr-2
             nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
             .date {{ post.created | formatDate }}
-          // TODO Локация
-          .location {{ post.meta.location.name }}
+          // Новый стандарт
+          .location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
+
+          // Старый стандарт
+          .location(v-else) {{ post.meta.location.name }}
 
           nuxt-link(v-show="$store.state.auth.account.name == post.author.name"
                     :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
