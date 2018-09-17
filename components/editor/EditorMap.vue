@@ -83,8 +83,8 @@ export default {
 							geometry: {
 								type: 'Point',
 								coordinates: [
-									r.geometry.location.lat(),
-									r.geometry.location.lng()
+									r.geometry.location.lng(),
+									r.geometry.location.lat()
 								]
 							}
 						}
@@ -112,8 +112,8 @@ export default {
           geometry: {
             type: 'Point',
             coordinates: [
-              location.geometry.location.lat(),
-              location.geometry.location.lng()
+              location.geometry.location.lng(),
+              location.geometry.location.lat()
             ]
           }
         }
