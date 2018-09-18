@@ -30,7 +30,7 @@ export default {
   data() {
     return {
       zoom: 4,
-      locationName: 'sdf',
+      locationName: '',
 
       center: {
         lat: 40,

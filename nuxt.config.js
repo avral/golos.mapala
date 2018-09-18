@@ -45,6 +45,7 @@ module.exports = {
   },
   css: [
     '@/assets/css/main.css',
+    'vue-js-modal/dist/styles.css'
   ],
   modules: [
     '@nuxtjs/apollo',
@@ -53,7 +54,6 @@ module.exports = {
     'nuxt-device-detect',
     '@nuxtjs/font-awesome',
     '@nuxtjs/sitemap',
-    '@nuxtjs/proxy',
 
     [
       '@nuxtjs/yandex-metrika',
@@ -70,7 +70,9 @@ module.exports = {
   ],
   apollo: {
     clientConfigs: {
-      default: '~/config/apollo'
+      default: {
+        httpEndpoint: process.env.API_QL_URL || 'http://localhost:5000/graphql',
+      },
     }
   },
   plugins: [
@@ -168,11 +170,4 @@ module.exports = {
       ]
     }
   },
-
-  proxy: [
-    // Проксируем на голос
-    //
-    'https://golos.io/create_account',
-    'https://golos.io/api/v1/',
-  ]
 }
