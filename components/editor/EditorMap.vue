@@ -2,6 +2,7 @@
 no-ssr
   .vue-map-container
     gmap-autocomplete(@place_changed="setCenter"
+                      :value="locationName"
                       :selectFirstOnEnter="true"
                       placeholder="Поиск локации").vue-map-search.form-control#search
 
@@ -10,6 +11,7 @@ no-ssr
       :options="options",
       :center="center",
       ref="mmm",
+      @click="moveMarker",
       map-type-id="terrain")
 
       gmap-marker(
@@ -28,10 +30,7 @@ export default {
   data() {
     return {
       zoom: 4,
-
-      //paths: [
-      //  [ {lat: 40.382, lng: -70.802}, {lat: 40.382, lng: -70.808}, {lat: 40.388, lng: -70.808}, {lat: 40.388, lng: -70.802} ],
-      //],
+      locationName: 'sdf',
 
       center: {
         lat: 40,
@@ -62,6 +61,15 @@ export default {
   },
 
   methods: {
+    moveMarker(location) {
+      this.marker = {
+        lat: location.latLng.lat(),
+        lng: location.latLng.lng()
+      }
+
+      this.dragend(location)
+    },
+
     dragend(marker) {
       this.center = {
         lat: marker.latLng.lat(),
@@ -72,7 +80,9 @@ export default {
       geocoder.geocode({
         'latLng': new google.maps.LatLng(this.center.lat, this.center.lng)
       }, r => {
+        if (!r) return
         r = r[0]
+        this.locationName = r.formatted_address
 
         if (r) {
 					this.$emit('locationUpdated', {
@@ -83,8 +93,8 @@ export default {
 							geometry: {
 								type: 'Point',
 								coordinates: [
-									r.geometry.location.lng(),
-									r.geometry.location.lat()
+									this.center.lng,
+									this.center.lat
 								]
 							}
 						}
