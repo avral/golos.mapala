@@ -71,114 +71,19 @@ query minimal_post ($identifier: CommentIdentifier!) {
 }
 `
 
-export const POST_QUERY = gql`
-query post ($identifier: CommentIdentifier!,
-            $linkifyImages: Boolean,
-            $isVoted: String,
-            $authorized: Boolean!)
-{
-  post(identifier: $identifier) {
-    author {
-      name
-      meta {
-        profile {
-          profileImage
-        }
-      }
-    }
-    permlink
-    meta {
-      location
-      format
-      tags
-    }
-    title
-    created
-    body(linkifyImages: $linkifyImages)
-    thumb
-    isVoted(account: $isVoted)  @include(if: $authorized)
-    netVotes
-    totalPendingPayout
-    children
-    comments {
-      permlink
-      parentPermlink
-      parentAuthor
-      created
-      body
-      totalPendingPayout
-      author {
-        name
-        meta {
-          profile {
-            profileImage
-          }
-        }
-      }
-    }
-  }
-}
-`
-
 export const POSTS_QUERY = gql`
 query posts ($after: String,
-             $category: String,
              $first: Int!,
-             $author: String,
-             $isVoted: String,
-             $authorized: Boolean!,
-             $tags: [String],
-             $app: String)
+             $author: String)
 {
   posts(after: $after,
         first: $first,
-        category: $category,
-        author: $author,
-        meta: {
-          tags: $tags,
-          app: $app
-        })
+        author: $author)
   {
     edges {
       node {
-        author {
-          name
-          meta {
-            profile {
-              profileImage
-            }
-          }
-        }
+        author
         permlink
-        meta {
-          location
-          format
-          tags
-        }
-        title
-        created
-        body
-        thumb
-        isVoted(account: $isVoted)  @include(if: $authorized)
-        netVotes
-        totalPendingPayout
-        children
-        comments {
-          permlink
-          parentPermlink
-          parentAuthor
-          created
-          body
-          totalPendingPayout
-          author {
-            name
-            meta {
-              profile {
-                profileImage
-              }
-            }
-          }
-        }
       },
       cursor
     }

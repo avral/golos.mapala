@@ -3,7 +3,24 @@ import axios from 'axios'
 import golos from 'golos-js'
 import { Signature, PrivateKey, hash } from 'golos-js/lib/auth/ecc'
 
+
 import config from '@/config'
+import { preparePost, jsonParseSafe } from '~/utils/'
+
+
+export async function getAccount(name) {
+  let [account] = await golos.api.getAccountsAsync([name])
+
+  if (!account) return
+
+  account.meta = jsonParseSafe(account.json_metadata)
+  
+  // Apps data
+  if (!('profile' in account.meta)) account.meta.profile = {}
+  if (!('mapalaProfile' in account.meta)) account.meta.mapalaProfile = {}
+
+  return account
+}
 
 
 export async function createUniqPermlink(author, title) {
@@ -108,6 +125,12 @@ export async function uploadImage (file, auth) {
   const res = await axios.post(postUrl, formData, {headers: {'content-type': 'multipart/form-data'}})
 
   return res.data.url
+}
+
+export async function getContent(author, permlink) {
+  let post = await golos.api.getContentAsync(author, permlink)
+
+  return preparePost(post)
 }
 
 

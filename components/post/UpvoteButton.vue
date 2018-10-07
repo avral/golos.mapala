@@ -47,7 +47,7 @@ export default {
 
   methods: {
     async getVotes() {
-      let r = await golos.api.getContent(this.post.author.name, this.post.permlink, -1)
+      let r = await golos.api.getContent(this.post.author, this.post.permlink, -1)
 
       this.votes = r.active_votes
       this.tpv = parseFloat(r.total_payout_value.replace(' GBG', ''))
@@ -62,7 +62,7 @@ export default {
 			  this.loading = true
         golos.config.set('websocket', 'wss://ws18.golos.io')
         golos.broadcast.vote(
-          this.wif, this.name, this.post.author.name,
+          this.wif, this.name, this.post.author,
           this.post.permlink, 10000, (err, res) => {
             err
               ? this.$notify({title: 'Vote error', message: err.message, type: 'warning'})

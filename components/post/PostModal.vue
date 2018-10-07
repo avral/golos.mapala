@@ -13,7 +13,7 @@
 import { mapActions } from 'vuex'
 import Post from '~/components/post/Post.vue'
 import NotFound from '~/components/errors/NotFound.vue'
-import { POST_QUERY } from '@/constants/queries.js'
+import { getContent } from '~/utils/golos'
 
 export default {
   props: ['author', 'permlink'],
@@ -41,19 +41,9 @@ export default {
 
   async created() {
     this.loading = true
+    this.post = await getContent(this.author.toLowerCase(), this.permlink)
+    if (!this.post) this.notFound = true
 
-    let client = this.$apolloProvider.defaultClient
-
-    let {data: {post}} = await client.query({query: POST_QUERY, variables: {
-      identifier: `@${this.author.toLowerCase()}/${this.permlink}`,
-      linkifyImages: true,
-      isVoted: this.$store.state.auth.account.name,
-      authorized: !!this.$store.state.auth.wif
-    }})
-
-    if (!post) this.notFound = true
-
-    this.post = JSON.parse(JSON.stringify(post))
     this.loading = false
   }
 }

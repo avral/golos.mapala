@@ -43,10 +43,10 @@ div
     gmap-info-window(
       :options="infoWindow.options",
       :opened="infoWindow.opened",
-      :content="infoWindow.content",
       :position="infoWindow.position",
       @closeclick="infoWindow.opened=false"
       )
+      div(v-html="infoWindow.content")
 
 
 </template>
@@ -56,7 +56,6 @@ import { map_options } from '@/config'
 import gql from 'graphql-tag'
 import { mapActions, mapState } from 'vuex'
 import PostModal from '~/components/post/PostModal.vue'
-import { ACCOUNT_MARKERS_QUERY } from '~/constants/queries.js'
 import GmapCluster from 'vue2-google-maps/dist/components/cluster'
 
 
@@ -74,7 +73,7 @@ export default {
           maxWidth: 250,
           pixelOffset: {
             width: 0,
-            height: -35
+            height: -52
           }
         },
         position: {
@@ -92,24 +91,24 @@ export default {
   },
 
   async created() {
-    let client = this.$apolloProvider.defaultClient
+    //let client = this.$apolloProvider.defaultClient
 
-    let { data } = await client.query({query: ACCOUNT_MARKERS_QUERY})
+    //let { data } = await client.query({query: ACCOUNT_MARKERS_QUERY})
 
-    this.account_markers = data.accounts.edges.map(e => {
-      e = e.node
+    //this.account_markers = data.accounts.edges.map(e => {
+    //  e = e.node
 
-      let avatar = e.meta.profile.profileImage || 'https://thumb.ibb.co/bHPoQz/icon_profile.png'
-      return {
-        name: e.name,
-        coords: {
-          lat: e.meta.mapalaProfile.location.geometry.coordinates[0],
-          lng: e.meta.mapalaProfile.location.geometry.coordinates[1]
-        },
+    //  let avatar = e.meta.profile.profileImage || 'https://thumb.ibb.co/bHPoQz/icon_profile.png'
+    //  return {
+    //    name: e.name,
+    //    coords: {
+    //      lat: e.meta.mapalaProfile.location.geometry.coordinates[0],
+    //      lng: e.meta.mapalaProfile.location.geometry.coordinates[1]
+    //    },
 
-        icon: 'https://imgp.golos.io/32x32/' + avatar
-      }
-    })
+    //    icon: 'https://imgp.golos.io/32x32/' + avatar
+    //  }
+    //})
   },
 
   computed: {

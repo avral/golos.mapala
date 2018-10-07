@@ -4,21 +4,21 @@ div
     .top_block
       .t_col
         .img_wrap
-          nuxt-link(:to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").user_av
-            img.user_av(v-if="post.author.meta.profile.profileImage" :src="post.author.meta.profile.profileImage | golos_proxy('64x64')")
+          nuxt-link(:to="{name: 'post', params: {author: post.author, permlink: post.permlink}}").user_av
+            img.user_av(:src="post.author | avatar")
 
         div.name_block
-          nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
+          nuxt-link.name(:to="{name: 'account', params: {account: post.author}}") @{{ post.author }}
           div.date
             | {{ post.created | formatDate }}
 
           // Новый стандарт
-          .location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
+          //.location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
 
           // Старый стандарт
-          .location(v-else) {{ post.meta.location.name }}
+          //.location(v-else) {{ post.meta.location.name }}
 
-      nuxt-link(v-show="$store.state.auth.account.name == post.author.name"
+      nuxt-link(v-show="$store.state.auth.account.name == post.author"
                 :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").edit
       
         span Редактировать
@@ -26,7 +26,7 @@ div
 
     .content
       h1.c_header {{ post.title }}
-      post-content(:body="post.body", :format="post.meta.format")
+      post-content(:body="post.content", :format="post.meta.format")
     
     .col
       post-bottom(:post="post")

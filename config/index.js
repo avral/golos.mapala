@@ -12,7 +12,7 @@ export default {
   img_proxy_prefix: 'https://imgp.golos.io/',
   API_QL_URL: process.env.API_QL_URL || 'http://127.0.0.1:5000/graphql',
 
-  baseURI: 'https://golos.mapala.net/',
+  baseURI: 'https://mapala.app/',
 }
 
 export const map_options = {

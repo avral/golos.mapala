@@ -1,12 +1,12 @@
 <template lang="pug">
 .bottom-block
   a(v-if="$device.isDesktop" @click="open_modal").icon.comment {{ post.children }}
-  nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.comment {{ post.children }}
+  nuxt-link(v-else :to="{name: 'post', params: {author: post.author, permlink: post.permlink}}").icon.comment {{ post.children }}
 
   a.icon.repost(@click="share()") Поделиться
 
   nuxt-link(v-if="$device.isDesktop && $route.name != 'post'"
-            :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}").icon.widthout-text
+            :to="{name: 'post', params: {author: post.author, permlink: post.permlink}}").icon.widthout-text
     i.fa.fa-eye
 
   upvote-button(:post="post")
@@ -30,7 +30,7 @@ export default {
 
   methods: {
     open_modal() {
-      this.$modal.show(PostModal, { author: this.post.author.name, permlink: this.post.permlink }, {
+      this.$modal.show(PostModal, { author: this.post.author, permlink: this.post.permlink }, {
         height: 'auto',
         width: '60%',
         scrollable: true,
@@ -40,7 +40,7 @@ export default {
 
     share() {
       // TODO Вынести домен в конфиг
-      this.$copyText(`${config.baseURI}@${this.post.author.name}/${this.post.permlink}`)
+      this.$copyText(`${config.baseURI}@${this.post.author}/${this.post.permlink}`)
       this.$message('Сылка на публикацию скопированна в буфер обмена')
     }
   }

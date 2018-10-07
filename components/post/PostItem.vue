@@ -3,43 +3,41 @@
   .col
     .post-item.mb-3(:class="post.thumb ? 'w_i': ''")
       div(v-if="post.thumb")
-
         a(v-if="$device.isDesktop" @click="open_modal")
           .post-image
             img(:src="post.thumb | golos_proxy('480x320')", :alt="post.title", :title="post.title")
 
-        nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
+        nuxt-link(v-else :to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
           .post-image
             img(:src="post.thumb | golos_proxy('480x320')", :alt="post.title", :title="post.title")
 
       .short
         .top-block
           .img-wrap
-            nuxt-link.card-link(:to="{name: 'account', params: {account: post.author.name}}")
-              img.user_av(v-if="post.author.meta.profile.profileImage"
-                          :src="post.author.meta.profile.profileImage | golos_proxy('64x64')"
-													:alt="'@' + post.author.name"
-													:title="'@' + post.author.name")
+            nuxt-link.card-link(:to="{name: 'account', params: {account: post.author}}")
+              .user_av
 
           .name-block.mr-2
-            nuxt-link.name(:to="{name: 'account', params: {account: post.author.name}}") @{{ post.author.name }}
+            nuxt-link.name(:to="{name: 'account', params: {account: post.author}}") @{{ post.author }}
             .date {{ post.created | formatDate }}
+
           // Новый стандарт
-          .location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
+          div(v-if="post.meta.location && post.meta.location.properties")
+            .location(v-if="post.meta.location.properties") {{ post.meta.location.properties.name }}
 
-          // Старый стандарт
-          .location(v-else) {{ post.meta.location.name }}
+            // Старый стандарт
+            .location(v-else) {{ post.meta.location.name }}
 
-          nuxt-link(v-show="$store.state.auth.account.name == post.author.name"
+          nuxt-link(v-show="$store.state.auth.account == post.author"
                     :to="{name: 'editor-permlink', params: {permlink: post.permlink}}").icon.ml-auto
             i.fa.fa-edit
 
         a(v-if="$device.isDesktop" @click="open_modal")
           h2.write-header  {{ post.title }}
-          p.write-text {{ post.body | html_preview }}
-        nuxt-link(v-else :to="{name: 'post', params: {author: post.author.name, permlink: post.permlink}}")
+          p.write-text {{ post.content | html_preview }}
+        nuxt-link(v-else :to="{name: 'post', params: {author: post.author, permlink: post.permlink}}")
           h2.write-header  {{ post.title }}
-          p.write-text {{ post.body | html_preview }}
+          p.write-text {{ post.content | html_preview }}
 
         post-bottom(:post="post")
             
@@ -73,7 +71,7 @@ export default {
     }),
 
     open_modal() {
-      this.$modal.show(PostModal, { author: this.post.author.name, permlink: this.post.permlink }, {
+      this.$modal.show(PostModal, { author: this.post.author, permlink: this.post.permlink }, {
         height: 'auto',
         width: '60%',
         scrollable: true,

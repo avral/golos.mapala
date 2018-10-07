@@ -12,11 +12,9 @@ import { escapeHtml } from '@/utils'
 let regex = /((?:https?\:\/\/)(?:[a-zA-Z]{1}(?:[\w\-\.]+\.)+(?:[\w]{2,5}))(?:\:[\d]{1,5})?\/(?:[^\s\/]+\/)*(?:[^\s]+\.(?:jpe?g|gif|png))(?:\?\w+=\w+(?:&\w+=\w+)*)?)[^"']*/
 
 
-Vue.filter('html_preview', (value = '') => {
-  return sbd.sentences(marked(value), {
-		sanitize: true,
-		newline_boundaries: true,
-		html_boundaries: true,
+Vue.filter('html_preview', (html) => {
+  return sbd.sentences(html, {
+		sanitize: true
 	}).slice(0, 2).join(' ')
 })
 
@@ -57,4 +55,9 @@ Vue.filter('body_preview', (value = '', length=50) => {
   let text = tmp.textContent || tmp.innerText
 
 	return text.slice(0, length);
+})
+
+
+Vue.filter('avatar', (value = '') => {
+  return '/_nuxt/img/icon-profile.3fc3bea.svg'
 })

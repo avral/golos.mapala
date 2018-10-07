@@ -7,17 +7,12 @@ div
         h2.mb-0
           | MAPALA
 
-    .navbar-link
-      el-popover(placement="bottom"
-                 title="Выплаты"
-                 width="300"
-                 trigger="hover"
-                 content="Суммарная выплата авторам Mapala в рублях.")
-        h4(slot="reference").mb-0.white-text.btn
-          | Всего выплачено: {{ totalPayout | convertGBG }}₽
+    .navbar-link.text-white.ml-3
+      h3.mb-0 By
+        a(href="https://golos.io/@avral")
+          strong.ml-3 AVRAL
 
-
-    .navbar-items
+    //.navbar-items
       nuxt-link(:to="{name: 'about'}").white-text Вопросы и ответы (FAQ)
       //.navbar-link
         nuxt-link(:to="{name: 'about'}").white-text Блог мапала
@@ -91,7 +86,7 @@ div
 import { mapState, mapMutations } from 'vuex'
 import { mixin as clickaway } from 'vue-clickaway'
 import { Loading } from 'element-ui'
-import { MAPALA_TOTAL_PAYOUT_QUERY } from '~/constants/queries'
+//import { MAPALA_TOTAL_PAYOUT_QUERY } from '~/constants/queries'
 
 
 export default {
@@ -113,11 +108,11 @@ export default {
   },
 
   created() {
-    let client = this.$apolloProvider.defaultClient
+    //let client = this.$apolloProvider.defaultClient
 
-    client.query({query: MAPALA_TOTAL_PAYOUT_QUERY})
-      //.then(r => console.log(r.data.stats * 2.60424))
-      .then(r => this.totalPayout = r.data.stats.posts.totalPayout)
+    //client.query({query: MAPALA_TOTAL_PAYOUT_QUERY})
+    //  //.then(r => console.log(r.data.stats * 2.60424))
+    //  .then(r => this.totalPayout = r.data.stats.posts.totalPayout)
   },
 
   methods: {

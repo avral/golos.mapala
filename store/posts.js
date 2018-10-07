@@ -1,12 +1,14 @@
 import config from '~/config'
-import { POSTS_QUERY } from '@/constants/queries.js'
+import steem from 'golos-js'
+import { POSTS_QUERY } from '~/constants/queries.js'
+import { getContent } from '~/utils/golos'
 
 
 export const state = () => ({
   list: [],
-
   author: undefined,
-  after: undefined,
+
+  after: undefined
 })
 
 export const actions = {
@@ -14,19 +16,17 @@ export const actions = {
     let client = this.app.apolloProvider.defaultClient
 
     let { data } = await client.query({query: POSTS_QUERY, variables: {
-      tags: [config.tag_for_post],
       first: config.pagination,
       author: state.author,
       after: state.after,
-      linkifyImages: true,
-      isVoted: rootState.auth.account.name,
-      authorized: !!rootState.auth.isAuth
     }})
 
-    let posts = data.posts.edges.map(p => p.node)
-    let posts_deep_copy = JSON.parse(JSON.stringify(posts))
+    // Load from node untill GraphqQL ready
+    let posts = await Promise.all(
+      data.posts.edges.map(p => getContent(p.node.author, p.node.permlink))
+    )
 
-    commit('set_posts', state.list.concat(posts_deep_copy))
+    commit('set_posts', [...state.list, ...posts])
 
     if (posts.length > 0) {
       commit('set_after', data.posts.edges[data.posts.edges.length - 1].cursor)

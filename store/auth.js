@@ -1,7 +1,5 @@
 import golos from 'golos-js'
-import { get_account } from '~/utils/golos.js'
-import { ACCOUNT_QUERY } from '~/constants/queries.js'
-import camelizeObject from 'camelcase-keys'
+import { getAccount } from '~/utils/golos'
 
 
 export const state = () => ({
@@ -33,7 +31,6 @@ export const actions = {
       dispatch('fetch_account')
     }
   },
-
 
   async setLocation({ commit, state }, place) {
     // TODO Вынести в функцию getGeoJSON
@@ -87,7 +84,7 @@ export const actions = {
       throw new Error('Это не приватный ключ')
     }
 
-    account = await get_account(account)
+    account = await getAccount(account)
 
     if (!account) {
       throw new Error('В GOLOS.IO нет такого пользователя')
@@ -115,16 +112,13 @@ export const actions = {
   },
 
   async fetch_account ({ commit, state }, account_name) {
-    // TODO Подгрузка инфы о пользователе
-    let client = this.app.apolloProvider.defaultClient
+    let account = await getAccount(account_name || state.account.name)
 
-    let { data: { account } } = await client.query({query: ACCOUNT_QUERY, variables: {
-      name: account_name || state.account.name
-    }})
+    if (!account) {
+      dispatch('logout')
+    }
 
-    // TODO Создать mapalaProfile по дефолту если его нет
-
-    commit('set_account', JSON.parse(JSON.stringify(account)))
+    commit('set_account', account)
   }
 }
 

@@ -70,19 +70,19 @@ export const actions = {
     }
 
     let permlink = state.permlink || await createUniqPermlink(rootState.auth.account.name, state.title)
-    let url = `https://golos.mapala.net/@${rootState.auth.account.name}/${permlink}`
+    let url = `https://mapala.app/@${rootState.auth.account.name}/${permlink}`
     let body = state[state.format]
 
-    if (!body.includes('https://golos.mapala.net/from-mapala.png')) {
+    if (!body.includes('https://mapala.app/from-mapala.png')) {
       if (state.format == 'markdown') {
         body += `
-          \n\n[![From Mapala](https://golos.mapala.net/from-mapala.png)](${url})
+          \n\n[Опубликовано на MAPALA.APP](${url})
         `
       } else {
         body += `
           \n\n
           <a href="${url}">
-            <img src="https://golos.mapala.net/from-mapala.png" alt="From Mapala">
+            Опубликовано на MAPALA.APP
           </a>
         `
       }
