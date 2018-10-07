@@ -4,6 +4,12 @@ import { POSTS_QUERY } from '~/constants/queries.js'
 import { getContent } from '~/utils/golos'
 
 
+let posts_for_hide = [
+  'komprometaciya-posting-klyuchei-mapala-golos-i-ee-istochnik-pavel-dorozhkin-avral',
+  'puteshestvie-nachinaetsya'
+]
+
+
 export const state = () => ({
   list: [],
   author: undefined,
@@ -25,6 +31,10 @@ export const actions = {
     let posts = await Promise.all(
       data.posts.edges.map(p => getContent(p.node.author, p.node.permlink))
     )
+
+    posts = posts.filter(p => {
+      return !posts_for_hide.includes(p.permlink)
+    })
 
     commit('set_posts', [...state.list, ...posts])
 

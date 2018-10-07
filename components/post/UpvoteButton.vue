@@ -47,7 +47,7 @@ export default {
 
   methods: {
     async getVotes() {
-      let r = await golos.api.getContent(this.post.author, this.post.permlink, -1)
+      let r = await golos.api.getContentAsync(this.post.author, this.post.permlink, 10000)
 
       this.votes = r.active_votes
       this.tpv = parseFloat(r.total_payout_value.replace(' GBG', ''))
